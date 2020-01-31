@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: trimmomatic
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - trimmomatic=0.39

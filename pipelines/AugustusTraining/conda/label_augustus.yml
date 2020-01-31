@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: augustus
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - augustus=3.3.3

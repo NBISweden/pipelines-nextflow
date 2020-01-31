@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: agat
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - agat=0.1.0

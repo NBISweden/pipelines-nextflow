@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: stringtie
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - stringtie=2.0
