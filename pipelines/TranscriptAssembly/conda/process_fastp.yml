@@ -6,4 +6,4 @@ channels:
   - defaults
 
 dependencies:
-  - fastp=0.2.0
+  - fastp=0.20.0
