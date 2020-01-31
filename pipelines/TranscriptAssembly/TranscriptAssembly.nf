@@ -106,7 +106,7 @@ workflow transcript_assembly {
         }
         hisat2(trimmed_reads,hisat2_index.out.collect())
         stringtie(hisat2.out[0])
-        logs.mix(hisat2.out[2]).mix(stringtie.out[1])
+        logs.mix(hisat2.out[2])
         multiqc(logs.collect(),params.multiqc_config)
 
 }
@@ -255,13 +255,11 @@ process stringtie {
 
     output:
     path "${bam.baseName}-transcripts.gtf"
-    path "${bam.baseName}.command.log"
 
     script:
     """
     stringtie $bam -l ${bam.baseName} -o ${bam.baseName}-transcripts.gtf \\
         -p ${task.cpus} ${params.stringtie_options}
-    mv .command.log ${bam.baseName}.command.log
     """
 
 }
