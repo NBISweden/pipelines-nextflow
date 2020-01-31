@@ -91,22 +91,20 @@ workflow transcript_assembly {
     main:
         fastqc(reads)
         hisat2_index(genome)
-        trimmed_reads = reads
-        logs = fastqc.out
         if(!params.skip_trimming){
             if (params.trimmer == 'fastp') {
                 fastp(reads)
-                trimmed_reads = fastp.out[0]
-                logs.mix(fastp.out[1])
+                fastp.out[0].set {trimmed_reads}
             } else if (params.trimmer == 'trimmomatic') {
                 trimmomatic(reads)
-                trimmed_reads = trimmomatic.out[0]
-                logs.mix(trimmomatic.out[2])
+                trimmomatic.out[0].set {trimmed_reads}
             }
+        } else {
+            reads.set {trimmed_reads}
         }
         hisat2(trimmed_reads,hisat2_index.out.collect())
         stringtie(hisat2.out[0])
-        logs.mix(hisat2.out[2])
+        fastqc.out.mix(fastp.out[1]).mix(trimmomatic.out[2]).mix(hisat2.out[2]).set {logs}
         multiqc(logs.collect(),params.multiqc_config)
 
 }
