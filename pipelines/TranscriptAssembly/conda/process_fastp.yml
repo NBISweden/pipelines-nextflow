@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: fastp
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - fastp=0.2.0
