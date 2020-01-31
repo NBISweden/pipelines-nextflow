@@ -311,6 +311,30 @@ process gbk2augustus {
 
 }
 
+process augustus_training {
+
+    tag "$species"
+    label 'Augustus'
+    publishDir "${params.outdir}/Augustus_training", mode: 'copy'
+
+    input:
+    path training_file
+    path test_file
+    each species
+
+    output:
+    path "${species}_run.log"
+
+    script:
+    """
+    new_species.pl --species=$species
+    etraining –-species=$species $training_file
+    augustus --species=$species $test_file | tee ${species}_run.log
+    augustus --species=$species $test_file | tee -a ${species}_run.log
+    """
+
+}
+
 workflow.onComplete {
     log.info ( workflow.success ? "\nAugustus training dataset complete!\n" : "Oops .. something went wrong\n" )
 }
