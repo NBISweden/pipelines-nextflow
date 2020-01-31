@@ -52,3 +52,5 @@ nextflow run -c params.config -profile nbis,conda TranscriptAssembly.nf
 | `hisat2_options` | Additional options for hisat2, e.g. strandedness (`--hisat2_options ' --fr'`). **Note:** Quote the options and preceed `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [Hisat2 Manual](https://ccb.jhu.edu/software/hisat2/manual.shtml) for the full range of options. (Default: `''`). |
 | **StringTie parameters** | |
 | `stringtie_options` | Additional options for stringtie, e.g. strandedness (`--stringtie_options ' --fr'`). **Note:** Quote the options and preceed `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [StringTie Manual](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual) for the full range of options. (Default: `''`). |
+| **Multiqc parameters** | |
+| `multiqc_config` | Path to the multiqc config file (default `$baseDir/config/multiqc_conf.yml`). |
