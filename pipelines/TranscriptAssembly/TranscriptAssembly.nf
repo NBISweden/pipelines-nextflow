@@ -95,16 +95,18 @@ workflow transcript_assembly {
             if (params.trimmer == 'fastp') {
                 fastp(reads)
                 fastp.out[0].set {trimmed_reads}
+                fastp.out[1].set {trimming_logs}
             } else if (params.trimmer == 'trimmomatic') {
                 trimmomatic(reads)
                 trimmomatic.out[0].set {trimmed_reads}
+                trimmomatic.out[2].set {trimming_logs}
             }
         } else {
             reads.set {trimmed_reads}
         }
         hisat2(trimmed_reads,hisat2_index.out.collect())
         stringtie(hisat2.out[0])
-        fastqc.out.mix(fastp.out[1]).mix(trimmomatic.out[2]).mix(hisat2.out[2]).set {logs}
+        fastqc.out.mix(trimming_logs).mix(hisat2.out[2]).set {logs}
         multiqc(logs.collect(),params.multiqc_config)
 
 }
