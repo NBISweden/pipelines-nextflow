@@ -18,24 +18,31 @@ vim params.config
 nextflow run -c params.config -profile nbis,conda AugustusTraining.nf
 ```
 
-Use `-resume` to restart failed jobs.
-```bash
-nextflow run -resume -c params.config -profile nbis,conda AugustusTraining.nf
-```
+## Workflow description
+
+1. Separate maker evidence into .
+2. Select model by AED.
+3. Keep the longest isoform.
+4. Remove incomplete gene models.
+5. Filter by locus distance.
+6. Extract the protein sequence.
+7. Blast sequences against themselves.
+8. Filter sequences.
+9. Create a training and test dataset.
+10. Train augustus using the species and training data.
 
 ## Parameters
 
-* `genome`: The path to the genome assembly in quotes.
-* `maker_evidence_gff`: The path to the gff annotation in quotes.
-* `outdir`: The name of the results folder
-
-* `gff_gene_model_filter_options`: Options to be passed to the filter by gene model script (default:'-c -r -d 500 -a 0.3').
-
-* `codon_table`: The number of the codon table to use for translation.
-
-* `test_size`: The size of the test data set
-* `flank_region_size`: The fize of the flank region to include. 
-
-## Stages
-
-
+| **General** | Description |
+| :------- | :--- |
+| `genome` | The path to the genome assembly in quotes. |
+| `maker_evidence_gff` | The path to the gff annotation in quotes. |
+| `outdir` | The name of the results folder |
+| **Gene Model Filter parameters** | |
+| `gff_gene_model_filter_options` | Options to be passed to the filter by gene model script (default:'-c -r -d 500 -a 0.3'). |
+| **Protein Sequence Extraction parameters** | |
+| `codon_table` | The number of the codon table to use for translation. |
+| **Augustus parameters** | |
+| `test_size` | The size of the test data set. |
+| `flank_region_size` | The size of the flank region to include. |
+| `augustus_training_species` | The species to use for training e.g. `[ 'species1', 'species2' ]` |
