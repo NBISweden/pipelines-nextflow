@@ -17,6 +17,7 @@ params.codon_table = 1
 
 params.test_size = 100
 params.flank_region_size = 500
+params.augustus_training_species = ['asecodes_parviclava']
 
 log.info """
 NBIS
@@ -44,6 +45,7 @@ NBIS
  Augustus training parameters
      test_size                     : ${params.test_size}
      flank_region_size             : ${params.flank_region_size}
+     augustus_training_species     : ${params.augustus_training_species}
 
  """
 
@@ -81,6 +83,7 @@ workflow augustus_training_dataset {
             blast_recursive.out.collect())
         gff2gbk(gff_filter_by_blast.out,genome.collect())
         gbk2augustus(gff2gbk.out)
+        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.augustus_training_species)
 
 }
 
