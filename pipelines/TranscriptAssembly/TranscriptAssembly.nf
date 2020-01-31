@@ -139,7 +139,7 @@ process fastp {
     tuple val(sample), path(reads)
 
     output:
-    tuple val(sample), path('*_trimmed*.fastq.gz')
+    tuple val(sample), path('*fastp-trimmed*.fastq.gz')
     path "${sample}_fastp.json"
 
     script:
