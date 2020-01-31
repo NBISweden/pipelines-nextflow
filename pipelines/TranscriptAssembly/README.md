@@ -18,12 +18,6 @@ vim params.config
 nextflow run -c params.config -profile nbis,conda TranscriptAssembly.nf
 ```
 
-Use `-resume` to restart failed jobs.
-```bash
-nextflow run -resume -c params.config -profile nbis,conda TranscriptAssembly.nf
-```
-
-
 ## Parameters
 
 | **General** | Description |
