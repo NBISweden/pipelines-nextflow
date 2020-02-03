@@ -75,10 +75,12 @@ if( !params.skip_trimming && params.trimmer == 'trimmomatic' && !file(params.tri
 workflow {
 
     main:
-        reads = Channel.fromFilePairs(params.reads, size: params.single_end ? 1 : 2, checkIfExists: true)
+        Channel.fromFilePairs(params.reads, size: params.single_end ? 1 : 2, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find reads matching ${params.reads}!\n" }
-        genome = Channel.fromPath(params.genome, checkIfExists: true)
+            .set {reads}
+        Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
+            .set {genome}
         transcript_assembly(reads,genome)
 }
 
