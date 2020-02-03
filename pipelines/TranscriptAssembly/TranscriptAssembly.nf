@@ -172,7 +172,7 @@ process trimmomatic {
     output:
     tuple val(sample), path('*trimmomatic-trimmed*.fastq.gz')
     tuple val(sample), path('*trimmomatic-unpaired*.fastq.gz') optional true
-    path 'trimmomatic.log'
+    path "${sample}_trimmomatic.log"
 
     script:
     if (params.single_end) {
