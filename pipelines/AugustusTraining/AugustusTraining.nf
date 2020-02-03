@@ -52,10 +52,12 @@ NBIS
 workflow {
 
     main:
-        evidence = Channel.fromPath(params.maker_evidence_gff, checkIfExists: true)
+        Channel.fromPath(params.maker_evidence_gff, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find gff file matching ${params.maker_evidence_gff}!\n" }
-        genome = Channel.fromPath(params.genome, checkIfExists: true)
+            .set {evidence}
+        Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
+            .set{genome}
 
         augustus_training_dataset(evidence,genome)
 
