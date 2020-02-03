@@ -333,7 +333,6 @@ process augustus_training {
     new_species.pl --species=$species
     etraining –-species=$species $training_file
     augustus --species=$species $test_file | tee ${species}_run.log
-    augustus --species=$species $test_file | tee -a ${species}_run.log
     """
 
 }
