@@ -17,7 +17,7 @@ params.codon_table = 1
 
 params.test_size = 100
 params.flank_region_size = 500
-params.augustus_training_species = ['asecodes_parviclava']
+params.augustus_training_species = []  // e.g. ['asecodes_parviclava']
 
 log.info """
 NBIS
@@ -327,6 +327,9 @@ process augustus_training {
 
     output:
     path "${species}_run.log"
+
+    when:
+    !params.augustus_training_species.isEmpty()
 
     script:
     """
