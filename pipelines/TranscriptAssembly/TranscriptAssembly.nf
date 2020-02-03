@@ -14,7 +14,7 @@ params.outdir = "results"
 
 trimming_tools = [ 'fastp', 'trimmomatic' ]
 params.skip_trimming = false
-params.trimmer = trimming_tools[0]
+params.trimmer = 'fastp'
 
 params.fastp_options = ' -Q -L'
 
