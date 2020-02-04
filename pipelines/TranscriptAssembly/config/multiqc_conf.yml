@@ -1,0 +1,13 @@
+title: "NBIS annotation transcript assembly report"
+
+run_modules:
+    - fastqc
+    - fastp
+    - trimmomatic
+    - hisat2
+
+module_order:
+    - fastqc
+    - fastp
+    - trimmomatic
+    - hisat2
