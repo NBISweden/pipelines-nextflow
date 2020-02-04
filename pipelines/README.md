@@ -32,19 +32,19 @@ These pipelines are translated from the bpipe pipelines in this repo along with 
 
 See their respective README for operation instructions.
 
-### AnnotationPreprocessing.nf
+### [AnnotationPreprocessing.nf](AnnotationPreprocessing)
 
 A pipeline for preprocessing genome assemblies in preparation for genome annotation.
 
-### AugustusTraining.nf
+### [AugustusTraining.nf](./AugustusTraining)
 
 A pipeline for creating a training and testing data set for Augustus.
 
-### FunctionalAnnotationPreparation.nf
+### [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation)
 
 A pipeline for functional annotation preparation.
 
-### TranscriptAssemblyHisat2Stringtie.nf
+### [TranscriptAssembly.nf](./TranscriptAssembly)
 
 A transcript assembly pipeline using hisat2 and stringtie.
 
