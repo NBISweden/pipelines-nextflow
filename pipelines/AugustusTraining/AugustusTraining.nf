@@ -18,7 +18,6 @@ params.codon_table = 1
 params.test_size = 100
 params.flank_region_size = 500
 params.augustus_training_species = []  // e.g. ['asecodes_parviclava']
-params.augustus_config_path = '' // e.g. /projects/references/augustus/config
 
 log.info """
 NBIS
@@ -47,7 +46,6 @@ NBIS
      test_size                     : ${params.test_size}
      flank_region_size             : ${params.flank_region_size}
      augustus_training_species     : ${params.augustus_training_species}
-     augustus_config_path          : ${params.augustus_config_path}
 
  """
 
@@ -337,10 +335,9 @@ process augustus_training {
     !params.augustus_training_species.isEmpty()
 
     script:
-    augustus_cfg_path = params.augustus_config_path ? params.augustus_config_path : '$PWD'
     """
-    export AUGUSTUS_CONFIG_PATH="$augustus_cfg_path"
-    mkdir -p \$AUGUSTUS_CONFIG_PATH/species
+    cp -r \$AUGUSTUS_CONFIG_PATH/ .
+    export AUGUSTUS_CONFIG_PATH="\$PWD"
     new_species.pl --species=$species
     etraining --species=$species $training_file
     augustus --species=$species $test_file | tee ${species}_run.log
