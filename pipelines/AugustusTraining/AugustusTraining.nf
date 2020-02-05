@@ -92,7 +92,7 @@ workflow augustus_training_dataset {
 process split_maker_evidence {
 
     tag "${maker_evidence.baseName}"
-    publishDir "${params.outdir}/maker_results_noAbinitio_clean", mode: 'copy'
+    publishDir "${params.outdir}", mode: 'copy'
     label 'AGAT'
 
     input:
