@@ -18,6 +18,7 @@ params.codon_table = 1
 params.test_size = 100
 params.flank_region_size = 500
 params.augustus_training_species = []  // e.g. ['asecodes_parviclava']
+params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
 NBIS
@@ -321,6 +322,7 @@ process augustus_training {
     tag "$species"
     label 'Augustus'
     publishDir "${params.outdir}/Augustus_training", mode: 'copy'
+    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(maker_species_publishdir).exists(), pattern: "${species}"
 
     input:
     path training_file
