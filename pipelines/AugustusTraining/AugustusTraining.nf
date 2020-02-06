@@ -329,7 +329,7 @@ process augustus_training {
 
     output:
     path "${species}_run.log"
-    path "config/species/${species}" 
+    path "${species}"
 
     when:
     !params.augustus_training_species.isEmpty()
@@ -341,6 +341,7 @@ process augustus_training {
     new_species.pl --species=$species
     etraining --species=$species $training_file
     augustus --species=$species $test_file | tee ${species}_run.log
+    mv config/species/${species} .
     """
 
 }
