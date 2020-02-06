@@ -329,7 +329,7 @@ process augustus_training {
 
     output:
     path "${species}_run.log"
-    path "species/${species}" optional true
+    path "config/species/${species}" 
 
     when:
     !params.augustus_training_species.isEmpty()
