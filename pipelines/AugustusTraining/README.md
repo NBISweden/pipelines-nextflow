@@ -46,3 +46,4 @@ nextflow run -c params.config -profile nbis,conda AugustusTraining.nf
 | `test_size` | The size of the test data set. |
 | `flank_region_size` | The size of the flank region to include. |
 | `augustus_training_species` | The species to use for training e.g. `[ 'species1', 'species2' ]` |
+| `maker_species_publishdir` | The shared directory where a copy of the augustus `species` profile is saved. | 
