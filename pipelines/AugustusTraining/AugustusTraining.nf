@@ -322,7 +322,7 @@ process augustus_training {
     tag "$species"
     label 'Augustus'
     publishDir "${params.outdir}/Augustus_training", mode: 'copy'
-    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(maker_species_publishdir).exists(), pattern: "${species}"
+    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(params.maker_species_publishdir).exists(), pattern: "${species}"
 
     input:
     path training_file
