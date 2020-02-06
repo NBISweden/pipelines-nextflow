@@ -336,7 +336,7 @@ process augustus_training {
 
     script:
     """
-    cp -rv \$AUGUSTUS_CONFIG_PATH/ .
+    cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
     export AUGUSTUS_CONFIG_PATH="\$PWD"
     new_species.pl --species=$species
     etraining --species=$species $training_file
