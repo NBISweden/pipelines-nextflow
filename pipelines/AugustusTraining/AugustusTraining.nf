@@ -319,19 +319,19 @@ process gbk2augustus {
 
 process augustus_training {
 
-    tag "$species"
+    tag "$species_label"
     label 'Augustus'
     publishDir "${params.outdir}/Augustus_training", mode: 'copy'
-    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(params.maker_species_publishdir).exists(), pattern: "${species}"
+    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(params.maker_species_publishdir).exists(), pattern: "${species_label}"
 
     input:
     path training_file
     path test_file
-    val species
+    val species_label
 
     output:
-    path "${species}_run.log"
-    path "${species}"
+    path "${species_label}_run.log"
+    path "${species_label}"
 
     when:
     params.augustus_training_species
@@ -340,10 +340,10 @@ process augustus_training {
     """
     cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
     export AUGUSTUS_CONFIG_PATH="\$PWD/config"
-    new_species.pl --species=$species
-    etraining --species=$species $training_file
-    augustus --species=$species $test_file | tee ${species}_run.log
-    mv config/species/${species} .
+    new_species.pl --species=$species_label
+    etraining --species=$species_label $training_file
+    augustus --species=$species_label $test_file | tee ${species_label}_run.log
+    mv config/species/${species_label} .
     """
 
 }
