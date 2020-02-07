@@ -17,7 +17,7 @@ params.codon_table = 1
 
 params.test_size = 100
 params.flank_region_size = 500
-params.augustus_training_species = []  // e.g. ['asecodes_parviclava']
+params.augustus_training_species = ''  // e.g. 'asecodes_parviclava'
 params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
@@ -327,14 +327,14 @@ process augustus_training {
     input:
     path training_file
     path test_file
-    each species
+    val species
 
     output:
     path "${species}_run.log"
     path "${species}"
 
     when:
-    !params.augustus_training_species.isEmpty()
+    params.augustus_training_species
 
     script:
     """
