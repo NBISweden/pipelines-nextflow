@@ -58,12 +58,15 @@ NBIS
 workflow {
 
     main:
-        annotation = Channel.fromPath(params.gff_annotation, checkIfExists: true)
+        Channel.fromPath(params.gff_annotation, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find gff file matching ${params.gff_annotation}!\n" }
-        genome = Channel.fromPath(params.genome, checkIfExists: true)
+            .set {annotation}
+        Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
-        blastdb = Channel.fromPath("${params.blast_db_fasta}{,.p*}", checkIfExists: true)
+            .set {genome}
+        Channel.fromPath("${params.blast_db_fasta}{,.p*}", checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}{,.p*}" }
+            .set {blastdb}
         functional_annotation_input_preparation(annotation,genome,blastdb)
 
 }

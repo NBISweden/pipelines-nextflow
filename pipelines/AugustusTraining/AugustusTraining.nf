@@ -17,6 +17,8 @@ params.codon_table = 1
 
 params.test_size = 100
 params.flank_region_size = 500
+params.augustus_training_species = ''  // e.g. 'asecodes_parviclava'
+params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
 NBIS
@@ -44,16 +46,19 @@ NBIS
  Augustus training parameters
      test_size                     : ${params.test_size}
      flank_region_size             : ${params.flank_region_size}
+     augustus_training_species     : ${params.augustus_training_species}
 
  """
 
 workflow {
 
     main:
-        evidence = Channel.fromPath(params.maker_evidence_gff, checkIfExists: true)
+        Channel.fromPath(params.maker_evidence_gff, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find gff file matching ${params.maker_evidence_gff}!\n" }
-        genome = Channel.fromPath(params.genome, checkIfExists: true)
+            .set {evidence}
+        Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
+            .set{genome}
 
         augustus_training_dataset(evidence,genome)
 
@@ -81,13 +86,14 @@ workflow augustus_training_dataset {
             blast_recursive.out.collect())
         gff2gbk(gff_filter_by_blast.out,genome.collect())
         gbk2augustus(gff2gbk.out)
+        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.augustus_training_species)
 
 }
 
 process split_maker_evidence {
 
     tag "${maker_evidence.baseName}"
-    publishDir "${params.outdir}/maker_results_noAbinitio_clean", mode: 'copy'
+    publishDir "${params.outdir}", mode: 'copy'
     label 'AGAT'
 
     input:
@@ -308,6 +314,37 @@ process gbk2augustus {
     randomSplit.pl $genbank_file ${params.test_size}
     """
     // randomSplit.pl is a script in the Augustus package
+
+}
+
+process augustus_training {
+
+    tag "$species_label"
+    label 'Augustus'
+    publishDir "${params.outdir}/Augustus_training", mode: 'copy'
+    publishDir "${params.maker_species_publishdir}", mode: 'copy', enabled: file(params.maker_species_publishdir).exists(), pattern: "${species_label}"
+
+    input:
+    path training_file
+    path test_file
+    val species_label
+
+    output:
+    path "${species_label}_run.log"
+    path "${species_label}"
+
+    when:
+    params.augustus_training_species
+
+    script:
+    """
+    cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
+    export AUGUSTUS_CONFIG_PATH="\$PWD/config"
+    new_species.pl --species=$species_label
+    etraining --species=$species_label $training_file
+    augustus --species=$species_label $test_file | tee ${species_label}_run.log
+    mv config/species/${species_label} .
+    """
 
 }
 
