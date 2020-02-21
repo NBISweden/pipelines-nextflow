@@ -136,7 +136,7 @@ process interproscan {
     path '*.tsv'
 
     script:
-    applications = { params.interproscan_db ? "-appl ${params.interproscan_db}" : '' }
+    applications = params.interproscan_db ? "-appl ${params.interproscan_db}" : ''
     tmpdir = task.scratch ? "-T ${task.scratch}" : ''
     """
     interproscan.sh ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
