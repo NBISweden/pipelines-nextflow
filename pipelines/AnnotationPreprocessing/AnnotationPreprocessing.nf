@@ -47,7 +47,7 @@ workflow {
 
 workflow annotation_preprocessing {
 
-    get:
+    take:
         genome_assembly
 
     main:

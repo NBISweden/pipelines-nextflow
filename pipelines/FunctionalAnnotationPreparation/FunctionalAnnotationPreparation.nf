@@ -73,7 +73,7 @@ workflow {
 
 workflow functional_annotation_input_preparation {
 
-    get:
+    take:
         gff_file
         genome
         blastdb

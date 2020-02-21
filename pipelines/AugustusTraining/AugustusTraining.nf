@@ -66,7 +66,7 @@ workflow {
 
 workflow augustus_training_dataset {
 
-    get:
+    take:
         gff_annotation
         genome
 
