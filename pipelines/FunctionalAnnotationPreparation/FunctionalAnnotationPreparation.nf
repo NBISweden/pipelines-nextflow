@@ -137,10 +137,10 @@ process interproscan {
 
     script:
     applications = { params.interproscan_db ? "-appl ${params.interproscan_db}" : '' }
-    tmpdir = task.scratch ? "-Djava.io.tmpdir=${task.scratch}" : ''
+    tmpdir = task.scratch ? "-T ${task.scratch}" : ''
     """
-    interproscan.sh ${tmpdir} ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
-        -f TSV --iprlookup --goterms -pa -dp -t p
+    interproscan.sh ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
+        -f TSV --iprlookup --goterms -pa -dp -t p ${tmpdir}
     """
 
 }
