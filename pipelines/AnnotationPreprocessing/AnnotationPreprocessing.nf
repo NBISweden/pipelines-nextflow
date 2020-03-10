@@ -114,7 +114,7 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
-    busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
+    busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out --config /usr/local/config/config.ini
     """
 }
 
