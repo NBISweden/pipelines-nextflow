@@ -114,7 +114,9 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
-    busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out --config /usr/local/config/config.ini
+    cp -r /augustus/config/* ${PWD}
+    export AUGUSTUS_CONFIG_PATH=${PWD}
+    busco -c ${task.cpus} -i ${fasta} -l ${lineage} -m genome --config /busco/config/config.ini --out ${out}
     """
 }
 
