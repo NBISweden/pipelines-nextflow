@@ -17,7 +17,7 @@ params.records_per_file = 1000
 
 params.blast_db_fasta = '/path/to/protein/database.fasta'
 
-params.interproscan_db = 'all'
+params.interproscan_db = ''
 
 params.merge_annotation_identifier = 'ID'
 
