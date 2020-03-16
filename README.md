@@ -69,6 +69,8 @@ nextflow run [-profile <profile_name1>[,<profile_name2>,...] ] workflow.nf [--wo
 	- Usage: `nextflow run -c <config> -profile nbis,singularity <nextflow_script>`.
 * `docker`: A docker software profile for compute infrastructures with `docker` installed.
 	- Usage: `nextflow run -c <config> -profile docker <nextflow_script>`.
+* `test`: Test profiles for each pipeline.
+	- Usage: `nextflow run -profile nbis,singularity,test <nextflow_script>`.
 
 ## Available pipelines
 
