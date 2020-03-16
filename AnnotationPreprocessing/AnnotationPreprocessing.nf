@@ -77,14 +77,9 @@ process fasta_filter_size {
 
 process assembly_generate_stats {
 
-    // FIXME: Options:
-    // a) Replace with agat script,
-    // b) Include script in bin directory,
-    // c) Include GAAS as subtree
-
     tag "${fasta_file.simpleName}"
     publishDir "${params.outdir}/stats", mode: 'copy'
-    label 'AGAT'
+    label 'GAAS'
 
     input:
     path fasta_file
