@@ -17,7 +17,7 @@ params.records_per_file = 1000
 
 params.blast_db_fasta = '/path/to/protein/database.fasta'
 
-params.interproscan_db = 'all'
+params.interproscan_db = ''
 
 params.merge_annotation_identifier = 'ID'
 
@@ -73,7 +73,7 @@ workflow {
 
 workflow functional_annotation_input_preparation {
 
-    get:
+    take:
         gff_file
         genome
         blastdb
@@ -136,10 +136,11 @@ process interproscan {
     path '*.tsv'
 
     script:
-    applications = { params.interproscan_db ? "-appl ${params.interproscan_db}" : '' }
+    applications = params.interproscan_db ? "-appl ${params.interproscan_db}" : ''
+    tmpdir = task.scratch ? "-T ${task.scratch}" : ''
     """
     interproscan.sh ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
-        -f TSV --iprlookup --goterms -pa -dp -t p
+        -f TSV --iprlookup --goterms -pa -dp -t p ${tmpdir}
     """
 
 }

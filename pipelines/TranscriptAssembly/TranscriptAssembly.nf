@@ -86,7 +86,7 @@ workflow {
 
 workflow transcript_assembly {
 
-    get:
+    take:
         reads
         genome
 
