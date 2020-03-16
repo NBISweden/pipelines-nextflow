@@ -55,6 +55,21 @@ A workflow is run in the following way:
 nextflow run [-profile <profile_name1>[,<profile_name2>,...] ] workflow.nf [--workflow_parameters]
 ```
 
+#### Available profiles
+
+* `uppmax`: A slurm and singularity profile for Uppmax clusters.
+	- Usage: `nextflow run -c <config> -profile uppmax <nextflow_script>`.
+* `nbis`: A slurm profile for the NBIS annotation cluster.
+	- Usage: `nextflow run -c <config> -profile nbis,singularity <nextflow_script>`.
+* `bils`: An LSF profile for the NBIS annotation cluster.
+	- Usage: `nextflow run -c <config> -profile bils,conda <nextflow_script>`.
+* `conda`: A conda software profile for use with compute infrastructures without `singularity` or `docker`.
+	- Usage: `nextflow run -c <config> -profile nbis,conda <nextflow_script>`.
+* `singularity`: A singularity software profile for compute infrastructures with `singularity` installed.
+	- Usage: `nextflow run -c <config> -profile nbis,singularity <nextflow_script>`.
+* `docker`: A docker software profile for compute infrastructures with `docker` installed.
+	- Usage: `nextflow run -c <config> -profile docker <nextflow_script>`.
+
 ## Available pipelines
 
 See their respective README for operation instructions.
