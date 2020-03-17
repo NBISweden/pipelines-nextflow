@@ -8,17 +8,66 @@ nextflow run -profile nbis,singularity TranscriptAssembly.nf \
   --genome 'path/to/genome.fasta'
 ```
 
-Parameters can also be stored in a config file:
+## Usage
+
+### Parameters
+
+- General:
+    * `reads`: Path to reads.
+    * `genome`: Path to genome.
+    * `single_end`: True if reads are single end reads, false if paired end (default: false).
+    * `outdir`: Path to results folder.
+    * `skip_trimming`: True if trimming should be skipped (default: false).
+    * `trimmer`: Read trimming tool to use ( available: 'fastp' - default, 'trimmomatic').
+- Fastp:
+    * `fastp_options`: Command line options for fastp (default: ' -Q -L' - disable quality trimming; disable length trimming).
+- Trimmomatic:
+    * `trimmomatic_adapter_path`: Path to trimmomatic adapter sequences.
+    * `trimmomatic_clip_options`: Trimmomatic clipping options ( default: 'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36' ).
+- Hisat2:
+    * `hisat2_options`: Command line options for hisat2, e.g. strandedness (`--hisat2_options ' --fr'`). **Note:** Quote the options and precede `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [Hisat2 Manual](https://ccb.jhu.edu/software/hisat2/manual.shtml) for the full range of options. (Default: `''`).
+- Stringtie:
+    * `stringtie_options`: Command line options for Stringtie, e.g. strandedness (`--stringtie_options ' --fr'`). **Note:** Quote the options and precede `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [StringTie Manual](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual) for the full range of options. (Default: `''`).
+- MultiQC:
+    * `multiqc_config`: Path to MultiQC config (default: "$baseDir/config/multiqc_conf.yml").
+
+
+Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
+
+`params.config`:
+```
+// Workflow parameters
+params.reads = '/path/to/reads*_{R1,R2}.fastq.gz'
+params.genome = '/path/to/genome.fasta'
+params.single_end = false
+params.outdir = '/path/to/results'
+params.skip_trimming = false
+params.trimmer = 'fastp'
+params.fastp_options = ' -Q -L'
+// params.trimmomatic_adapter_path = '/path/to/trimmomatic/adapters.fasta'
+// params.trimmomatic_clip_options = 'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36'
+params.hisat2_options = ''
+params.stringtie_options = ''
+params.multiqc_config = "$baseDir/config/multiqc_conf.yml"
+
+// Nextflow parameters
+resume = true
+workDir = '/path/to/temporary/workspace'
+conda.cacheDir = '$HOME/.nextflow/conda'
+singularity.cacheDir = '$HOME/.nextflow/singularity'
+```
+
+Run nextflow with config file:
 ```bash
-# Put all available parameter settings in a file.
-grep "^params." TranscriptAssembly.nf > params.config
-# Edit config file parameter values.
-vim params.config
-# Run workflow with config file.
+# Open screen terminal
+screen -S my_nextflow_analysis
+# Load Nextflow
+conda activate nextflow-env
+# Run Nextflow analysis
 nextflow run -c params.config -profile nbis,singularity TranscriptAssembly.nf
 ```
 
-## Workflow description
+## Workflow Stages
 
 1. Read QC.
     * **FastQC**: Reads properties are summarised and checked for common issues relating to sequence content and quality.
@@ -31,26 +80,3 @@ nextflow run -c params.config -profile nbis,singularity TranscriptAssembly.nf
     * **Stringtie**: Assemble transcripts from the aligned reads.
 4. Summary report.
     * **MultiQC**: Provide a consolidated report of the statistics from each previous tool.
-
-
-## Parameters
-
-| **General** | Description |
-| :------- | :--- |
-| `reads` | The path to the reads in quotes. The read pairs path must use the `{}` notation to define what a read pair is. |
-| `genome` | The path to the genome assembly in quotes. |
-| `single_end` | `true` if the reads are single-end, or `false` if reads are paired-end (default: `false`). |
-| `outdir` | The name of the results folder. |
-| `skip_trimming` | Skips trimming if true (default: `false`). |
-| `trimmer` | The trimming tool to use (avail:  [`fastp` (default), `trimmomatic`]).
-| **Fastp parameters** | |
-| `fastp_options` | Default is ` -Q -L` which disables quality and length trimming by default. |
-| **Trimmomatic parameters** | |
-| `trimmomatic_adapter_path` | The path to the trimmomatic adapter file (must be specified when `trimmomatic` is selected as the trimmer).  |
-| `trimmomatic_clip_options` | Read clipping options (Default:`'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36'`). |
-| **Hisat2 parameters** | |
-| `hisat2_options` | Additional options for hisat2, e.g. strandedness (`--hisat2_options ' --fr'`). **Note:** Quote the options and preceed `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [Hisat2 Manual](https://ccb.jhu.edu/software/hisat2/manual.shtml) for the full range of options. (Default: `''`). |
-| **StringTie parameters** | |
-| `stringtie_options` | Additional options for stringtie, e.g. strandedness (`--stringtie_options ' --fr'`). **Note:** Quote the options and preceed `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [StringTie Manual](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual) for the full range of options. (Default: `''`). |
-| **Multiqc parameters** | |
-| `multiqc_config` | Path to the multiqc config file (default `$baseDir/config/multiqc_conf.yml`). |
