@@ -13,10 +13,12 @@ nextflow run -profile nbis,singularity AnnotationPreprocessing.nf \
 
 ### Parameters
 
-* `genome`: The path to the genome assembly in quotes.
-* `outdir`: The name of the results folder.
-* `min_length`: The minimum_length for fasta sequences in the assembly to be (default: 1000).
-* `busco_lineage`: The busco lineages to compare against (default: '[ 'eukaryota_odb10', 'bacteria_odb10' ]').
+- General:
+	* `genome`: The path to the genome assembly in quotes.
+	* `outdir`: The name of the results folder.
+	* `min_length`: The minimum_length for fasta sequences in the assembly to be (default: 1000).
+- Busco:
+	* `busco_lineage`: The busco lineages to compare against (default: '[ 'eukaryota_odb10', 'bacteria_odb10' ]').
 
 Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
 
@@ -48,6 +50,6 @@ nextflow run -c params.config -profile nbis,singularity AnnotationPreprocessing.
 
 ### Workflow Stages
 
-* Filter: Remove fasta sequences less than `min_length` bases.
-* Summarise and plot assembly metrics.
-* Run BUSCO on filtered assembly.
+1. Filter: Remove fasta sequences less than `min_length` bases.
+2. Summarise and plot assembly metrics.
+3. Run BUSCO on filtered assembly.
