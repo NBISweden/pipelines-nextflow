@@ -3,7 +3,7 @@
 ## Quickstart
 
 ```
-nextflow run -profile nbis,conda FunctionalAnnotationPreparation.nf \
+nextflow run -profile nbis,singularity FunctionalAnnotationPreparation.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --gff_annotation 'path/to/annotation.gff3'
 ```
@@ -15,12 +15,12 @@ grep "^params\." FunctionalAnnotationPreparation.nf > params.config
 # Edit config file parameter values.
 vim params.config
 # Run workflow with config file.
-nextflow run -c params.config -profile nbis,conda FunctionalAnnotationPreparation.nf
+nextflow run -c params.config -profile nbis,singularity FunctionalAnnotationPreparation.nf
 ```
 
 Use `-resume` to restart failed jobs.
 ```bash
-nextflow run -resume -c params.config -profile nbis,conda FunctionalAnnotationPreparation.nf
+nextflow run -resume -c params.config -profile nbis,singularity FunctionalAnnotationPreparation.nf
 ```
 
 ## Parameters
@@ -29,11 +29,9 @@ nextflow run -resume -c params.config -profile nbis,conda FunctionalAnnotationPr
 * `gff_annotation`: The path to the gff annotation in quotes.
 * `outdir`: The name of the results folder
 
-* `records_per_file`: The number of records per file. A parallelisation option 
+* `records_per_file`: The number of records per file. A parallelisation option
 to improve blast and interproscan speed.
 
 * `blast_db`: The path to protein database files in quotes.
 
 ## Stages
-
-

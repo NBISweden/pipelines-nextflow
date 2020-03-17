@@ -3,7 +3,7 @@
 ## Quickstart
 
 ```bash
-nextflow run -profile nbis,conda TranscriptAssembly.nf \
+nextflow run -profile nbis,singularity TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
@@ -15,7 +15,7 @@ grep "^params." TranscriptAssembly.nf > params.config
 # Edit config file parameter values.
 vim params.config
 # Run workflow with config file.
-nextflow run -c params.config -profile nbis,conda TranscriptAssembly.nf
+nextflow run -c params.config -profile nbis,singularity TranscriptAssembly.nf
 ```
 
 ## Workflow description

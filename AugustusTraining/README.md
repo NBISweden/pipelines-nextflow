@@ -3,7 +3,7 @@
 ## Quickstart
 
 ```
-nextflow run -profile nbis,conda AugustusTraining.nf \
+nextflow run -profile nbis,singularity AugustusTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
@@ -15,7 +15,7 @@ grep "^params." AugustusTraining.nf > params.config
 # Edit config file parameter values.
 vim params.config
 # Run workflow with config file.
-nextflow run -c params.config -profile nbis,conda AugustusTraining.nf
+nextflow run -c params.config -profile nbis,singularity AugustusTraining.nf
 ```
 
 ## Workflow description
