@@ -70,7 +70,7 @@ screen -r my_nextflow_run
 
 #### Nextflow on Uppmax
 
-Nextflow is available under the module system on Uppmax, but is outdated.
+Nextflow is available under the module system on Uppmax, but could be outdated.
 
 Nextflow scripts can be run in the following way.
 
@@ -78,6 +78,8 @@ Nextflow scripts can be run in the following way.
 module load bioinfo-tools Nextflow
 NXF_VER=20.01.0 nextflow run [ -c <config> ] <nextflow_script> [ --script_parameters ]
 ```
+
+This downloads the specific version of Nextflow locally for you to use before running the script. This version is cached in your `$HOME/.nextflow/` folder.
 
 ## Available pipelines
 
