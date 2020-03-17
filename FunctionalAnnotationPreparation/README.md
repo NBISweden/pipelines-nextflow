@@ -34,15 +34,10 @@ Parameters to the workflow can be provided either using `--parameter` notation o
 params.gff_annotation = "/path/to/annotation.gff"
 params.genome = "/path/to/genome.fasta"
 params.outdir = "results"
-
 params.codon_table = 1
-
 params.records_per_file = 1000
-
 params.blast_db_fasta = '/path/to/protein/database.fasta'
-
 params.interproscan_db = ''
-
 params.merge_annotation_identifier = 'ID'
 
 // Nextflow parameters
@@ -67,4 +62,4 @@ nextflow run -c params.config -profile nbis,singularity FunctionalAnnotationPrep
 1. Extract protein sequences based on GFF coordinates.
 2. Blast protein sequences against protein database.
 3. Query protein sequences against interproscan databases.
-4. Merge functional annotations. 
+4. Merge functional annotations.
