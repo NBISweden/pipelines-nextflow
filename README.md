@@ -87,20 +87,16 @@ This downloads the specific version of Nextflow locally for you to use before ru
 
 See their respective README for operation instructions.
 
-#### [AnnotationPreprocessing.nf](AnnotationPreprocessing)
-
+* [AnnotationPreprocessing.nf](AnnotationPreprocessing):
 A pipeline for preprocessing genome assemblies in preparation for genome annotation.
 
-#### [AugustusTraining.nf](./AugustusTraining)
-
+* [AugustusTraining.nf](./AugustusTraining):
 A pipeline for creating a training and testing data set for Augustus.
 
-#### [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation)
-
+* [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation):
 A pipeline for functional annotation preparation.
 
-#### [TranscriptAssembly.nf](./TranscriptAssembly)
-
+* [TranscriptAssembly.nf](./TranscriptAssembly):
 A transcript assembly pipeline using hisat2 and stringtie.
 
 ### General workflow profiles
