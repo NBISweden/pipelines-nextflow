@@ -2,23 +2,60 @@
 
 ## Quickstart
 
-```
+```bash
 nextflow run -profile nbis,singularity AugustusTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
 
-Parameters can also be stored in a config file:
+## Usage
+
+### Parameters
+
+- General:
+    * `maker_evidence_gff`: Path to the GFF annotation.
+    * `genome`: Path to the genome assembly.
+    * `outdir`: Path to the results folder.
+- Extract protein sequence:
+    * `codon_table`: The number of the codon table to use for translation (default: 1).
+- Augustus:
+    * `flank_size`: The size of the flank region to include (default: 500).
+    * `test_size`: The size of the test data set (default: 100).
+    * `augustus_training_species`: A label for the Augustus `species` profile to use for training e.g. `'my_species_label'`.
+    * `maker_species_publishdir`: A shared directory where a copy of the augustus `my_species_label` profile is saved.
+
+Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
+
+`params.config`:
+```
+// Workflow parameters
+params.maker_evidence_gff = "/path/to/maker/evidence.gff"
+params.genome = "/path/to/genome/assembly.fasta"
+params.outdir = "results"
+params.codon_table = 1
+params.test_size = 100
+params.flank_region_size = 500
+params.augustus_training_species = ''  // e.g. 'asecodes_parviclava'
+params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
+
+// Nextflow parameters
+resume = true
+workDir = '/path/to/temporary/workspace'
+conda.cacheDir = '$HOME/.nextflow/conda'
+singularity.cacheDir = '$HOME/.nextflow/singularity'
+```
+
+Run nextflow with config file:
 ```bash
-# Put all available parameter settings in a file.
-grep "^params." AugustusTraining.nf > params.config
-# Edit config file parameter values.
-vim params.config
-# Run workflow with config file.
+# Open screen terminal
+screen -S my_nextflow_analysis
+# Load Nextflow
+conda activate nextflow-env
+# Run Nextflow analysis
 nextflow run -c params.config -profile nbis,singularity AugustusTraining.nf
 ```
 
-## Workflow description
+## Workflow Stages
 
 1. Separate maker evidence into .
 2. Select model by AED.
@@ -30,20 +67,3 @@ nextflow run -c params.config -profile nbis,singularity AugustusTraining.nf
 8. Filter sequences.
 9. Create a training and test dataset.
 10. Train augustus using the species and training data.
-
-## Parameters
-
-| **General** | Description |
-| :------- | :--- |
-| `genome` | The path to the genome assembly in quotes. |
-| `maker_evidence_gff` | The path to the gff annotation in quotes. |
-| `outdir` | The name of the results folder |
-| **Gene Model Filter parameters** | |
-| `gff_gene_model_filter_options` | Options to be passed to the filter by gene model script (default:'-c -r -d 500 -a 0.3'). |
-| **Protein Sequence Extraction parameters** | |
-| `codon_table` | The number of the codon table to use for translation. |
-| **Augustus parameters** | |
-| `test_size` | The size of the test data set. |
-| `flank_region_size` | The size of the flank region to include. |
-| `augustus_training_species` | A label for the Augustus `species` profile to use for training e.g. `'my_species_label'`.  |
-| `maker_species_publishdir` | A shared directory where a copy of the augustus `my_species_label` profile is saved. |
