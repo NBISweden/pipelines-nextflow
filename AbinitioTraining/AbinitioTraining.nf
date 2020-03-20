@@ -368,7 +368,25 @@ process convert_gff2zff {
     """
 }
 
+process snap_training {
 
+    input:
+    path training_files
+    val species_label
+
+    output:
+    path "*.hmm"
+
+    script:
+    ann_file = training_files.find { it =~ /.ann$/ }
+    dna_file = training_files.find { it =~ /.dna$/ }
+    """
+    fathom -categorize 1000 ${ann_file} ${dna_file}
+    fathom -export 1000 -plus uni.ann uni.dna
+    forge export.ann export.dna
+    hmm-assembler.pl "$species_label" . > "${species_label}.hmm"
+    """
+}
 
 workflow.onComplete {
     log.info ( workflow.success ? "\nAugustus training dataset complete!\n" : "Oops .. something went wrong\n" )
