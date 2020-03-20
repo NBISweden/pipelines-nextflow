@@ -350,6 +350,26 @@ process augustus_training {
 
 }
 
+process convert_gff2zff {
+
+    label 'AGAT'
+
+    input:
+    path annotation
+    path genome
+
+    output:
+    path "*.{ann,dna}"
+
+    script:
+    """
+    agat_converter_sp_gff2zff.pl --gff $annotation \\
+        --fasta $genome -o ${genome.baseName}
+    """
+}
+
+
+
 workflow.onComplete {
     log.info ( workflow.success ? "\nAugustus training dataset complete!\n" : "Oops .. something went wrong\n" )
 }
