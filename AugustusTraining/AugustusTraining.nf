@@ -11,8 +11,6 @@ params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
 
-params.gff_gene_model_filter_options = '-c -r -d 500 -a 0.3'
-
 params.codon_table = 1
 
 params.test_size = 100
@@ -36,9 +34,6 @@ NBIS
      maker_evidence_gff            : ${params.maker_evidence_gff}
      genome                        : ${params.genome}
      outdir                        : ${params.outdir}
-
- Gene Model Filtering parameters
-     gff_gene_model_filter_options : ${params.gff_gene_model_filter_options}
 
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}

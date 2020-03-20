@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: gaas
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - gaas=1.0.1
