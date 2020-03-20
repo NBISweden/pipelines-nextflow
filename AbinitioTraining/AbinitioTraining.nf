@@ -82,6 +82,8 @@ workflow abinitio_training {
         gff2gbk(gff_filter_by_blast.out,genome.collect())
         gbk2augustus(gff2gbk.out)
         augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.augustus_training_species)
+        convert_gff2zff(gff_filter_by_blast.out,genome.collect())
+        snap_training(convert_gff2zff.out,params.augustus_training_species)
 
 }
 
