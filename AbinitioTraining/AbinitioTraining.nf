@@ -10,7 +10,7 @@ nextflow.preview.dsl=2
 params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
-params.species_label = ''  // e.g. 'asecodes_parviclava'
+params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
 
 params.codon_table = 1
 

@@ -32,7 +32,7 @@ Parameters to the workflow can be provided either using `--parameter` notation o
 params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
-params.species_label = ''  // e.g. 'asecodes_parviclava'
+params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
 params.codon_table = 1
 params.test_size = 100
 params.flank_region_size = 500
