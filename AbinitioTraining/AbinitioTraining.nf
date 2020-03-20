@@ -10,12 +10,12 @@ nextflow.preview.dsl=2
 params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
+params.species_label = ''  // e.g. 'asecodes_parviclava'
 
 params.codon_table = 1
 
 params.test_size = 100
 params.flank_region_size = 500
-params.augustus_training_species = ''  // e.g. 'asecodes_parviclava'
 params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
@@ -34,6 +34,7 @@ NBIS
      maker_evidence_gff            : ${params.maker_evidence_gff}
      genome                        : ${params.genome}
      outdir                        : ${params.outdir}
+     species_label                 : ${params.species_label}
 
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}
@@ -41,7 +42,6 @@ NBIS
  Augustus training parameters
      test_size                     : ${params.test_size}
      flank_region_size             : ${params.flank_region_size}
-     augustus_training_species     : ${params.augustus_training_species}
 
  """
 
@@ -81,9 +81,9 @@ workflow abinitio_training {
             blast_recursive.out.collect())
         gff2gbk(gff_filter_by_blast.out,genome.collect())
         gbk2augustus(gff2gbk.out)
-        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.augustus_training_species)
+        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.species_label)
         convert_gff2zff(gff_filter_by_blast.out,genome.collect())
-        snap_training(convert_gff2zff.out,params.augustus_training_species)
+        snap_training(convert_gff2zff.out,params.species_label)
 
 }
 
