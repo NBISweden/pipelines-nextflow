@@ -1,9 +1,9 @@
-# Augustus training pipeline
+# Abinitio training pipeline
 
 ## Quickstart
 
 ```bash
-nextflow run -profile nbis,singularity AugustusTraining.nf \
+nextflow run -profile nbis,singularity AbinitioTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
@@ -52,7 +52,7 @@ screen -S my_nextflow_analysis
 # Load Nextflow
 conda activate nextflow-env
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity AugustusTraining.nf
+nextflow run -c params.config -profile nbis,singularity AbinitioTraining.nf
 ```
 
 ## Workflow Stages
