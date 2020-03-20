@@ -27,7 +27,7 @@ NBIS
  | |\\  | |_) || |_ ____) |
  |_| \\_|____/_____|_____/  Annotation Service
 
- Augustus training dataset workflow
+ Abintio training dataset workflow
  ===================================
 
  General Parameters
@@ -55,11 +55,11 @@ workflow {
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
             .set{genome}
 
-        augustus_training_dataset(evidence,genome)
+        abinitio_training(evidence,genome)
 
 }
 
-workflow augustus_training_dataset {
+workflow abinitio_training {
 
     take:
         gff_annotation
