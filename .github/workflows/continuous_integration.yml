@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.01.0', '']
-        profile: ['test,conda', 'test,docker']
+        profile: [conda, docker]
         workflow: [${GITHUB_WORKSPACE}/AnnotationPreprocessing, ${GITHUB_WORKSPACE}/AugustusTraining, ${GITHUB_WORKSPACE}/FunctionalAnnotationPreparation, ${GITHUB_WORKSPACE}/TranscriptAssembly]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -35,4 +35,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
-      run: nextflow run -profile ${{ matrix.profile }} ${{ matrix.workflow }}
+      run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
