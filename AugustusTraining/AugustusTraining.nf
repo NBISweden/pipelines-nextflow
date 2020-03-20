@@ -11,6 +11,8 @@ params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
 
+params.model_selection_value = 0.3
+
 params.codon_table = 1
 
 params.test_size = 100
@@ -34,6 +36,9 @@ NBIS
      maker_evidence_gff            : ${params.maker_evidence_gff}
      genome                        : ${params.genome}
      outdir                        : ${params.outdir}
+
+ Model selection by AED
+     model_selection_value         : ${params.model_selection_value}
 
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}
@@ -126,7 +131,7 @@ process model_selection_by_AED {
 
     script:
     """
-    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value 0.3 -a _AED -t ">=" -o codingGeneFeatures.filter.gff
+    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">=" -o codingGeneFeatures.filter.gff
     """
     // agat_sp_filter_feature_by_attribute_value.pl is a script from AGAT
 }
