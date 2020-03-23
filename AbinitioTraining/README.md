@@ -22,7 +22,7 @@ nextflow run -profile nbis,singularity AbinitioTraining.nf \
 - Extract protein sequence:
     * `codon_table`: The number of the codon table to use for translation (default: 1).
 - Augustus:
-    * `flank_size`: The size of the flank region to include (default: 500).
+    * `flank_size`: The size of the flank region to include (default: 1000).
     * `test_size`: The size of the test data set (default: 100).
     * `maker_species_publishdir`: A shared directory where a copy of the augustus `species_label` profile is saved.
 
