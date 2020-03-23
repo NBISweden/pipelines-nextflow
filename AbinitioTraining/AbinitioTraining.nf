@@ -17,7 +17,7 @@ params.model_selection_value = 0.3
 params.codon_table = 1
 
 params.test_size = 100
-params.flank_region_size = 500
+params.flank_region_size = 1000
 params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
@@ -386,8 +386,8 @@ process snap_training {
     ann_file = training_files.find { it =~ /.ann$/ }
     dna_file = training_files.find { it =~ /.dna$/ }
     """
-    fathom -categorize 1000 ${ann_file} ${dna_file}
-    fathom -export 1000 -plus uni.ann uni.dna
+    fathom -categorize ${params.flank_region_size} ${ann_file} ${dna_file}
+    fathom -export ${params.flank_region_size} -plus uni.ann uni.dna
     forge export.ann export.dna
     hmm-assembler.pl "$species_label" . > "${species_label}.hmm"
     """
