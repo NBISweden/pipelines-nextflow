@@ -337,9 +337,6 @@ process augustus_training {
     path "${species_label}_run.log"
     path "${species_label}"
 
-    when:
-    params.augustus_training_species
-
     script:
     """
     cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
