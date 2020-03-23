@@ -87,11 +87,11 @@ This downloads the specific version of Nextflow locally for you to use before ru
 
 See their respective README for operation instructions.
 
+* [AbinitioTraining.nf](./AbinitioTraining):
+A pipeline for creating a training and testing data set for Augustus and Snap.
+
 * [AnnotationPreprocessing.nf](AnnotationPreprocessing):
 A pipeline for preprocessing genome assemblies in preparation for genome annotation.
-
-* [AugustusTraining.nf](./AugustusTraining):
-A pipeline for creating a training and testing data set for Augustus.
 
 * [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation):
 A pipeline for functional annotation preparation.

@@ -1,9 +1,9 @@
 # conda env create -f environment.yml
-name: agat
+name: snap
 channels:
   - conda-forge
   - bioconda
   - defaults
 
 dependencies:
-  - agat=0.2.3
+  - snap=2013_11_29
