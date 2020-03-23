@@ -375,6 +375,8 @@ process convert_gff2zff {
 
 process snap_training {
 
+    publishDir "${params.outdir}/Snap_training", mode: 'copy'
+
     input:
     path training_files
     val species_label
