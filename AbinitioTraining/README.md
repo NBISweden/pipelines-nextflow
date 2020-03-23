@@ -17,6 +17,8 @@ nextflow run -profile nbis,singularity AbinitioTraining.nf \
     * `genome`: Path to the genome assembly.
     * `outdir`: Path to the results folder.
     * `species_label`: A species label for the training data.
+- Model selection:
+    * `model_selection_value`: Value of AED confidence value to select by.
 - Extract protein sequence:
     * `codon_table`: The number of the codon table to use for translation (default: 1).
 - Augustus:
@@ -33,6 +35,7 @@ params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
 params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
+params.model_selection_value = 0.3
 params.codon_table = 1
 params.test_size = 100
 params.flank_region_size = 500
