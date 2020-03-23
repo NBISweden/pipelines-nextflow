@@ -365,7 +365,7 @@ process convert_gff2zff {
 
     script:
     """
-    agat_converter_sp_gff2zff.pl --gff $annotation \\
+    agat_convert_sp_gff2zff.pl --gff $annotation \\
         --fasta $genome -o ${genome.baseName}
     """
 }
