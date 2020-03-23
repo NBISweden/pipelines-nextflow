@@ -339,7 +339,8 @@ process augustus_training {
 
     script:
     """
-    cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
+    : \${AUGUSTUS_CONFIG_PATH:=/usr/local/config}
+    cp -rv \${AUGUSTUS_CONFIG_PATH} .
     export AUGUSTUS_CONFIG_PATH="\$PWD/config"
     new_species.pl --species=$species_label
     etraining --species=$species_label $training_file
