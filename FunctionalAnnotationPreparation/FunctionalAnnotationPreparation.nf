@@ -64,7 +64,7 @@ workflow {
         Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
             .set {genome}
-        Channel.fromPath("${params.blast_db_fasta}{,.p*}", checkIfExists: true)
+        Channel.fromPath("${params.blast_db_fasta}?(.p*)", checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}{,.p*}" }
             .set {blastdb}
         functional_annotation_input_preparation(annotation,genome,blastdb)
@@ -79,9 +79,14 @@ workflow functional_annotation_input_preparation {
         blastdb
 
     main:
+        blastdbfiles = blastdb.collect()
+        if(blastdbfiles.size() == 1){
+            makeblastdb(blastdbfiles)
+            blastdbfiles = makeblastdb.out.collect()
+        }
         gff2protein(gff_file,genome.collect())
         blastp(gff2protein.out.splitFasta(by: params.records_per_file, file: true),
-            blastdb.collect())
+            blastdbfiles)
         interproscan(gff2protein.out.splitFasta(by: params.records_per_file, file: true))
         merge_functional_annotation(gff_file,
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
@@ -106,6 +111,21 @@ process gff2protein {
         -p -cfs -cis -ct ${params.codon_table} --gff $gff_file
     """
     // agat_sp_extract_sequences.pl is a script from AGAT
+
+}
+
+process makeblastdb {
+
+    input:
+    path proteinfa
+
+    output:
+    path "*{,.*}"
+
+    script:
+    """
+    makeblastdb -in $proteinfa -dbtype prot
+    """
 
 }
 
