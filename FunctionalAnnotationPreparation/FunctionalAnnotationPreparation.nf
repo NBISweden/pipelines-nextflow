@@ -159,7 +159,7 @@ process interproscan {
     applications = params.interproscan_db ? "-appl ${params.interproscan_db}" : ''
     tmpdir = task.scratch ? "-T ${task.scratch}" : ''
     """
-    export PATH="\$PATH:/opt/interproscan"
+    export PATH="/opt/interproscan:\$PATH"
     interproscan.sh ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
         -f TSV --iprlookup --goterms -pa -dp -t p ${tmpdir}
     """
