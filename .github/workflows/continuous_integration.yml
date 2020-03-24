@@ -6,9 +6,9 @@ name: Continuous Integration
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, add_actions ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, add_actions ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
