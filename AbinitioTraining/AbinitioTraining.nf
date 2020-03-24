@@ -10,12 +10,14 @@ nextflow.preview.dsl=2
 params.maker_evidence_gff = "/path/to/maker/evidence.gff"
 params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
+params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
+
+params.model_selection_value = 0.3
 
 params.codon_table = 1
 
 params.test_size = 100
-params.flank_region_size = 500
-params.augustus_training_species = ''  // e.g. 'asecodes_parviclava'
+params.flank_region_size = 1000
 params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
 
 log.info """
@@ -27,13 +29,17 @@ NBIS
  | |\\  | |_) || |_ ____) |
  |_| \\_|____/_____|_____/  Annotation Service
 
- Augustus training dataset workflow
+ Abintio training dataset workflow
  ===================================
 
  General Parameters
      maker_evidence_gff            : ${params.maker_evidence_gff}
      genome                        : ${params.genome}
      outdir                        : ${params.outdir}
+     species_label                 : ${params.species_label}
+
+ Model selection by AED
+     model_selection_value         : ${params.model_selection_value}
 
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}
@@ -41,7 +47,6 @@ NBIS
  Augustus training parameters
      test_size                     : ${params.test_size}
      flank_region_size             : ${params.flank_region_size}
-     augustus_training_species     : ${params.augustus_training_species}
 
  """
 
@@ -55,11 +60,11 @@ workflow {
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
             .set{genome}
 
-        augustus_training_dataset(evidence,genome)
+        abinitio_training(evidence,genome)
 
 }
 
-workflow augustus_training_dataset {
+workflow abinitio_training {
 
     take:
         gff_annotation
@@ -81,7 +86,9 @@ workflow augustus_training_dataset {
             blast_recursive.out.collect())
         gff2gbk(gff_filter_by_blast.out,genome.collect())
         gbk2augustus(gff2gbk.out)
-        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.augustus_training_species)
+        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.species_label)
+        convert_gff2zff(gff_filter_by_blast.out,genome.collect())
+        snap_training(convert_gff2zff.out,params.species_label)
 
 }
 
@@ -126,7 +133,7 @@ process model_selection_by_AED {
 
     script:
     """
-    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value 0.3 -a _AED -t ">=" -o codingGeneFeatures.filter.gff
+    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">=" -o codingGeneFeatures.filter.gff
     """
     // agat_sp_filter_feature_by_attribute_value.pl is a script from AGAT
 }
@@ -335,12 +342,10 @@ process augustus_training {
     path "${species_label}_run.log"
     path "${species_label}"
 
-    when:
-    params.augustus_training_species
-
     script:
     """
-    cp -rv \${AUGUSTUS_CONFIG_PATH}/ .
+    : \${AUGUSTUS_CONFIG_PATH:=/usr/local/config}
+    cp -rv \${AUGUSTUS_CONFIG_PATH} .
     export AUGUSTUS_CONFIG_PATH="\$PWD/config"
     new_species.pl --species=$species_label
     etraining --species=$species_label $training_file
@@ -348,6 +353,46 @@ process augustus_training {
     mv config/species/${species_label} .
     """
 
+}
+
+process convert_gff2zff {
+
+    label 'AGAT'
+
+    input:
+    path annotation
+    path genome
+
+    output:
+    path "*.{ann,dna}"
+
+    script:
+    """
+    agat_convert_sp_gff2zff.pl --gff $annotation \\
+        --fasta $genome -o ${genome.baseName}
+    """
+}
+
+process snap_training {
+
+    publishDir "${params.outdir}/Snap_training", mode: 'copy'
+
+    input:
+    path training_files
+    val species_label
+
+    output:
+    path "*.hmm"
+
+    script:
+    ann_file = training_files.find { it =~ /.ann$/ }
+    dna_file = training_files.find { it =~ /.dna$/ }
+    """
+    fathom -categorize ${params.flank_region_size} ${ann_file} ${dna_file}
+    fathom -export ${params.flank_region_size} -plus uni.ann uni.dna
+    forge export.ann export.dna
+    hmm-assembler.pl "$species_label" . > "${species_label}.hmm"
+    """
 }
 
 workflow.onComplete {
