@@ -22,8 +22,8 @@ jobs:
         nxf_ver: ['20.01.0', '']
         profile: [conda, docker]
         workflow:
+          - ${GITHUB_WORKSPACE}/AbinitioTraining
           - ${GITHUB_WORKSPACE}/AnnotationPreprocessing
-          - ${GITHUB_WORKSPACE}/AugustusTraining
           - ${GITHUB_WORKSPACE}/FunctionalAnnotationPreparation
           - ${GITHUB_WORKSPACE}/TranscriptAssembly
 
