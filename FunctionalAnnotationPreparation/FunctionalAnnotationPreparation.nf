@@ -79,14 +79,10 @@ workflow functional_annotation_input_preparation {
         blastdb
 
     main:
-        blastdbfiles = blastdb.collect()
-        if(blastdbfiles.size() == 1){
-            makeblastdb(blastdbfiles)
-            blastdbfiles = makeblastdb.out.collect()
-        }
+        makeblastdb(blastdb,blastdb.filter(~/.p(hr|in|sq)$/).ifEmpty('DBFILES_ABSENT'))
         gff2protein(gff_file,genome.collect())
         blastp(gff2protein.out.splitFasta(by: params.records_per_file, file: true),
-            blastdbfiles)
+            makeblastdb.out.mix(blastdb.filter(!~/[^.]f(ast|n)?a$/)).unique().collect())
         interproscan(gff2protein.out.splitFasta(by: params.records_per_file, file: true))
         merge_functional_annotation(gff_file,
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
@@ -116,20 +112,33 @@ process gff2protein {
 
 process makeblastdb {
 
+    label 'blast'
+
     input:
-    path 'protein.fasta'
+    path fasta
+    val state
 
     output:
-    path "*{,.*}"
+    path "*.fasta*"
+
+    when:
+    state == 'DBFILES_ABSENT'
 
     script:
     """
-    makeblastdb -in protein.fasta -dbtype prot
+    if [[ "$fasta" =~ \\.f(ast|n)?a\$ ]]; then
+        makeblastdb -in $fasta -dbtype prot
+    else
+        ln -s $fasta protein.fasta
+        makeblastdb -in protein.fasta -dbtype prot
+    fi
     """
 
 }
 
 process blastp {
+
+    label 'blast'
 
     input:
     path fasta_file
