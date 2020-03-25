@@ -80,14 +80,15 @@ workflow functional_annotation_input_preparation {
 
     main:
         makeblastdb(blastdb,blastdb.filter(~/.p(hr|in|sq)$/).ifEmpty('DBFILES_ABSENT'))
+        makeblastdb.out.mix(blastdb.filter(!~/[^.]f(ast|n)?a$/)).unique().collect().set{blastfiles}
         gff2protein(gff_file,genome.collect())
         blastp(gff2protein.out.splitFasta(by: params.records_per_file, file: true),
-            makeblastdb.out.mix(blastdb.filter(!~/[^.]f(ast|n)?a$/)).unique().collect())
+            blastfiles)
         interproscan(gff2protein.out.splitFasta(by: params.records_per_file, file: true))
         merge_functional_annotation(gff_file,
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
             interproscan.out.collectFile(name:'interproscan_merged.tsv').collect(),
-            blastdb.collect())
+            blastfiles)
 }
 
 process gff2protein {
@@ -192,10 +193,11 @@ process merge_functional_annotation {
     path "${gff_annotation.baseName}_plus-functional-annotation.gff"
 
     script:
+    fasta = blast_files.find { it =~ /\.f(ast|n)?a$/ }
     """
     agat_sp_manage_functional_annotation.pl -f ${gff_annotation} \\
         -b ${merged_blast_results} -i ${merged_interproscan_results} \\
-        -db ${params.blast_db_fasta} -id ${params.merge_annotation_identifier} \\
+        -db ${fasta} -id ${params.merge_annotation_identifier} \\
         -o ${gff_annotation.baseName}_plus-functional-annotation.gff
     """
     // agat_sp_manage_functional_annotation.pl is a script from AGAT
