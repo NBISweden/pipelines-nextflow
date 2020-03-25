@@ -79,8 +79,8 @@ workflow functional_annotation_input_preparation {
         blastdb
 
     main:
-        makeblastdb(blastdb,blastdb.filter(~/.p(hr|in|sq)$/).ifEmpty('DBFILES_ABSENT'))
-        makeblastdb.out.mix(blastdb.filter(!~/[^.]f(ast|n)?a$/)).unique().collect().set{blastfiles}
+        makeblastdb(blastdb,blastdb.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
+        makeblastdb.out.mix(blastdb.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
         gff2protein(gff_file,genome.collect())
         blastp(gff2protein.out.splitFasta(by: params.records_per_file, file: true),
             blastfiles)
@@ -130,7 +130,7 @@ process makeblastdb {
     if [[ "$fasta" =~ \\.f(ast|n)?a\$ ]]; then
         makeblastdb -in $fasta -dbtype prot
     else
-        ln -s $fasta protein.fasta
+        cp $fasta protein.fasta
         makeblastdb -in protein.fasta -dbtype prot
     fi
     """
@@ -149,7 +149,8 @@ process blastp {
     path "${fasta_file.baseName}_blast.tsv"
 
     script:
-    database = blastdb[0].toString() - ~/.p\w\w$/
+    // database = blastdb[0].toString() - ~/.p\w\w$/
+    database = blastdb.find { it =~ /\.f(ast|n)?a$/ } 
     """
     blastp -query $fasta_file -db ${database} -num_threads ${task.cpus} \\
         -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
