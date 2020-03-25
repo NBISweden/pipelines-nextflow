@@ -64,7 +64,7 @@ workflow {
         Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
             .set {genome}
-        Channel.fromPath("${params.blast_db_fasta}" + (params.blast_db_fasta =~ /^(ht|f)tps?:/ ? '': "?(.p*)"), checkIfExists: true)
+        Channel.fromPath("${params.blast_db_fasta}" + (params.blast_db_fasta =~ /^(ht|f)tps?:/ ? '': "*"), checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}?(.p*)" }
             .set {blastdb}
         functional_annotation_input_preparation(annotation,genome,blastdb)
