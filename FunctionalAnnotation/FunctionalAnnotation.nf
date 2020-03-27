@@ -19,7 +19,10 @@ params.blast_db_fasta = '/path/to/protein/database.fasta'
 
 params.interproscan_db = ''
 
-params.merge_annotation_identifier = 'ID'
+// agat_sp_manage_functional_annotation.pl parameters
+params.merge_annotation_identifier = 'NBIS'
+params.blast_evalue = '1e-6'
+params.protein_existence = '5'
 
 log.info("""
 NBIS
@@ -166,6 +169,7 @@ process merge_functional_annotation {
     agat_sp_manage_functional_annotation.pl -f ${gff_annotation} \\
         -b ${merged_blast_results} -i ${merged_interproscan_results} \\
         -db ${params.blast_db_fasta} -id ${params.merge_annotation_identifier} \\
+				-be ${params.blast_evalue} -pe ${params.protein_existence} \\
         -o ${gff_annotation.baseName}_plus-functional-annotation.gff
     """
     // agat_sp_manage_functional_annotation.pl is a script from AGAT
