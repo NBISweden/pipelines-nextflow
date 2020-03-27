@@ -30,7 +30,7 @@ NBIS
  | |\\  | |_) || |_ ____) |
  |_| \\_|____/_____|_____/  Annotation Service
 
- Functional annotation input preparation workflow
+ Functional annotation workflow
  ===================================
 
  General parameters

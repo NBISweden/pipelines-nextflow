@@ -91,7 +91,7 @@ process assembly_generate_stats {
     """
     gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_assembly_report
     """
-    // fasta_statisticsAndPlot.pl can be found in the NBIS GAAS repository
+    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 }
 
 process busco {
