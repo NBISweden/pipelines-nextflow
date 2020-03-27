@@ -93,8 +93,8 @@ A pipeline for creating a training and testing data set for Augustus and Snap.
 * [AnnotationPreprocessing.nf](AnnotationPreprocessing):
 A pipeline for preprocessing genome assemblies in preparation for genome annotation.
 
-* [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation):
-A pipeline for functional annotation preparation.
+* [FunctionalAnnotation.nf](./FunctionalAnnotation):
+A pipeline for functional annotation.
 
 * [TranscriptAssembly.nf](./TranscriptAssembly):
 A transcript assembly pipeline using hisat2 and stringtie.
