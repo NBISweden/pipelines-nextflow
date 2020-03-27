@@ -15,13 +15,14 @@ params.codon_table = 1
 
 params.records_per_file = 1000
 
+// blastp parameters
 params.blast_db_fasta = '/path/to/protein/database.fasta'
+params.blast_evalue = '1e-6'
 
 params.interproscan_db = ''
 
 // agat_sp_manage_functional_annotation.pl parameters
-params.merge_annotation_identifier = 'NBIS'
-params.blast_evalue = '1e-6'
+params.id_prefix = 'NBIS'
 params.protein_existence = '5'
 
 log.info("""
@@ -49,12 +50,14 @@ NBIS
 
  Blast parameters
      blast_db_fasta                 : ${params.blast_db_fasta}
+     blast_evalue                   : ${params.blast_evalue}
 
  Interproscan parameters
      interproscan_db                : ${params.interproscan_db}
 
  Merge functional annotation parameters
-     merge_annotation_identifier    : ${params.merge_annotation_identifier}
+     id_prefix                      : ${params.id_prefix}
+     protein_existence              : ${params.protein_existence}
 
  """)
 
@@ -125,7 +128,7 @@ process blastp {
     database = blastdb[0].toString() - ~/.p\w\w$/
     """
     blastp -query $fasta_file -db ${database} -num_threads ${task.cpus} \\
-        -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
+        -be ${params.blast_evalue} -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
     """
 
 }
@@ -168,8 +171,8 @@ process merge_functional_annotation {
     """
     agat_sp_manage_functional_annotation.pl -f ${gff_annotation} \\
         -b ${merged_blast_results} -i ${merged_interproscan_results} \\
-        -db ${params.blast_db_fasta} -id ${params.merge_annotation_identifier} \\
-				-be ${params.blast_evalue} -pe ${params.protein_existence} \\
+        -db ${params.blast_db_fasta} -id ${params.id_prefix} \\
+	-pe ${params.protein_existence} \\
         -o ${gff_annotation.baseName}_plus-functional-annotation.gff
     """
     // agat_sp_manage_functional_annotation.pl is a script from AGAT
