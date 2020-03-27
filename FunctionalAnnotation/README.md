@@ -21,10 +21,12 @@ nextflow run -profile nbis,singularity FunctionalAnnotation.nf \
     * `codon_table`: (default: 1).
 - Blastp:
     * `blast_db_fasta`: Path to protein database.
+    * `blast_evalue`: Maximum e-value to keep the in the output (default: '1e-6').
 - Interproscan:
     * `interproscan_db`: Names of interproscan database to check against.
 - Merge Functional Annotation:
-    * `merge_annotation_identifier`: Name of field to merge functional annotation (default: 'ID').
+    * `id_prefix`: Prefix set in the new identifider (default: 'NBIS').
+    * `protein_existence`: Filter blast result by type of evidence that supports the existence of the protein in the uniprot DB (from 1 to 5, default: '5').
 
 Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
 
@@ -37,8 +39,10 @@ params.outdir = "results"
 params.codon_table = 1
 params.records_per_file = 1000
 params.blast_db_fasta = '/path/to/protein/database.fasta'
+params.blast_evalue = '1e-6'
 params.interproscan_db = ''
-params.merge_annotation_identifier = 'ID'
+params.id_prefix = 'NBIS'
+params.protein_existence = '5'
 
 // Nextflow parameters
 resume = true
