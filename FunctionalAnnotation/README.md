@@ -21,7 +21,7 @@ nextflow run -profile nbis,singularity FunctionalAnnotation.nf \
     * `codon_table`: (default: 1).
 - Blastp:
     * `blast_db_fasta`: Path to protein database.
-    * `blast_evalue`: Maximum e-value to keep the in the output (default: '1e-6').
+    * `blast_evalue`: Maximum expected value (E) for saving hits (default: '1e-6').
 - Interproscan:
     * `interproscan_db`: Names of interproscan database to check against.
 - Merge Functional Annotation:
