@@ -1,4 +1,4 @@
-# Functional annotation preparation pipeline
+# Functional annotation pipeline
 
 ## Quickstart
 
