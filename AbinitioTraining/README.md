@@ -53,8 +53,8 @@ params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/proj
 // Nextflow parameters
 resume = true
 workDir = '/path/to/temporary/workspace'
-conda.cacheDir = '$HOME/.nextflow/conda'
-singularity.cacheDir = '$HOME/.nextflow/singularity'
+conda.cacheDir = "$HOME/.nextflow/conda"
+singularity.cacheDir = "$HOME/.nextflow/singularity"
 ```
 
 Run nextflow with config file:

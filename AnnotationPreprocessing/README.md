@@ -44,8 +44,8 @@ params.busco_lineage = [ 'eukaryota_odb10', 'bacteria_odb10' ]
 // Nextflow parameters
 resume = true
 workDir = '/path/to/temporary/workspace'
-conda.cacheDir = '$HOME/.nextflow/conda'
-singularity.cacheDir = '$HOME/.nextflow/singularity'
+conda.cacheDir = "$HOME/.nextflow/conda"
+singularity.cacheDir = "$HOME/.nextflow/singularity"
 ```
 
 Run nextflow with config file:
