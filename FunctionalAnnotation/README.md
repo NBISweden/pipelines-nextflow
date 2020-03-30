@@ -1,6 +1,6 @@
 # Functional annotation pipeline
 
-## Quickstart
+## Quickstart (NBIS)
 
 ```bash
 nextflow run -profile nbis,conda FunctionalAnnotation.nf \

@@ -1,12 +1,21 @@
 # Abinitio training pipeline
 
-## Quickstart
+## Quickstart (NBIS)
 
 ```bash
+module load Singularity
 nextflow run -profile nbis,singularity AbinitioTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
+
+Or:
+```bash
+nextflow run -profile nbis,conda AbinitioTraining.nf \
+  --genome '/path/to/genome_assembly.fasta' \
+  --maker_evidence_gff 'path/to/annotation.gff3'
+```
+
 
 ## Usage
 

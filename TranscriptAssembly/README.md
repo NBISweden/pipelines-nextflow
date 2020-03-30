@@ -3,19 +3,18 @@
 ## Quickstart (NBIS)
 
 ```bash
-nextflow run -profile nbis,conda TranscriptAssembly.nf \
+module load Singularity
+nextflow run -profile nbis,singularity TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
 
 Or:
 ```bash
-module load Singularity
-nextflow run -profile nbis,singularity TranscriptAssembly.nf \
+nextflow run -profile nbis,conda TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
-But see: [Issue #16](https://github.com/NBISweden/pipelines-nextflow/issues/16)
 
 ## Usage
 

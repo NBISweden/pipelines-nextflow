@@ -1,13 +1,23 @@
 # Annotation preprocessing pipeline
 
-## Quickstart
+## Quickstart (NBIS)
 
 ```bash
+module load Singularity
 nextflow run -profile nbis,singularity AnnotationPreprocessing.nf \
 	--genome '/path/to/genome_assembly.fasta' \
 	--outdir 'results' \
 	--min_length '1000'
 ```
+
+Or:
+```bash
+nextflow run -profile nbis,conda AnnotationPreprocessing.nf \
+	--genome '/path/to/genome_assembly.fasta' \
+	--outdir 'results' \
+	--min_length '1000'
+```
+
 
 ## Usage
 
