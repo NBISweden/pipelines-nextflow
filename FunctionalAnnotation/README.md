@@ -3,7 +3,7 @@
 ## Quickstart
 
 ```bash
-nextflow run -profile nbis,singularity FunctionalAnnotation.nf \
+nextflow run -profile nbis,conda FunctionalAnnotation.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --gff_annotation 'path/to/annotation.gff3'
 ```
