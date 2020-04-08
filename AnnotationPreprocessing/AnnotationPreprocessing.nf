@@ -55,6 +55,9 @@ workflow annotation_preprocessing {
         assembly_generate_stats(fasta_filter_size.out)
         busco(fasta_filter_size.out,params.busco_lineage)
 
+    emit:
+        fasta = fasta_filter_size.out
+
 }
 
 process fasta_filter_size {
