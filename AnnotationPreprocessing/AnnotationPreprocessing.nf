@@ -55,6 +55,9 @@ workflow annotation_preprocessing {
         assembly_generate_stats(genome_assembly.mix(assembly_purify.out))
         busco(assembly_purify.out,params.busco_lineage)
 
+    emit:
+        fasta = fasta_filter_size.out
+
 }
 
 process assembly_purify {
