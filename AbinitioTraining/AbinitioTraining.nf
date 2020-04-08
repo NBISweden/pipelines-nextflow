@@ -91,8 +91,8 @@ workflow abinitio_training {
         snap_training(convert_gff2zff.out,params.species_label)
 
     emit:
-        augustus_training.out
-        snap_training.out
+        augustus = augustus_training.out
+        snap = snap_training.out
 
 }
 
