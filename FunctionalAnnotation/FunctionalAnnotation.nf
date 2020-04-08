@@ -93,6 +93,9 @@ workflow functional_annotation_input_preparation {
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
             interproscan.out.collectFile(name:'interproscan_merged.tsv').collect(),
             blastdb.collect())
+
+    emit:
+        annotation = merge_functional_annotation.out
 }
 
 process gff2protein {
