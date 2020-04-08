@@ -90,6 +90,10 @@ workflow abinitio_training {
         convert_gff2zff(gff_filter_by_blast.out,genome.collect())
         snap_training(convert_gff2zff.out,params.species_label)
 
+    emit:
+        augustus_training.out
+        snap_training.out
+
 }
 
 process split_maker_evidence {
