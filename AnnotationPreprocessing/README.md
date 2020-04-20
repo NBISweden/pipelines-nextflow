@@ -1,10 +1,10 @@
 # Annotation preprocessing pipeline
 
-## Quickstart (NBIS)
+## Quickstart (NBIS Staff)
 
 ```bash
 module load Singularity
-nextflow run -profile nbis,singularity AnnotationPreprocessing.nf \
+nextflow run -profile nbis,singularity /path/to/AnnotationPreprocessing.nf \
 	--genome '/path/to/genome_assembly.fasta' \
 	--outdir 'results' \
 	--min_length '1000'
@@ -12,7 +12,7 @@ nextflow run -profile nbis,singularity AnnotationPreprocessing.nf \
 
 Or:
 ```bash
-nextflow run -profile nbis,conda AnnotationPreprocessing.nf \
+nextflow run -profile nbis,conda /path/to/AnnotationPreprocessing.nf \
 	--genome '/path/to/genome_assembly.fasta' \
 	--outdir 'results' \
 	--min_length '1000'
@@ -55,7 +55,7 @@ screen -S my_nextflow_analysis
 # Load Nextflow
 conda activate nextflow-env
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity AnnotationPreprocessing.nf
+nextflow run -c params.config -profile nbis,singularity /path/to/AnnotationPreprocessing.nf
 ```
 
 ### Workflow Stages
