@@ -1,17 +1,17 @@
 # Transcript assembly pipeline
 
-## Quickstart (NBIS)
+## Quickstart (NBIS Staff)
 
 ```bash
 module load Singularity
-nextflow run -profile nbis,singularity TranscriptAssembly.nf \
+nextflow run -profile nbis,singularity /path/to/TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
 
 Or:
 ```bash
-nextflow run -profile nbis,conda TranscriptAssembly.nf \
+nextflow run -profile nbis,conda /path/to/TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
@@ -72,7 +72,7 @@ screen -S my_nextflow_analysis
 # Load Nextflow
 conda activate nextflow-env
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity TranscriptAssembly.nf
+nextflow run -c params.config -profile nbis,singularity /path/to/TranscriptAssembly.nf
 ```
 
 ## Workflow Stages
