@@ -28,7 +28,7 @@ Installation using conda:
 
 ```bash
 # Install both nextflow and nf-core tools using conda
-conda create -n nextflow-env nf-core nextflow
+conda create -c conda-forge -c bioconda -n nextflow-env nf-core nextflow
 conda activate nextflow-env
 ```
 
