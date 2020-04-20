@@ -1,12 +1,14 @@
 # Functional annotation pipeline
 
-## Quickstart (NBIS)
+## Quickstart (NBIS Staff)
 
 ```bash
-nextflow run -profile nbis,conda FunctionalAnnotation.nf \
+nextflow run -profile nbis,conda /path/to/FunctionalAnnotation.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --gff_annotation 'path/to/annotation.gff3'
 ```
+
+Note: Interproscan must be installed locally. 
 
 ## Usage
 
@@ -58,7 +60,7 @@ screen -S my_nextflow_analysis
 # Load Nextflow
 conda activate nextflow-env
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity FunctionalAnnotation.nf
+nextflow run -c params.config -profile nbis,singularity /path/to/FunctionalAnnotation.nf
 ```
 
 ## Workflow Stages
