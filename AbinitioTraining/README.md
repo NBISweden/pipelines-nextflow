@@ -1,17 +1,17 @@
 # Abinitio training pipeline
 
-## Quickstart (NBIS)
+## Quickstart (NBIS Staff)
 
 ```bash
 module load Singularity
-nextflow run -profile nbis,singularity AbinitioTraining.nf \
+nextflow run -profile nbis,singularity /path/to/AbinitioTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
 
 Or:
 ```bash
-nextflow run -profile nbis,conda AbinitioTraining.nf \
+nextflow run -profile nbis,conda /path/to/AbinitioTraining.nf \
   --genome '/path/to/genome_assembly.fasta' \
   --maker_evidence_gff 'path/to/annotation.gff3'
 ```
@@ -64,7 +64,7 @@ screen -S my_nextflow_analysis
 # Load Nextflow
 conda activate nextflow-env
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity AbinitioTraining.nf
+nextflow run -c params.config -profile nbis,singularity /path/to/AbinitioTraining.nf
 ```
 
 ## Workflow Stages
