@@ -17,7 +17,7 @@ Requirements:
 * Nextflow
 * A container platform (recommended for reproducibility)
     * Singularity
-	* Docker
+    * Docker
 * The conda package manager if a container platform is not available.
 * If conda, singularity, or docker is unavailable, all tool dependencies
 must be installed in your PATH.
@@ -28,7 +28,7 @@ Installation using conda:
 
 ```bash
 # Install both nextflow and nf-core tools using conda
-conda create -c conda-forge -c bioconda -n nextflow-env nf-core nextflow
+conda create -c conda-forge -c bioconda -n nextflow-env nextflow
 conda activate nextflow-env
 ```
 
