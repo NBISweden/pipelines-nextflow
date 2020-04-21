@@ -28,6 +28,8 @@ nextflow run -profile nbis,conda /path/to/AbinitioTraining.nf \
     * `species_label`: A species label for the training data.
 - Model selection:
     * `model_selection_value`: Value of AED confidence value to select by.
+- Filter models by locus distance:
+    * `locus_distance`: Value of the minimum distance between two loci to be selected (default: 3000).
 - Extract protein sequence:
     * `codon_table`: The number of the codon table to use for translation (default: 1).
 - Augustus:

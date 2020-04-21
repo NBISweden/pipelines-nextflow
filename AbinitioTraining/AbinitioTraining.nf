@@ -14,6 +14,8 @@ params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
 
 params.model_selection_value = 0.3
 
+params.locus_distance = 3000
+
 params.codon_table = 1
 
 params.test_size = 100
@@ -41,6 +43,8 @@ NBIS
  Model selection by AED
      model_selection_value         : ${params.model_selection_value}
 
+ Filter by locus distance
+     locus_distance                : ${params.locus_distance}
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}
 
@@ -192,7 +196,7 @@ process filter_by_locus_distance {
 
     script:
     """
-    agat_sp_filter_by_locus_distance.pl --gff ${coding_gene_features_gff} -o codingGeneFeatures.filter.longest_cds.complete.good_distance.gff
+    agat_sp_filter_by_locus_distance.pl --gff ${coding_gene_features_gff} -d ${params.locus_distance} -o codingGeneFeatures.filter.longest_cds.complete.good_distance.gff
     """
     // agat_sp_filter_by_locus_distance.pl is a script from AGAT
 }
