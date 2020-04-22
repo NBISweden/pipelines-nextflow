@@ -166,6 +166,7 @@ process merge_functional_annotation {
 
     output:
     path "${gff_annotation.baseName}_plus-functional-annotation.gff"
+    path "*.tsv", includeInputs:true
 
     script:
     """
