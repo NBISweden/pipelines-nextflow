@@ -137,7 +137,7 @@ process model_selection_by_AED {
 
     script:
     """
-    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">=" -o codingGeneFeatures.filter.gff
+    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">" -o codingGeneFeatures.filter.gff
     """
     // agat_sp_filter_feature_by_attribute_value.pl is a script from AGAT
 }
