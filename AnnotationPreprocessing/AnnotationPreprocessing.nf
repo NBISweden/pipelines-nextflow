@@ -51,32 +51,11 @@ workflow annotation_preprocessing {
         genome_assembly
 
     main:
-        assembly_generate_stats_raw(genome_assembly)
         assembly_purify(genome_assembly)
-        assembly_generate_stats(assembly_purify.out)
+        assembly_generate_stats(genome_assembly.mix(assembly_purify.out))
         busco(assembly_purify.out,params.busco_lineage)
 
 }
-
-process assembly_generate_stats_raw {
-
-    tag "${fasta_file.baseName}"
-    publishDir "${params.outdir}/stats_raw", mode: 'copy'
-    label 'GAAS'
-
-    input:
-    path fasta_file
-
-    output:
-    path "${fasta_file.baseName}_raw_assembly_report"
-
-    script:
-    """
-    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_raw_assembly_report
-    """
-    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
-}
-
 
 process assembly_purify {
 
