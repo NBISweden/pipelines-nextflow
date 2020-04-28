@@ -60,7 +60,7 @@ workflow annotation_preprocessing {
 
 process assembly_generate_stats_raw {
 
-    tag "${fasta_file.simpleName}"
+    tag "${fasta_file.baseName}"
     publishDir "${params.outdir}/stats_raw", mode: 'copy'
     label 'GAAS'
 
@@ -108,11 +108,11 @@ process assembly_generate_stats {
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_assembly_report"
+    path "${fasta_file.baseName}_report"
 
     script:
     """
-    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_assembly_report
+    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_report
     """
     // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 }
