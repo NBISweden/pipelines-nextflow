@@ -51,27 +51,29 @@ workflow annotation_preprocessing {
         genome_assembly
 
     main:
-        fasta_filter_size(genome_assembly)
-        assembly_generate_stats(fasta_filter_size.out)
-        busco(fasta_filter_size.out,params.busco_lineage)
+        assembly_purify(genome_assembly)
+        assembly_generate_stats(genome_assembly.mix(assembly_purify.out))
+        busco(assembly_purify.out,params.busco_lineage)
 
 }
 
-process fasta_filter_size {
+process assembly_purify {
 
     tag "${fasta_file.baseName} ; min length = ${params.min_length}"
     publishDir "${params.outdir}/assembly", mode: 'copy'
+    label 'GAAS'
 
     input:
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_min${params.min_length}.fasta"
+    path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa"
 
-    script:
+		script:
     """
-    seqtk seq -A $fasta_file -L ${params.min_length} > ${fasta_file.baseName}_min${params.min_length}.fasta
+    gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
+    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 
 }
 
@@ -85,11 +87,11 @@ process assembly_generate_stats {
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_assembly_report"
+    path "${fasta_file.baseName}_report"
 
     script:
     """
-    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_assembly_report
+    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_report
     """
     // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 }

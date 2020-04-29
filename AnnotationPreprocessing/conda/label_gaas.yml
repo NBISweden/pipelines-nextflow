@@ -6,4 +6,4 @@ channels:
   - defaults
 
 dependencies:
-  - gaas=1.0.1
+  - gaas=1.1.0
