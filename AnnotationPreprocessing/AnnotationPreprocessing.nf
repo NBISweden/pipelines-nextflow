@@ -56,7 +56,7 @@ workflow annotation_preprocessing {
         busco(assembly_purify.out,params.busco_lineage)
 
     emit:
-        fasta = fasta_filter_size.out
+        fasta = assembly_purify.out
 
 }
 
