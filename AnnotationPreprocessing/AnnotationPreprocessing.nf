@@ -58,6 +58,9 @@ workflow annotation_preprocessing {
     emit:
         fasta = assembly_purify.out
 
+    emit:
+        fasta = fasta_filter_size.out
+
 }
 
 process assembly_purify {
