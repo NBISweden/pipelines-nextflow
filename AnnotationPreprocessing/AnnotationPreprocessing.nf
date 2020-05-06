@@ -76,7 +76,7 @@ process assembly_purify {
     """
     gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
-    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
+    // gaas_fasta_purify.pl can be found in the NBIS GAAS repository
 
 }
 
