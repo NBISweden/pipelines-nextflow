@@ -72,7 +72,7 @@ process assembly_purify {
     output:
     path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa"
 
-		script:
+    script:
     """
     gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
