@@ -52,8 +52,10 @@ Run nextflow with config file:
 ```bash
 # Open screen terminal
 screen -S my_nextflow_analysis
-# Load Nextflow
+# Load Nextflow environment with conda
 conda activate nextflow-env
+# Load Singularity for Nextflow to use -profile singularity
+module load Singularity
 # Run Nextflow analysis
 nextflow run -c params.config -profile nbis,singularity /path/to/AnnotationPreprocessing.nf
 ```
