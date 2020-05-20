@@ -55,6 +55,9 @@ workflow annotation_preprocessing {
         assembly_generate_stats(genome_assembly.mix(assembly_purify.out))
         busco(assembly_purify.out,params.busco_lineage)
 
+    emit:
+        fasta = assembly_purify.out
+
 }
 
 process assembly_purify {
@@ -69,11 +72,11 @@ process assembly_purify {
     output:
     path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa"
 
-		script:
+    script:
     """
     gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
-    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
+    // gaas_fasta_purify.pl can be found in the NBIS GAAS repository
 
 }
 

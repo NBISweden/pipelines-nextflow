@@ -27,7 +27,7 @@ must be installed in your PATH.
 Installation using conda:
 
 ```bash
-# Install both nextflow and nf-core tools using conda
+# Install nextflow from bioconda
 conda create -c conda-forge -c bioconda -n nextflow-env nextflow
 conda activate nextflow-env
 ```

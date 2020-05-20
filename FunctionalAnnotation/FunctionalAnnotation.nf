@@ -73,11 +73,11 @@ workflow {
         Channel.fromPath("${params.blast_db_fasta}{,.p*}", checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}{,.p*}" }
             .set {blastdb}
-        functional_annotation_input_preparation(annotation,genome,blastdb)
+        functional_annotation(annotation,genome,blastdb)
 
 }
 
-workflow functional_annotation_input_preparation {
+workflow functional_annotation {
 
     take:
         gff_file
@@ -93,6 +93,9 @@ workflow functional_annotation_input_preparation {
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
             interproscan.out.collectFile(name:'interproscan_merged.tsv').collect(),
             blastdb.collect())
+
+    emit:
+        annotation = merge_functional_annotation.out
 }
 
 process gff2protein {

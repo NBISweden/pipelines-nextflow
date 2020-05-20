@@ -111,6 +111,9 @@ workflow transcript_assembly {
         fastqc.out.mix(trimming_logs).mix(hisat2.out[2]).set {logs}
         multiqc(logs.collect(),params.multiqc_config)
 
+    emit:
+        transcripts = stringtie.out
+
 }
 
 process fastqc {
