@@ -116,6 +116,12 @@ process busco {
     """
     : "\${BUSCO_CONFIG_FILE:=/usr/local/config/config.ini}"
     export BUSCO_CONFIG_FILE
+    if [ -z "AUGUSTUS_CONFIG_PATH" ]; then
+        # Create writable tmp directory for augustus
+        AUG_CONF_DIR=\$( mktemp -d Augustus_config.XXX --tmpdir $PWD )
+        cp -r /usr/local/config/* \$AUG_CONF_DIR
+        export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
+    fi
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
     """
 }
