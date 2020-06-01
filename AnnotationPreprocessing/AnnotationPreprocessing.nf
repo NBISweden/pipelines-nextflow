@@ -114,12 +114,10 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
-    : "\${BUSCO_CONFIG_FILE:=/usr/local/config/config.ini}"
-    export BUSCO_CONFIG_FILE
-    if [ -z "\${AUGUSTUS_CONFIG_PATH:-}" ]; then
+    if [ ! -w "\${AUGUSTUS_CONFIG_PATH}" ]; then
         # Create writable tmp directory for augustus
         AUG_CONF_DIR=\$( mktemp -d -p \$PWD )
-        cp -r /usr/local/config/* \$AUG_CONF_DIR
+        cp -r \$AUGUSTUS_CONFIG_PATH/* \$AUG_CONF_DIR
         export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
     fi
     echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE"
