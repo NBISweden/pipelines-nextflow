@@ -16,7 +16,7 @@ trimming_tools = [ 'fastp', 'trimmomatic' ]
 params.skip_trimming = false
 params.trimmer = 'fastp'
 
-params.fastp_options = ' -Q -L'
+params.fastp_options = ' -Q'
 
 params.trimmomatic_adapter_path = '/path/to/trimmomatic/adapters.fasta'
 params.trimmomatic_clip_options = 'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36'
