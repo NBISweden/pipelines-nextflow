@@ -47,6 +47,7 @@ params.genome = "/path/to/genome/assembly.fasta"
 params.outdir = "results"
 params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
 params.model_selection_value = 0.3
+params.locus_distance = 3000
 params.codon_table = 1
 params.test_size = 100
 params.flank_region_size = 1000
