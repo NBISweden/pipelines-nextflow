@@ -24,7 +24,7 @@ jobs:
         workflow:
           - ${GITHUB_WORKSPACE}/AbinitioTraining
           - ${GITHUB_WORKSPACE}/AnnotationPreprocessing
-          - ${GITHUB_WORKSPACE}/FunctionalAnnotationPreparation
+          # - ${GITHUB_WORKSPACE}/FunctionalAnnotation
           - ${GITHUB_WORKSPACE}/TranscriptAssembly
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -38,8 +38,8 @@ jobs:
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
-    - name: Alias local interproscan to docker container.
-      run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
+    # - name: Alias local interproscan to docker container.
+    #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
       run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
