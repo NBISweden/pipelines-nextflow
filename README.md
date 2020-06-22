@@ -17,7 +17,7 @@ Requirements:
 * Nextflow
 * A container platform (recommended for reproducibility)
     * Singularity
-	* Docker
+    * Docker
 * The conda package manager if a container platform is not available.
 * If conda, singularity, or docker is unavailable, all tool dependencies
 must be installed in your PATH.
@@ -27,8 +27,8 @@ must be installed in your PATH.
 Installation using conda:
 
 ```bash
-# Install both nextflow and nf-core tools using conda
-conda create -n nextflow-env nf-core nextflow
+# Install nextflow from bioconda
+conda create -c conda-forge -c bioconda -n nextflow-env nextflow
 conda activate nextflow-env
 ```
 
@@ -93,8 +93,8 @@ A pipeline for creating a training and testing data set for Augustus and Snap.
 * [AnnotationPreprocessing.nf](AnnotationPreprocessing):
 A pipeline for preprocessing genome assemblies in preparation for genome annotation.
 
-* [FunctionalAnnotationPreparation.nf](./FunctionalAnnotationPreparation):
-A pipeline for functional annotation preparation.
+* [FunctionalAnnotation.nf](./FunctionalAnnotation):
+A pipeline for functional annotation.
 
 * [TranscriptAssembly.nf](./TranscriptAssembly):
 A transcript assembly pipeline using hisat2 and stringtie.

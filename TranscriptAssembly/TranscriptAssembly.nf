@@ -16,7 +16,7 @@ trimming_tools = [ 'fastp', 'trimmomatic' ]
 params.skip_trimming = false
 params.trimmer = 'fastp'
 
-params.fastp_options = ' -Q -L'
+params.fastp_options = ' -Q'
 
 params.trimmomatic_adapter_path = '/path/to/trimmomatic/adapters.fasta'
 params.trimmomatic_clip_options = 'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36'
@@ -110,6 +110,9 @@ workflow transcript_assembly {
         stringtie(hisat2.out[0])
         fastqc.out.mix(trimming_logs).mix(hisat2.out[2]).set {logs}
         multiqc(logs.collect(),params.multiqc_config)
+
+    emit:
+        transcripts = stringtie.out
 
 }
 

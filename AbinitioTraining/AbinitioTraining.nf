@@ -14,6 +14,8 @@ params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
 
 params.model_selection_value = 0.3
 
+params.locus_distance = 3000
+
 params.codon_table = 1
 
 params.test_size = 100
@@ -41,6 +43,8 @@ NBIS
  Model selection by AED
      model_selection_value         : ${params.model_selection_value}
 
+ Filter by locus distance
+     locus_distance                : ${params.locus_distance}
  Protein Sequence extraction parameters
      codon_table                   : ${params.codon_table}
 
@@ -72,23 +76,27 @@ workflow abinitio_training {
 
     main:
         split_maker_evidence(gff_annotation)
-        model_selection_by_AED(split_maker_evidence.out[0])
-        retain_longest_isoform(model_selection_by_AED.out)
-        remove_incomplete_gene_models(retain_longest_isoform.out,
+        model_selection_by_AED(split_maker_evidence.out.transcripts)
+        retain_longest_isoform(model_selection_by_AED.out.selected_models)
+        remove_incomplete_gene_models(retain_longest_isoform.out.longest_isoform,
             genome.collect())
-        filter_by_locus_distance(remove_incomplete_gene_models.out)
-        extract_protein_sequence(filter_by_locus_distance.out,
+        filter_by_locus_distance(remove_incomplete_gene_models.out.complete_gene_models)
+        extract_protein_sequence(filter_by_locus_distance.out.distanced_models,
             genome.collect())
-        blast_makeblastdb(extract_protein_sequence.out)
-        blast_recursive(extract_protein_sequence.out,
+        blast_makeblastdb(extract_protein_sequence.out.proteins)
+        blast_recursive(extract_protein_sequence.out.proteins,
             blast_makeblastdb.out.collect())
-        gff_filter_by_blast(filter_by_locus_distance.out,
+        gff_filter_by_blast(filter_by_locus_distance.out.distanced_models,
             blast_recursive.out.collect())
-        gff2gbk(gff_filter_by_blast.out,genome.collect())
+        gff2gbk(gff_filter_by_blast.out.blast_filtered,genome.collect())
         gbk2augustus(gff2gbk.out)
-        augustus_training(gbk2augustus.out[0],gbk2augustus.out[1],params.species_label)
-        convert_gff2zff(gff_filter_by_blast.out,genome.collect())
+        augustus_training(gbk2augustus.out.training_data,gbk2augustus.out.testing_data,params.species_label)
+        convert_gff2zff(gff_filter_by_blast.out.blast_filtered,genome.collect())
         snap_training(convert_gff2zff.out,params.species_label)
+
+    emit:
+        augustus = augustus_training.out.training_model
+        snap = snap_training.out.training_model
 
 }
 
@@ -102,8 +110,8 @@ process split_maker_evidence {
     path maker_evidence
 
     output:
-    path "maker_results_noAbinitio_clean/mrna.gff"
-    path "maker_results_noAbinitio_clean/*"
+    path "maker_results_noAbinitio_clean/mrna.gff", emit: transcripts
+    path "maker_results_noAbinitio_clean/*", emit: all
 
     script:
     """
@@ -129,11 +137,11 @@ process model_selection_by_AED {
     path mrna_gff
 
     output:
-    path "codingGeneFeatures.filter.gff"
+    path "codingGeneFeatures.filter.gff", emit: selected_models
 
     script:
     """
-    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">=" -o codingGeneFeatures.filter.gff
+    agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">" -o codingGeneFeatures.filter.gff
     """
     // agat_sp_filter_feature_by_attribute_value.pl is a script from AGAT
 }
@@ -148,7 +156,7 @@ process retain_longest_isoform {
     path coding_gene_features_gff
 
     output:
-    path "codingGeneFeatures.filter.longest_cds.gff"
+    path "codingGeneFeatures.filter.longest_cds.gff", emit: longest_isoform
 
     script:
     """
@@ -168,7 +176,7 @@ process remove_incomplete_gene_models {
     path genome_fasta
 
     output:
-    path "codingGeneFeatures.filter.longest_cds.complete.gff"
+    path "codingGeneFeatures.filter.longest_cds.complete.gff", emit: complete_gene_models
 
     script:
     """
@@ -188,11 +196,11 @@ process filter_by_locus_distance {
     path coding_gene_features_gff
 
     output:
-    path "codingGeneFeatures.filter.longest_cds.complete.good_distance.gff"
+    path "codingGeneFeatures.filter.longest_cds.complete.good_distance.gff", emit: distanced_models
 
     script:
     """
-    agat_sp_filter_by_locus_distance.pl --gff ${coding_gene_features_gff} -o codingGeneFeatures.filter.longest_cds.complete.good_distance.gff
+    agat_sp_filter_by_locus_distance.pl --gff ${coding_gene_features_gff} -d ${params.locus_distance} -o codingGeneFeatures.filter.longest_cds.complete.good_distance.gff
     """
     // agat_sp_filter_by_locus_distance.pl is a script from AGAT
 }
@@ -207,7 +215,7 @@ process extract_protein_sequence {
     path genome_fasta
 
     output:
-    path "${gff_file.baseName}_proteins.fasta"
+    path "${gff_file.baseName}_proteins.fasta", emit: proteins
 
     script:
     """
@@ -268,7 +276,7 @@ process gff_filter_by_blast {
     path blast_file
 
     output:
-    path "${gff_file.baseName}_blast-filtered.gff3"
+    path "${gff_file.baseName}_blast-filtered.gff3", emit: blast_filtered
 
     script:
     """
@@ -314,9 +322,9 @@ process gbk2augustus {
     path genbank_file
 
     output:
-    path "${genbank_file}.train"
-    path "${genbank_file}.test"
-    path "${genbank_file}"
+    path "${genbank_file}.train", emit: training_data
+    path "${genbank_file}.test", emit: testing_data
+    path "${genbank_file}", emit: genbank_file
 
     script:
     """
@@ -340,7 +348,7 @@ process augustus_training {
 
     output:
     path "${species_label}_run.log"
-    path "${species_label}"
+    path "${species_label}", emit: training_model
 
     script:
     """
@@ -382,7 +390,7 @@ process snap_training {
     val species_label
 
     output:
-    path "*.hmm"
+    path "*.hmm", emit: training_model
 
     script:
     ann_file = training_files.find { it =~ /.ann$/ }

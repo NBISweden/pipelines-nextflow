@@ -51,27 +51,32 @@ workflow annotation_preprocessing {
         genome_assembly
 
     main:
-        fasta_filter_size(genome_assembly)
-        assembly_generate_stats(fasta_filter_size.out)
-        busco(fasta_filter_size.out,params.busco_lineage)
+        assembly_purify(genome_assembly)
+        assembly_generate_stats(genome_assembly.mix(assembly_purify.out))
+        busco(assembly_purify.out,params.busco_lineage)
+
+    emit:
+        fasta = assembly_purify.out
 
 }
 
-process fasta_filter_size {
+process assembly_purify {
 
     tag "${fasta_file.baseName} ; min length = ${params.min_length}"
     publishDir "${params.outdir}/assembly", mode: 'copy'
+    label 'GAAS'
 
     input:
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_min${params.min_length}.fasta"
+    path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa"
 
     script:
     """
-    seqtk seq -A $fasta_file -L ${params.min_length} > ${fasta_file.baseName}_min${params.min_length}.fasta
+    gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
+    // gaas_fasta_purify.pl can be found in the NBIS GAAS repository
 
 }
 
@@ -85,13 +90,13 @@ process assembly_generate_stats {
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_assembly_report"
+    path "${fasta_file.baseName}_report"
 
     script:
     """
-    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_assembly_report
+    gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_report
     """
-    // fasta_statisticsAndPlot.pl can be found in the NBIS GAAS repository
+    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 }
 
 process busco {
@@ -109,8 +114,14 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
-    : "\${BUSCO_CONFIG_FILE:=/usr/local/config/config.ini}"
-    export BUSCO_CONFIG_FILE
+    if [ ! -w "\${AUGUSTUS_CONFIG_PATH}" ]; then
+        # Create writable tmp directory for augustus
+        AUG_CONF_DIR=\$( mktemp -d -p \$PWD )
+        cp -r \$AUGUSTUS_CONFIG_PATH/* \$AUG_CONF_DIR
+        export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
+    fi
+    echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE"
+    echo "AUGUSTUS_CONFIG_PATH=\$AUGUSTUS_CONFIG_PATH"
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
     """
 }

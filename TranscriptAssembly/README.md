@@ -1,9 +1,17 @@
 # Transcript assembly pipeline
 
-## Quickstart
+## Quickstart (NBIS Staff)
 
 ```bash
-nextflow run -profile nbis,singularity TranscriptAssembly.nf \
+module load Singularity
+nextflow run -profile nbis,singularity /path/to/TranscriptAssembly.nf \
+  --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
+  --genome 'path/to/genome.fasta'
+```
+
+Or:
+```bash
+nextflow run -profile nbis,conda /path/to/TranscriptAssembly.nf \
   --reads '/path/to/reads*_{R1,R2}.fastq.gz' \
   --genome 'path/to/genome.fasta'
 ```
@@ -53,18 +61,20 @@ params.multiqc_config = "$baseDir/config/multiqc_conf.yml"
 // Nextflow parameters
 resume = true
 workDir = '/path/to/temporary/workspace'
-conda.cacheDir = '$HOME/.nextflow/conda'
-singularity.cacheDir = '$HOME/.nextflow/singularity'
+conda.cacheDir = "$HOME/.nextflow/conda"
+singularity.cacheDir = "$HOME/.nextflow/singularity"
 ```
 
 Run nextflow with config file:
 ```bash
 # Open screen terminal
 screen -S my_nextflow_analysis
-# Load Nextflow
+# Load Nextflow environment with conda
 conda activate nextflow-env
+# Load Singularity for Nextflow to use -profile singularity
+module load Singularity
 # Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity TranscriptAssembly.nf
+nextflow run -c params.config -profile nbis,singularity /path/to/TranscriptAssembly.nf
 ```
 
 ## Workflow Stages
