@@ -6,4 +6,4 @@ channels:
   - defaults
 
 dependencies:
-  - busco=4.0.2
+  - busco=4.0.6

@@ -114,8 +114,14 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
-    : "\${BUSCO_CONFIG_FILE:=/usr/local/config/config.ini}"
-    export BUSCO_CONFIG_FILE
+    if [ ! -w "\${AUGUSTUS_CONFIG_PATH}" ]; then
+        # Create writable tmp directory for augustus
+        AUG_CONF_DIR=\$( mktemp -d -p \$PWD )
+        cp -r \$AUGUSTUS_CONFIG_PATH/* \$AUG_CONF_DIR
+        export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
+    fi
+    echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE"
+    echo "AUGUSTUS_CONFIG_PATH=\$AUGUSTUS_CONFIG_PATH"
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
     """
 }

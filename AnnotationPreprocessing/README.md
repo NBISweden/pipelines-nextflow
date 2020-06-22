@@ -65,3 +65,7 @@ nextflow run -c params.config -profile nbis,singularity /path/to/AnnotationPrepr
 1. Filter: Remove fasta sequences less than `min_length` bases.
 2. Summarise and plot assembly metrics.
 3. Run BUSCO on filtered assembly.
+
+### Known issues
+
+1. The Busco conda package does not resolve dependencies when `channel_priority: strict` is used.
