@@ -51,9 +51,4 @@ jobs:
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
-      run: |
-        conda --version
-        which python
-        echo $USER
-        ls -la /home/runner/work/pipelines-nextflow/pipelines-nextflow
-        nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
+      run: nextflow run -process.maxForks 1 -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
