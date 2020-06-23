@@ -54,5 +54,6 @@ jobs:
       run: |
         conda --version
         which python
-        ls -la /home/runner/work/pipelines-nextflow/pipelines-nextflow/work/ 
+        echo $USER
+        ls -la /home/runner/work/pipelines-nextflow/pipelines-nextflow
         nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
