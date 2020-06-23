@@ -38,6 +38,9 @@ jobs:
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
+    - name: Update Conda
+      run: conda update -n base conda
+
     # - name: Alias local interproscan to docker container.
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
