@@ -46,12 +46,12 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         update-conda: true
-      run: conda --version
-      run: which python
 
     # - name: Alias local interproscan to docker container.
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
+      run: conda --version
+      run: which python
       run: strace -f
       run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
