@@ -47,7 +47,7 @@ A workflow is run in the following way:
 nextflow run [-profile <profile_name1>[,<profile_name2>,...] ] workflow.nf [--workflow_parameters]
 ```
 
-If running on a grid infrastructure, `nextflow` must be able to communicate
+If running on a compute cluster infrastructure, `nextflow` must be able to communicate
 with the scheduler at all times, otherwise tasks will be cancelled.
 The best way to do this is to run `nextflow` using a `screen` or `tmux`
 terminal.
@@ -70,16 +70,46 @@ screen -r my_nextflow_run
 
 #### Nextflow on Uppmax
 
-Nextflow is available under the module system on Uppmax, but could be outdated.
+Nextflow is available under the module system on Uppmax.
 
-Nextflow scripts can be run in the following way.
+Nextflow scripts can be generally be run in the following way.
 
 ```bash
 module load bioinfo-tools Nextflow
+# Uses Nextflow version 20.01.0 - check Nextflow website for current release version
 NXF_VER=20.01.0 nextflow run [ -c <config> ] <nextflow_script> [ --script_parameters ]
 ```
 
 This downloads the specific version of Nextflow locally for you to use before running the script. This version is cached in your `$HOME/.nextflow/` folder.
+
+In general, one should write their own configuration for nextflow scripts for their specific system. 
+The annotation pipelines come with prebuilt profiles that are useful on Uppmax systems. More specifically,
+the profile `uppmax` is suitable to use as configuration for utilising the SLURM queuing system, and either
+the profile `singularity` (recommended - the application `singularity` is available by default) or 
+`conda` (very slow - the application `conda` is loaded using the module system) to load the necessary
+software needed for the workflows. Additional configuration should also be added to utilise the Uppmax 
+clusters efficiently. In your own configuration file we suggest adding the following additional settings:
+
+`workflow.config`:
+```
+// Workflow parameters
+params.outdir = '/proj/<snic_storage_project>/results'
+
+// Nextflow configuration options
+workDir = '/proj/<snic_storage_project>/nobackup/work'
+resume = true
+process {
+    clusterOptions = '-A <snic_compute_project>'
+    // You can also override existing process cpu or time settings here too.
+}
+```
+used like so:
+```
+NXF_VER=<version> nextflow run -c workflow.config -profile uppmax,singularity <nextflow_script>
+```
+
+Note: The FunctionalAnnotation pipeline needs one tool installed in the `PATH` along with its databases. 
+See [FunctionalAnnotation](./FunctionalAnnotation) for details.
 
 ## Available pipelines
 
