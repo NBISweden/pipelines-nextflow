@@ -17,6 +17,10 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    env:
+      NXF_VER: ${{ matrix.nxf_ver }}
+      NXF_ANSI_LOG: false
+
     strategy:
       matrix:
         nxf_ver: ['20.01.0', '']
@@ -34,15 +38,20 @@ jobs:
 
     - name: Install Nextflow
       run: |
-        export NXF_VER=${{ matrix.nxf_ver }}
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
-    - name: Update Conda
-      run: conda update -n base conda
+    # Use https://github.com/marketplace/actions/setup-conda to setup conda
+    - name: Setup Conda
+      uses: s-weigand/setup-conda@v1
+      with:
+        update-conda: true
+      run: conda --version
+      run: which python
 
     # - name: Alias local interproscan to docker container.
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
+      run: strace -f
       run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
