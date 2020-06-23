@@ -54,5 +54,5 @@ jobs:
       run: |
         conda --version
         which python
-        ls -l /usr/share/miniconda/ 
+        ls -la /home/runner/work/pipelines-nextflow/pipelines-nextflow/work/ 
         nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
