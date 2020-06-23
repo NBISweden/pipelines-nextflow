@@ -54,5 +54,4 @@ jobs:
       run: |
         conda --version
         which python
-        strace -f
-        nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
+        strace -f nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
