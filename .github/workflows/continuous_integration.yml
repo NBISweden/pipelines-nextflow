@@ -24,7 +24,9 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.01.0', '']
-        profile: [conda, docker]
+        profile:
+          # - conda 
+          - docker
         workflow:
           - ${GITHUB_WORKSPACE}/AbinitioTraining
           - ${GITHUB_WORKSPACE}/AnnotationPreprocessing
