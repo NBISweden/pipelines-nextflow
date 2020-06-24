@@ -95,7 +95,7 @@ workflow functional_annotation {
             blastdb.collect())
 
     emit:
-        annotation = merge_functional_annotation.out
+        annotation = merge_functional_annotation.out[0]
 }
 
 process gff2protein {
