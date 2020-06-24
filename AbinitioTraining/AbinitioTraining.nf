@@ -115,7 +115,7 @@ process split_maker_evidence {
 
     script:
     """
-    agat_sp_split_by_level2_feature.pl -g ${maker_evidence} -o maker_results_noAbinitio_clean
+    agat_sp_separate_by_record_type.pl -g ${maker_evidence} -o maker_results_noAbinitio_clean
     if test -f maker_results_noAbinitio_clean/mrna.gff && test -f maker_results_noAbinitio_clean/transcript.gff; then
         agat_sp_merge_annotations.pl --gff maker_results_noAbinitio_clean/mrna.gff \\
             --gff maker_results_noAbinitio_clean/transcript.gff --out merged_transcripts.gff
@@ -124,7 +124,7 @@ process split_maker_evidence {
         cp maker_results_noAbinitio_clean/transcript.gff maker_results_noAbinitio_clean/mrna.gff
     fi
     """
-    // agat_sp_split_by_level2_feature.pl is a script from AGAT
+    // agat_sp_separate_by_record_type.pl is a script from AGAT
 }
 
 process model_selection_by_AED {
