@@ -25,7 +25,7 @@ jobs:
       matrix:
         nxf_ver: ['20.01.0', '']
         profile:
-          # - conda 
+          # - conda
           - docker
         workflow:
           - ${GITHUB_WORKSPACE}/AbinitioTraining
@@ -53,4 +53,4 @@ jobs:
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
-      run: nextflow run -process.maxForks 1 -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
+      run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
