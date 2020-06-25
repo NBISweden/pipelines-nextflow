@@ -44,10 +44,10 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Use https://github.com/marketplace/actions/setup-conda to setup conda
-    - name: Setup Conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
+    # - name: Setup Conda
+    #   uses: s-weigand/setup-conda@v1
+    #   with:
+    #     update-conda: true
 
     # - name: Alias local interproscan to docker container.
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
