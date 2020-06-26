@@ -1,0 +1,56 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Continuous Integration
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master, add_actions ]
+  pull_request:
+    branches: [ master, add_actions ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a job called "test"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    env:
+      NXF_VER: ${{ matrix.nxf_ver }}
+      NXF_ANSI_LOG: false
+
+    strategy:
+      matrix:
+        nxf_ver: ['20.01.0', '']
+        profile:
+          # - conda
+          - docker
+        workflow:
+          - ${GITHUB_WORKSPACE}/AbinitioTraining
+          - ${GITHUB_WORKSPACE}/AnnotationPreprocessing
+          # - ${GITHUB_WORKSPACE}/FunctionalAnnotation
+          - ${GITHUB_WORKSPACE}/TranscriptAssembly
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Install Nextflow
+      run: |
+        wget -qO- get.nextflow.io | bash
+        sudo mv nextflow /usr/local/bin/
+
+    # Use https://github.com/marketplace/actions/setup-conda to setup conda
+    # - name: Setup Conda
+    #   uses: s-weigand/setup-conda@v1
+    #   with:
+    #     update-conda: true
+
+    # - name: Alias local interproscan to docker container.
+    #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
+
+    - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
+      run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}

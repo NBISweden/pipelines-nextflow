@@ -70,8 +70,8 @@ workflow {
         Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
             .set {genome}
-        Channel.fromPath("${params.blast_db_fasta}{,.p*}", checkIfExists: true)
-            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}{,.p*}" }
+        Channel.fromPath("${params.blast_db_fasta}" + (params.blast_db_fasta =~ /^(ht|f)tps?:/ ? '': "*"), checkIfExists: true)
+            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}?(.p*)" }
             .set {blastdb}
         functional_annotation(annotation,genome,blastdb)
 
@@ -85,9 +85,11 @@ workflow functional_annotation {
         blastdb
 
     main:
+        makeblastdb(blastdb,blastdb.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
+        makeblastdb.out.mix(blastdb.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
         gff2protein(gff_file,genome.collect())
         blastp(gff2protein.out.splitFasta(by: params.records_per_file, file: true),
-            blastdb.collect())
+            blastfiles)
         interproscan(gff2protein.out.splitFasta(by: params.records_per_file, file: true))
         merge_functional_annotation(gff_file,
             blastp.out.collectFile(name:'blast_merged.tsv').collect(),
@@ -118,7 +120,35 @@ process gff2protein {
 
 }
 
+process makeblastdb {
+
+    label 'blast'
+
+    input:
+    path fasta
+    val state
+
+    output:
+    path "*.fasta*"
+
+    when:
+    state == 'DBFILES_ABSENT'
+
+    script:
+    """
+    if [[ "$fasta" =~ \\.f(ast|n)?a\$ ]]; then
+        makeblastdb -in $fasta -dbtype prot
+    else
+        cp $fasta protein.fasta
+        makeblastdb -in protein.fasta -dbtype prot
+    fi
+    """
+
+}
+
 process blastp {
+
+    label 'blast'
 
     input:
     path fasta_file
@@ -128,7 +158,8 @@ process blastp {
     path "${fasta_file.baseName}_blast.tsv"
 
     script:
-    database = blastdb[0].toString() - ~/.p\w\w$/
+    // database = blastdb[0].toString() - ~/.p\w\w$/
+    database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
     """
     blastp -query $fasta_file -db ${database} -num_threads ${task.cpus} \\
         -evalue ${params.blast_evalue} -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
@@ -148,6 +179,7 @@ process interproscan {
     applications = params.interproscan_db ? "-appl ${params.interproscan_db}" : ''
     tmpdir = task.scratch ? "-T ${task.scratch}" : ''
     """
+    export PATH="/opt/interproscan:\$PATH"
     interproscan.sh ${applications} -i $protein_fasta -o ${protein_fasta.baseName}.tsv \\
         -f TSV --iprlookup --goterms -pa -dp -t p ${tmpdir}
     """
@@ -172,11 +204,12 @@ process merge_functional_annotation {
     path "*.tsv", includeInputs:true
 
     script:
+    fasta = blast_files.find { it =~ /\.f(ast|n)?a$/ }
     """
     agat_sp_manage_functional_annotation.pl -f ${gff_annotation} \\
         -b ${merged_blast_results} -i ${merged_interproscan_results} \\
         -db ${params.blast_db_fasta} -id ${params.id_prefix} \\
-	-pe ${params.protein_existence} \\
+        -pe ${params.protein_existence} \\
         -o ${gff_annotation.baseName}_plus-functional-annotation.gff
     """
     // agat_sp_manage_functional_annotation.pl is a script from AGAT
