@@ -404,5 +404,5 @@ process snap_training {
 }
 
 workflow.onComplete {
-    log.info ( workflow.success ? "\nAugustus training dataset complete!\n" : "Oops .. something went wrong\n" )
+    log.info ( workflow.success ? "\nAbinitio training complete!\n" : "Oops .. something went wrong\n" )
 }
