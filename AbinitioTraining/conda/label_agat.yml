@@ -6,4 +6,4 @@ channels:
   - defaults
 
 dependencies:
-  - agat=0.4.0
+  - agat=0.5.1
