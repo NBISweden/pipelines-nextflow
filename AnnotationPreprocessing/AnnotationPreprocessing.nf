@@ -120,7 +120,8 @@ process busco {
         cp -r \$AUGUSTUS_CONFIG_PATH/* \$AUG_CONF_DIR
         export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
     fi
-    echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE"
+    # before with buscov4 it was echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE", it stops working for buscov5
+    echo "BUSCO_CONFIG_FILE=\$AUGUSTUS_CONFIG_PATH/myconfig.ini"
     echo "AUGUSTUS_CONFIG_PATH=\$AUGUSTUS_CONFIG_PATH"
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
     """
