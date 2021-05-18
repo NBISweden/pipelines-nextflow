@@ -4,7 +4,7 @@
 
 * [Disclaimer](#disclaimer)
 * [Maintainers](#maintainers)
-* [Setup](#setup)
+* [Installation and Usage](#installation-and-usage)
 * [Available pipelines](#available-pipelines)
 
 ## Disclaimer
