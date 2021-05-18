@@ -3,12 +3,19 @@
 ### Table of Contents
 
 * [Disclaimer](#disclaimer)
+* [Maintainers](#maintainers)
 * [Installation and Usage](#installation-and-usage)
 * [Available pipelines](#available-pipelines)
 
 ## Disclaimer
 
 If you use these pipelines in your work, please acknowledge NBIS within your communication according to this example: "Support by NBIS (National Bioinformatics Infrastructure Sweden) is gratefully acknowledged."
+
+## Maintainers
+
+* Mahesh Binzer-Panchal (Nextflow, Reproducibility)
+* Jacques Dainat (Annotation expert, Nextflow, Conda)
+* Lucile Soler (Annotation expert)
 
 ## Installation and Usage
 
