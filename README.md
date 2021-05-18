@@ -3,7 +3,7 @@
 ### Table of Contents
 
 * [Disclaimer](#disclaimer)
-* [Setup](#setup)
+* [Installation and Usage](#installation-and-usage)
 * [Available pipelines](#available-pipelines)
 
 ## Disclaimer
@@ -82,13 +82,13 @@ NXF_VER=20.01.0 nextflow run [ -c <config> ] <nextflow_script> [ --script_parame
 
 This downloads the specific version of Nextflow locally for you to use before running the script. This version is cached in your `$HOME/.nextflow/` folder.
 
-In general, one should write their own configuration for nextflow scripts for their specific system. 
+In general, one should write their own configuration for nextflow scripts for their specific system.
 The annotation pipelines come with prebuilt profiles that are useful on Uppmax systems. More specifically,
-the profile `uppmax` is suitable to use as configuration for utilising the SLURM queuing system and the 
+the profile `uppmax` is suitable to use as configuration for utilising the SLURM queuing system and the
 singularity application to load necessary software. Alternatively the profile `nbis` and either
-the profile `singularity` (recommended - the application `singularity` is available by default) or 
+the profile `singularity` (recommended - the application `singularity` is available by default) or
 `conda` (very slow - the application `conda` is loaded using the module system) to load the necessary
-software needed for the workflows can be used. Additional configuration should also be added to utilise the Uppmax 
+software needed for the workflows can be used. Additional configuration should also be added to utilise the Uppmax
 clusters efficiently. In your own configuration file we suggest adding the following additional settings:
 
 `workflow.config`:
@@ -109,7 +109,7 @@ used like so:
 NXF_VER=<version> nextflow run -c workflow.config -profile uppmax <nextflow_script>
 ```
 
-Note: The FunctionalAnnotation pipeline needs one tool installed in the `PATH` along with its databases. 
+Note: The FunctionalAnnotation pipeline needs one tool installed in the `PATH` along with its databases.
 See [FunctionalAnnotation](./FunctionalAnnotation) for details.
 
 ## Available pipelines
