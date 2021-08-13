@@ -13,9 +13,16 @@ If you use these pipelines in your work, please acknowledge NBIS within your com
 
 ## Maintainers
 
-* Mahesh Binzer-Panchal (Nextflow, Reproducibility)
-* Jacques Dainat (Annotation expert, Nextflow, Conda)
-* Lucile Soler (Annotation expert)
+* Mahesh Binzer-Panchal (\@mahesh-panchal; Nextflow, Reproducibility)
+* Jacques Dainat (\@Juke34; Annotation expert, Nextflow, Conda)
+* Lucile Soler (\@LucileSol; Annotation expert)
+
+### Acknowledgements
+
+These workflows were based on the Bpipe workflows written by
+Marc Höppner (\@marchoeppner) and Jacques Dainat (\@Juke34).
+
+Thank you to everyone who contributes to this project.
 
 ## Installation and Usage
 
