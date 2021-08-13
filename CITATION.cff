@@ -1,7 +1,7 @@
 # YAML 1.2
 ---
 abstract: "A set of workflows written in Nextflow for Genome Annotation. "
-authors: 
+authors:
   -
     affiliation: "National Bioinformatics Infrastructure Sweden (NBIS) / Uppsala University"
     family-names: "Binzer-Panchal"
@@ -17,7 +17,7 @@ authors:
     orcid: "https://orcid.org/https://orcid.org/0000-0002-0121-2393"
 cff-version: "1.1.0"
 date-released: 2021-08-05
-keywords: 
+keywords:
   - Nextflow
   - "Genome Annotation"
   - "Functional Annotation"
