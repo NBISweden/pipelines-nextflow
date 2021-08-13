@@ -21,7 +21,6 @@ keywords:
   - Nextflow
   - "Genome Annotation"
   - "Functional Annotation"
-license: "gpl-3.0"
 message: "If you use this software, please cite it using these metadata."
 repository-code: "https://github.com/NBISweden/pipelines-nextflow"
 title: "NBIS Genome Annotation Workflows"
