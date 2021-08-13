@@ -1,0 +1,29 @@
+# YAML 1.2
+---
+abstract: "A set of workflows written in Nextflow for Genome Annotation. "
+authors:
+  -
+    affiliation: "National Bioinformatics Infrastructure Sweden (NBIS) / Uppsala University"
+    family-names: "Binzer-Panchal"
+    given-names: Mahesh
+    orcid: "https://orcid.org/https://orcid.org/0000-0003-1675-0677"
+  -
+    family-names: Dainat
+    given-names: Jacques
+    orcid: "https://orcid.org/https://orcid.org/0000-0002-6629-0173"
+  -
+    family-names: Soler
+    given-names: Lucile
+    orcid: "https://orcid.org/https://orcid.org/0000-0002-0121-2393"
+cff-version: "1.1.0"
+date-released: 2021-08-05
+keywords:
+  - Nextflow
+  - "Genome Annotation"
+  - "Functional Annotation"
+license: "GNU General Public License v3.0"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/NBISweden/pipelines-nextflow"
+title: "NBIS Genome Annotation Workflows"
+version: "v1.0.0"
+...
