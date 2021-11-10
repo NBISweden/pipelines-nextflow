@@ -9,6 +9,7 @@ Vendela, William and Viktor
  */
 // Test push by Viktor
 // Test5 by Vendela
+// Test by William
 
 params.gff_annotation = "/path/to/annotation.gff"
 params.genome = "/path/to/genome.fasta"
