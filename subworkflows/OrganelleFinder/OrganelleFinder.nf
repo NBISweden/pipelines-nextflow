@@ -5,10 +5,11 @@ nextflow.preview.dsl=2
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.
-Vendela
+Vendela, William and Viktor
  */
 // Test push by Viktor
 // Test5 by Vendela
+// Test by William
 
 params.gff_annotation = "/path/to/annotation.gff"
 params.genome = "/path/to/genome.fasta"
