@@ -7,6 +7,8 @@ nextflow.preview.dsl=2
  * given `params.foo` specify on the run command line `--foo some_value`.
 Vendela, William and Viktor
  */
+// Test push by Viktor
+// Test5 by Vendela
 
 params.gff_annotation = "/path/to/annotation.gff"
 params.genome = "/path/to/genome.fasta"
