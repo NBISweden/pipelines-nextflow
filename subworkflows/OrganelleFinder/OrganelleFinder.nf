@@ -9,6 +9,7 @@ Vendela, William and Viktor
  */
 // Test fetch upstream and status by Viktor
 // Test5 by Vendela
+// Test of conflicts
 // Test by William
 
 params.gff_annotation = "/path/to/annotation.gff"
