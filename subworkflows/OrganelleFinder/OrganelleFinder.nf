@@ -8,6 +8,8 @@ nextflow.preview.dsl=2
 Vendela
  */
 
+// Test by Vendela again
+
 params.gff_annotation = "/path/to/annotation.gff"
 params.genome = "/path/to/genome.fasta"
 params.outdir = "results"
