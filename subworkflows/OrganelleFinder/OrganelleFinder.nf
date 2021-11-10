@@ -7,7 +7,6 @@ nextflow.preview.dsl=2
  * given `params.foo` specify on the run command line `--foo some_value`.
 Vendela, William and Viktor
  */
-// Test fetch upstream and status by Viktor
 // Test5 by Vendela
 // Test of conflicts
 // Test by William
