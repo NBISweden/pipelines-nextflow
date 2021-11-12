@@ -6,4 +6,4 @@ channels:
   - defaults
 
 dependencies:
-  - blast=2.9.0
+  - blast=2.12.0

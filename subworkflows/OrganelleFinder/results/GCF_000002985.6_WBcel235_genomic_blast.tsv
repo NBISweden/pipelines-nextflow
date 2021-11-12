@@ -1,0 +1,678 @@
+BLASTX 2.12.0+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: Ref_mitochondria_animal.fna
+           13 sequences; 3,791 total letters
+
+
+
+Query= NC_003279.8 Caenorhabditis elegans chromosome I
+
+Length=15072434
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_023890.1_prot_YP_009022044.1_1 [gene=ND1] [db_xref=GeneID:...  31.2    5.4  
+lcl|NC_023890.1_prot_YP_009022048.1_5 [gene=ATP8] [db_xref=GeneID...  28.1    7.8  
+
+
+>lcl|NC_023890.1_prot_YP_009022044.1_1 [gene=ND1] [db_xref=GeneID:18983007] 
+[protein=NADH dehydrogenase subunit 1] [transl_except=(pos:970..971,aa:TERM)] 
+[protein_id=YP_009022044.1] 
+[location=2800..3770] [gbkey=CDS]
+Length=323
+
+ Score = 31.2 bits (69),  Expect = 5.4, Method: Compositional matrix adjust.
+ Identities = 16/35 (46%), Positives = 22/35 (63%), Gaps = 1/35 (3%)
+ Frame = -2
+
+Query  2519473  LFYLLTIFIAI-FFRKMEEKFLGHSRGGSGPEIVG  2519372
+                L Y++ I IA+ FF  +E K LG+ +   GP IVG
+Sbjct  12       LMYMIPILIAVAFFTLLERKVLGYMQLRKGPNIVG  46
+
+
+>lcl|NC_023890.1_prot_YP_009022048.1_5 [gene=ATP8] [db_xref=GeneID:18982998] 
+[protein=ATP synthase F0 subunit 8] [protein_id=YP_009022048.1] 
+[location=7844..8032] [gbkey=CDS]
+Length=62
+
+ Score = 28.1 bits (61),  Expect = 7.8, Method: Compositional matrix adjust.
+ Identities = 15/45 (33%), Positives = 24/45 (53%), Gaps = 5/45 (11%)
+ Frame = -2
+
+Query  14917795  TSWCIGQKILKPAEKTFLTTDDQFVCDKTRKILHT---SWPEAAH  14917670
+                 +SW +   IL+P   ++L T+D    +K  K +HT   +WP   H
+Sbjct  15        SSWLMYILILQPKISSYLPTNDP--TNKNNKTMHTNSWTWPWTQH  57
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 11731114720
+
+
+Query= NC_003280.10 Caenorhabditis elegans chromosome II
+
+Length=15279421
+
+
+***** No hits found *****
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 11892220380
+
+
+Query= NC_003281.10 Caenorhabditis elegans chromosome III
+
+Length=13783801
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_023890.1_prot_YP_009022053.1_10 [gene=ND4] [db_xref=GeneID...  32.0    3.9  
+lcl|NC_023890.1_prot_YP_009022049.1_6 [gene=ATP6] [db_xref=GeneID...  31.2    4.1  
+lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:...  30.0    4.5  
+lcl|NC_023890.1_prot_YP_009022052.1_9 [gene=ND4L] [db_xref=GeneID...  29.3    6.0  
+lcl|NC_023890.1_prot_YP_009022054.1_11 [gene=ND5] [db_xref=GeneID...  30.8    7.9  
+
+
+>lcl|NC_023890.1_prot_YP_009022053.1_10 [gene=ND4] [db_xref=GeneID:18983003] 
+[protein=NADH dehydrogenase subunit 4] [transl_except=(pos:1381..1381,aa:TERM)] 
+[protein_id=YP_009022053.1] 
+[location=10248..11628] [gbkey=CDS]
+Length=460
+
+ Score = 32.0 bits (71),  Expect = 3.9, Method: Compositional matrix adjust.
+ Identities = 19/70 (27%), Positives = 35/70 (50%), Gaps = 2/70 (3%)
+ Frame = +2
+
+Query  4227302  TKYVNEVSICKNHQTFKLKTQST--ISGLKFEFFHSNQPFSLSYSNFHTSVSLFSNSKTT  4227475
+                T  +   +ICK  Q +   + +T  I+ L  ++F  +Q  ++S+SN++TS+   S    T
+Sbjct  9        TALLLTTTICKPKQLWPTTSINTFGIALLSLQWFKPSQELTMSFSNYYTSIDYISAPLLT  68
+
+Query  4227476  NQRHITNLFF  4227505
+                    +T L  
+Sbjct  69       LSCWLTPLMI  78
+
+
+>lcl|NC_023890.1_prot_YP_009022049.1_6 [gene=ATP6] [db_xref=GeneID:18982999] 
+[protein=ATP synthase F0 subunit 6] [protein_id=YP_009022049.1] 
+[location=8002..8685] [gbkey=CDS]
+Length=227
+
+ Score = 31.2 bits (69),  Expect = 4.1, Method: Compositional matrix adjust.
+ Identities = 15/39 (38%), Positives = 22/39 (56%), Gaps = 2/39 (5%)
+ Frame = -2
+
+Query  13288473  GFGVRAAANIKAGELVCEYTGDVT--LLPTSDPVASSST  13288363
+                   GVR  AN+ AG L+ + T   T  LLPT   +++ +T
+Sbjct  156       ALGVRLTANLTAGHLLIQLTSTATLSLLPTMLTLSAMTT  194
+
+
+>lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:18983001] 
+[protein=NADH dehydrogenase subunit 3] [transl_except=(pos:349..349,aa:TERM)] 
+[protein_id=YP_009022051.1] 
+[location=join(9538..9711,9713..9887)] [gbkey=CDS]
+Length=116
+
+ Score = 30.0 bits (66),  Expect = 4.5, Method: Compositional matrix adjust.
+ Identities = 19/54 (35%), Positives = 30/54 (56%), Gaps = 11/54 (20%)
+ Frame = -2
+
+Query  4838823  YVIILHPITSSLIPYLFGM-PLQTIVIPF----------YLLFILKISLTIPLP  4838695
+                ++ ++ P T  L PY  G  PL++  +PF          +LLF L+I+L +PLP
+Sbjct  24       WLTLMKPDTEKLSPYECGFDPLESARLPFSIRFFLVAILFLLFDLEIALLLPLP  77
+
+
+>lcl|NC_023890.1_prot_YP_009022052.1_9 [gene=ND4L] [db_xref=GeneID:18983002] 
+[protein=NADH dehydrogenase subunit 4L] [protein_id=YP_009022052.1] 
+[location=9958..10254] [gbkey=CDS]
+Length=98
+
+ Score = 29.3 bits (64),  Expect = 6.0, Method: Compositional matrix adjust.
+ Identities = 16/36 (44%), Positives = 21/36 (58%), Gaps = 2/36 (6%)
+ Frame = +2
+
+Query  4116659  KLIAKLTRYPANLQSSH--LTPLLSLSFCSCHCFMG  4116760
+                 L   L+ +P  LQ+S   LTP+L LSF +C   MG
+Sbjct  39       SLYIALSMWPIQLQTSSFMLTPMLMLSFSACEAGMG  74
+
+
+>lcl|NC_023890.1_prot_YP_009022054.1_11 [gene=ND5] [db_xref=GeneID:18983004] 
+[protein=NADH dehydrogenase subunit 5] [protein_id=YP_009022054.1] 
+[location=11836..13644] [gbkey=CDS]
+Length=602
+
+ Score = 30.8 bits (68),  Expect = 7.9, Method: Compositional matrix adjust.
+ Identities = 20/67 (30%), Positives = 34/67 (51%), Gaps = 1/67 (1%)
+ Frame = +3
+
+Query  4518624  FMCSQKAGKHSFLLI*FWKSTEKYLKK-IIYIYFSFVGNICFFVIFKNFKLTANTHKSSH  4518800
+                F+  +  G  SFLLI +W+  E+ L   ++ I ++ +G+   F+    F   AN+     
+Sbjct  138      FIGWEGVGVMSFLLIGWWRGREETLSSALMAIIYNRIGDFGLFISMTWFMTNANSLGWHL  197
+
+Query  4518801  ILENLVT  4518821
+                 L+NL T
+Sbjct  198      PLDNLPT  204
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 10787860172
+
+
+Query= NC_003282.8 Caenorhabditis elegans chromosome IV
+
+Length=17493829
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:...  32.3    0.73 
+
+
+>lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:18983001] 
+[protein=NADH dehydrogenase subunit 3] [transl_except=(pos:349..349,aa:TERM)] 
+[protein_id=YP_009022051.1] 
+[location=join(9538..9711,9713..9887)] [gbkey=CDS]
+Length=116
+
+ Score = 32.3 bits (72),  Expect = 0.73, Method: Compositional matrix adjust.
+ Identities = 20/54 (37%), Positives = 31/54 (57%), Gaps = 11/54 (20%)
+ Frame = +1
+
+Query  15558115  YVTILHPITSSLIPYLSGM-PLQTIVIPF----------YLLFILKISLTIPLP  15558243
+                 ++T++ P T  L PY  G  PL++  +PF          +LLF L+I+L +PLP
+Sbjct  24        WLTLMKPDTEKLSPYECGFDPLESARLPFSIRFFLVAILFLLFDLEIALLLPLP  77
+
+
+ Score = 31.6 bits (70),  Expect = 1.5, Method: Compositional matrix adjust.
+ Identities = 20/54 (37%), Positives = 31/54 (57%), Gaps = 11/54 (20%)
+ Frame = +2
+
+Query  16122248  YVTILHPITSSLIPYLFGM-PLQTIVIPF----------YLLFILKISLTIPLP  16122376
+                 ++T++ P T  L PY  G  PL++  +PF          +LLF L+I+L +PLP
+Sbjct  24        WLTLMKPDTEKLSPYECGFDPLESARLPFSIRFFLVAILFLLFDLEIALLLPLP  77
+
+
+ Score = 30.0 bits (66),  Expect = 4.9, Method: Compositional matrix adjust.
+ Identities = 19/54 (35%), Positives = 31/54 (57%), Gaps = 11/54 (20%)
+ Frame = -1
+
+Query  16638580  YVTILHPITSSLIPFLFG-MPLQTIVIPF----------YLLFILKISLTIPLP  16638452
+                 ++T++ P T  L P+  G  PL++  +PF          +LLF L+I+L +PLP
+Sbjct  24        WLTLMKPDTEKLSPYECGFDPLESARLPFSIRFFLVAILFLLFDLEIALLLPLP  77
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 13539960486
+
+
+Query= NC_003283.11 Caenorhabditis elegans chromosome V
+
+Length=20924180
+
+
+***** No hits found *****
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 16104379108
+
+
+Query= NC_003284.9 Caenorhabditis elegans chromosome X
+
+Length=17718942
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_023890.1_prot_YP_009022050.1_7 [gene=COX3] [db_xref=GeneID...  31.2    5.9  
+lcl|NC_023890.1_prot_YP_009022046.1_3 [gene=COX1] [db_xref=GeneID...  30.8    9.9  
+
+
+>lcl|NC_023890.1_prot_YP_009022050.1_7 [gene=COX3] [db_xref=GeneID:18983000] 
+[protein=cytochrome c oxidase subunit III] [transl_except=(pos:784..784,aa:TERM)] 
+[protein_id=YP_009022050.1] 
+[location=8685..9468] [gbkey=CDS]
+Length=261
+
+ Score = 31.2 bits (69),  Expect = 5.9, Method: Compositional matrix adjust.
+ Identities = 24/84 (29%), Positives = 38/84 (45%), Gaps = 5/84 (6%)
+ Frame = +3
+
+Query  6441252  EPVP--NNCWIPPGIVCRSGFQIICRKYSLILF--VHYTRFLHCL-HINANQTLQMKSLT  6441416
+                 P P    CW P GI   + F++     +++L   V  T   H L   N NQT+Q  +LT
+Sbjct  107      APTPELGGCWPPTGITPLNPFEVPLLNTAVLLASGVTITWAHHSLMETNRNQTIQALTLT  166
+
+Query  6441417  VLDNQFVFLSSCFEFCDYPLMISE  6441488
+                +L   +       E+ + P  I++
+Sbjct  167      ILLGLYFTSLQAMEYYEAPFTITD  190
+
+
+>lcl|NC_023890.1_prot_YP_009022046.1_3 [gene=COX1] [db_xref=GeneID:18982996] 
+[protein=cytochrome c oxidase subunit I] [protein_id=YP_009022046.1] 
+[location=5402..6949] [gbkey=CDS]
+Length=515
+
+ Score = 30.8 bits (68),  Expect = 9.9, Method: Compositional matrix adjust.
+ Identities = 16/48 (33%), Positives = 22/48 (46%), Gaps = 0/48 (0%)
+ Frame = +1
+
+Query  1776601  IFPPTFFSRNQSDSCRNHFIFQVWPLLFVSPSSMELTKKKRQPVDLPG  1776744
+                IF   FFS N  D    +FIF  W  +  +  S+ +  +  QP  L G
+Sbjct  2        IFTRWFFSTNHKDIGTLYFIFGAWAGMVGTALSLLIRAELSQPGTLLG  49
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 13714198722
+
+
+Query= NC_001328.1 Caenorhabditis elegans mitochondrion, complete genome
+
+Length=13794
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_023890.1_prot_YP_009022046.1_3 [gene=COX1] [db_xref=GeneID...  462     4e-148
+lcl|NC_023890.1_prot_YP_009022056.1_13 [gene=CYTB] [db_xref=GeneI...  214     4e-64 
+lcl|NC_023890.1_prot_YP_009022047.1_4 [gene=COX2] [db_xref=GeneID...  155     1e-45 
+lcl|NC_023890.1_prot_YP_009022050.1_7 [gene=COX3] [db_xref=GeneID...  145     1e-41 
+lcl|NC_023890.1_prot_YP_009022054.1_11 [gene=ND5] [db_xref=GeneID...  139     9e-37 
+lcl|NC_023890.1_prot_YP_009022044.1_1 [gene=ND1] [db_xref=GeneID:...  106     1e-27 
+lcl|NC_023890.1_prot_YP_009022053.1_10 [gene=ND4] [db_xref=GeneID...  93.2    2e-22 
+lcl|NC_023890.1_prot_YP_009022049.1_6 [gene=ATP6] [db_xref=GeneID...  56.6    2e-11 
+lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:...  40.0    1e-06 
+lcl|NC_023890.1_prot_YP_009022045.1_2 [gene=ND2] [db_xref=GeneID:...  30.4    0.010 
+
+
+>lcl|NC_023890.1_prot_YP_009022046.1_3 [gene=COX1] [db_xref=GeneID:18982996] 
+[protein=cytochrome c oxidase subunit I] [protein_id=YP_009022046.1] 
+[location=5402..6949] [gbkey=CDS]
+Length=515
+
+ Score = 462 bits (1189),  Expect = 4e-148, Method: Compositional matrix adjust.
+ Identities = 279/507 (55%), Positives = 368/507 (73%), Gaps = 1/507 (0%)
+ Frame = +3
+
+Query  7893  RSNHKDIGTLYFIFGL*SGMVGTRFSLLIRLELAKPGFFLRNGQLYNSVITAHAILIIFF  8072
+              +NHKDIGTLYFIFG  +GMVGT  SLLIR EL++PG  L + Q+YN ++TAHA ++IFF
+Sbjct  9     STNHKDIGTLYFIFGAWAGMVGTALSLLIRAELSQPGTLLGDDQIYNVIVTAHAFIMIFF  68
+
+Query  8073  MVIPTIIGGFGN*LLPLMLGAPDIRFPRLNNLRFWLLPTSILLILDACFVDIGCGTR*TV  8252
+             MV+P +IGGFGN L+P+M+GAPD+ FPR+NN+ FWLLP S+LL+L +  ++ G GT  TV
+Sbjct  69    MVMPIMIGGFGNWLVPMMIGAPDMAFPRMNNMSFWLLPPSLLLLLASSGIEAGAGTGWTV  128
+
+Query  8253  YPPLR-TMGHPGSRVDLAIFSLHAAGLRSILGGINFMCTTKNLRRSSISLEHItlfv*tv  8429
+             YPPL   + H G+ VDL IFSLH AG+ SILG INF+ T  N++  ++S     LFV +V
+Sbjct  129   YPPLAGNLAHAGASVDLTIFSLHLAGVSSILGAINFITTAINMKSPAMSQYQTPLFVWSV  188
+
+Query  8430  fvtvfllvlslpvlAGAITMLLTDRNLNTSFFDPRTGGNPLIYQHLF*FFGHPEVYILIL  8609
+              +T  LL+LSLPVLA  ITMLLTDRNLNT+FFDP  GG+P++YQHLF FFGHPEVYILIL
+Sbjct  189   LITAVLLLLSLPVLAAGITMLLTDRNLNTTFFDPSGGGDPILYQHLFWFFGHPEVYILIL  248
+
+Query  8610  PAFGIVRQSTLYLTGKKEVFGALGIVYAILRIGLIGCVV*AHHMYTVGIDLDSRAYFSAA  8789
+             P FG++     Y  GKKE FG +G+V+A++ IG +G +V AHHM+TVG+D+D+RAYF++A
+Sbjct  249   PGFGMISHVVTYYAGKKEPFGYMGMVWAMMSIGFLGFIVWAHHMFTVGMDVDTRAYFTSA  308
+
+Query  8790  TIVIAVPTGVKVFR*LATLFGIKMVFNPlll*vlgfiflftlggltgvvlSNSRLDIILH  8969
+             T++IA+PTGVKVF  LATL G  + ++  +L  LGFIFLFT+GGLTG+VL+NS LDI+LH
+Sbjct  309   TMIIAIPTGVKVFSWLATLHGGMVKWDAAMLWALGFIFLFTVGGLTGIVLANSSLDIVLH  368
+
+Query  8970  DTYYVVRHFHYVLSLGAVFGIFTGVTL**RFITGYVLDKLMISAVFILLFIGVNLTFFPL  9149
+             DTYYVV HFHYVLS+GAVF I  G T      TGY L +      F ++F GVN+TFFP 
+Sbjct  369   DTYYVVAHFHYVLSMGAVFAIMAGFTHWFPLFTGYSLHQTWAKVHFGVMFAGVNMTFFPQ  428
+
+Query  9150  HFAGLHGFPRKYLDYPDVYSV*NIIASYGSIIRTAGLFLFIYVLLESFFSYRLVIRDYYS  9329
+             HF GL G PR+Y DYPD Y++ N I+S GS+I    + + ++++ E+F S R V++   +
+Sbjct  429   HFLGLAGMPRRYSDYPDAYTLWNSISSIGSLISLVAVIMMMFIIWEAFSSKRKVMKVELT  488
+
+Query  9330  NRRPEYCMSNYVFGHSYQSEIYFRTTR  9410
+                 E+        H+Y+   + +T  
+Sbjct  489   TTNVEWIHGCPPPHHTYEEPAHVQTQE  515
+
+
+>lcl|NC_023890.1_prot_YP_009022056.1_13 [gene=CYTB] [db_xref=GeneID:18983006] 
+[protein=cytochrome b] [protein_id=YP_009022056.1] 
+[location=14403..15542] [gbkey=CDS]
+Length=379
+
+ Score = 214 bits (546),  Expect = 4e-64, Method: Compositional matrix adjust.
+ Identities = 147/378 (39%), Positives = 221/378 (58%), Gaps = 10/378 (3%)
+ Frame = +1
+
+Query  4504  LKINNR----LLNFVNGMLVTLPSRKTLTLR*NFGSILGIVLIFQILTGTFLAFYYTPDR  4671
+             + +N+R    L   +N   + LPS   ++   NFGS+LG  LI Q +TG FLA +Y+P+ 
+Sbjct  1     MTMNHRKTHPLTKIINNSFIDLPSPSNISAWWNFGSLLGTCLILQTITGIFLAMHYSPNI  60
+
+Query  4672  LIAFSTVQYIMYEVNFG*VFRIFHFNGARLFFIFLYLHIFKGLFFIRYRLKKV*MSGLTI  4851
+              +AFS+V +I  +V +G + R  H NGA LFF+ +YLHI +GL++  Y  K+   +G+ +
+Sbjct  61    SLAFSSVAHITRDVQYGWLIRNMHANGASLFFMCIYLHIGRGLYYGSYLYKETWNTGIIL  120
+
+Query  4852  YLLVIIEAFIGYVLV*AQIRF*AAVVITRLLRvipi*gptivt*i*RGFGVTGATLKFFF  5031
+              LL +  AF+GYVL   Q+ F  A VIT LL  IP  G T+V  I  GF V  ATL  FF
+Sbjct  121   LLLTMATAFMGYVLPWGQMSFWGATVITNLLSAIPFIGNTLVQWIWGGFSVDNATLTRFF  180
+
+Query  5032  VLHFLLP*AILVIVLGHLIFLHRTGRTSRLYCHGDYDKVCFRPEYLGKDAYNivi*llfi  5211
+              LHFLLP  I+ + + HL+FLH TG  +    + + DK+ F P +  KD   +++ L  +
+Sbjct  181   TLHFLLPFTIMGLTMVHLLFLHETGSNNPTGLNSNTDKIPFHPYFSYKDLLGVILMLTLL  240
+
+Query  5212  vlrliYPFN-LGDAEMFIEADPIMRPVHIVPE*YFLFAYAILRAIPNKVLGVIALLIRIV  5388
+             +   ++  N LGD + F  A+P+  P HI PE YFLFAYAILR++PNK+ GV+ALL+ I+
+Sbjct  241   LTLTLFSPNLLGDPDNFTPANPLSTPPHIKPEWYFLFAYAILRSVPNKLGGVLALLLSIL  300
+
+Query  5389  TFYFFALVNNYTSCLTK---LNKFLVFIFIISSTILR*LGQCTVEDPFTILRPLFSFIYF  5559
+               +    ++      T+   L + L + FI +  +L  +G   VE+PF  +  + S +YF
+Sbjct  301   VLFLMPALHTSKQRTTQFRPLTQTLFWSFIANLLVLTWIGGQPVENPFITIGQVASILYF  360
+
+Query  5560  GLAYLILFI--FIRSKLL  5607
+                 +++ I   I +K+L
+Sbjct  361   STLLILIPIAGVIENKML  378
+
+
+>lcl|NC_023890.1_prot_YP_009022047.1_4 [gene=COX2] [db_xref=GeneID:18982997] 
+[protein=cytochrome c oxidase subunit II] [protein_id=YP_009022047.1] 
+[location=7084..7770] [gbkey=CDS]
+Length=228
+
+ Score = 155 bits (393),  Expect = 1e-45, Method: Compositional matrix adjust.
+ Identities = 79/164 (48%), Positives = 107/164 (65%), Gaps = 1/164 (1%)
+ Frame = +1
+
+Query  9829   QFGELLCSIFPTIILLIQIVPSLRLLYYYGLINLDRNLTVKVTGHQ*Y*RYEYRDIPGLE  10008
+              Q  E++ +I P I+L+   +PSLR+LY    IN + +LT+K  GHQ Y  YEY D   LE
+Sbjct  59     QEVEMIWTILPAIVLITIALPSLRVLYLMDEIN-NPHLTIKAMGHQWYWTYEYTDYENLE  117
+
+Query  10009  FDSYIKSLDQLSLGEPRLLEVDNRCVIPCDTNIRFCITSADVIHAWALNSLSVKLDAIRG  10188
+              FDSY+     L  G  RLLEVD+R V+P ++ IR  +++ DV+H+WA+ SL VK DA+ G
+Sbjct  118    FDSYMTPTKTLPNGHFRLLEVDHRMVMPMESPIRMLVSAEDVLHSWAVPSLGVKTDAVPG  177
+
+Query  10189  ILRTFSYRFPIVGVFYGQCSEICGANHSFIPIALEVTLLDNFKR  10320
+               L   ++     GVFYGQCSEICGANHSF+PI +E   L +F+ 
+Sbjct  178    RLNQATFIVTRPGVFYGQCSEICGANHSFMPIVIESVPLWHFEN  221
+
+
+>lcl|NC_023890.1_prot_YP_009022050.1_7 [gene=COX3] [db_xref=GeneID:18983000] 
+[protein=cytochrome c oxidase subunit III] [transl_except=(pos:784..784,aa:TERM)] 
+[protein_id=YP_009022050.1] 
+[location=8685..9468] [gbkey=CDS]
+Length=261
+
+ Score = 145 bits (366),  Expect = 1e-41, Method: Compositional matrix adjust.
+ Identities = 95/238 (40%), Positives = 134/238 (56%), Gaps = 3/238 (1%)
+ Frame = +2
+
+Query  5684  HNFHILRLSRYAYNLFFASAGMLRSLVIFFKFGLYELFIFTLFSVLFISFA*GKDIAIEG  5863
+             H +H++  S +      A+  M   L ++F +    L    L ++L   F   +D+  EG
+Sbjct  6     HAYHMVDPSPWPLTGAAAALLMTSGLAMWFHYNSTLLMALGLLTMLLTMFQWWRDVVREG  65
+
+Query  5864  -LRGYHNFFVIDGFKFGVilfvfrefifffcif*tffDAALVPVHELGET*SPFGMHLVN  6040
+               +G+H   V    ++G+ILF+  E  FF   F  F+ ++L P  ELG    P G+  +N
+Sbjct  66    TFQGHHTPPVQKSLRYGMILFITSEVFFFIGFFWAFYHSSLAPTPELGGCWPPTGITPLN  125
+
+Query  6041  PFGVPLLNTIILLRSGVTVT*AHHRLLRNKR--CTNSIILTCLLAAYFTGIQLIEYIEAR  6214
+             PF VPLLNT +LL SGVT+T AHH L+   R     ++ LT LL  YFT +Q +EY EA 
+Sbjct  126   PFEVPLLNTAVLLASGVTITWAHHSLMETNRNQTIQALTLTILLGLYFTSLQAMEYYEAP  185
+
+Query  6215  FSIADGVFGRIFYLSTGFHGIHVLCGGLFLAFNFLRLLKNHFNYNHHLGLEFAILY*H  6388
+             F+I DGV+G  F+++TGFHG+HV+ G +FL    LR +K HF   HH G E A  Y H
+Sbjct  186   FTITDGVYGSTFFIATGFHGLHVIIGSMFLIVCLLRQIKFHFTSTHHFGFEAAAWYWH  243
+
+
+>lcl|NC_023890.1_prot_YP_009022054.1_11 [gene=ND5] [db_xref=GeneID:18983004] 
+[protein=NADH dehydrogenase subunit 5] [protein_id=YP_009022054.1] 
+[location=11836..13644] [gbkey=CDS]
+Length=602
+
+ Score = 139 bits (350),  Expect = 9e-37, Method: Compositional matrix adjust.
+ Identities = 109/346 (32%), Positives = 182/346 (53%), Gaps = 19/346 (5%)
+ Frame = +3
+
+Query  11778  FFLE*DFLRLKFNFYFNRILFSFILFLVTFRVLVFSTYYLNSELNFNYYYFVLLIFVGRM  11957
+              FF+E   L L  + Y   ++F  +   VT+ +L +S +Y+  +   + ++  LLIF+  M
+Sbjct  71     FFIE---LNLIHDMY--ALIFMPVALYVTWAILEYSRWYMMEDPYAHKFFKYLLIFLVAM  125
+
+Query  11958  FRLNFRNSIFTMLLR*DLLGISRFFLVLFYNN*DRC-RGAINTALTNRLGDYFIFV---F  12125
+                L   N++F   +  + +G+  F L+ ++   +     A+   + NR+GD+ +F+   +
+Sbjct  126    MILITANNLFQFFIGWEGVGVMSFLLIGWWRGREETLSSALMAIIYNRIGDFGLFISMTW  185
+
+Query  12126  FGLSVFRGYYFLRFRIFRSYISLLL--LLTAFTKRAQFPFRSWLPKAIRAPTPVRSLVHS  12299
+              F  +     + L      + ++ LL  +L A  K AQF    WLP A+  PTPV +L+HS
+Sbjct  186    FMTNANSLGWHLPLDNLPTPLTPLLGFILAATGKSAQFGLHPWLPAAMEGPTPVSALLHS  245
+
+Query  12300  RTLVTAGlillinfnnlviQKD-FISFVLIIGLFTIFFSSLASLVEEDLKKVVALRTLSQ  12476
+               T+V AG+ LLI  + L+   +  +S  L +G  T FF+SL +L + DLKK++A  T SQ
+Sbjct  246    STMVVAGIFLLIRVHPLLASNNTALSICLCLGAITTFFASLCALPQNDLKKIIAYSTSSQ  305
+
+Query  12477  IGFSIVTLGLGLRFISFIHLVRHALFKRCLFIQVGYIIHCSFGQQDGRNYRNNGNLPNFI  12656
+              +G  +VT+GL    ++F+H+  HA FK  LF+  G+IIH    +QD    RN G L   +
+Sbjct  306    LGLMMVTIGLNQPNLAFLHICMHAFFKAMLFMCAGFIIHSLSNEQD---IRNMGGLYKPL  362
+
+Query  12657  QLQ---ILVTLFCLCGLIFSRGAVRKDFILELFFSNNYIMFFRLIF  12785
+               +    + +    L G+ F  G   KD I+E   S +Y+  + L+ 
+Sbjct  363    PITSAFMTIGNMALMGMPFLTGYYSKDAIIET-MSTSYLNTWALLM  407
+
+
+ Score = 23.9 bits (50),  Expect = 1.1, Method: Compositional matrix adjust.
+ Identities = 8/29 (28%), Positives = 18/29 (62%), Gaps = 0/29 (0%)
+ Frame = +2
+
+Query  7205  SFCCVFQRDSKALAAYSSVTHIRFLLLSL  7291
+             S C + Q D K + AYS+ + +  +++++
+Sbjct  285   SLCALPQNDLKKIIAYSTSSQLGLMMVTI  313
+
+
+>lcl|NC_023890.1_prot_YP_009022044.1_1 [gene=ND1] [db_xref=GeneID:18983007] 
+[protein=NADH dehydrogenase subunit 1] [transl_except=(pos:970..971,aa:TERM)] 
+[protein_id=YP_009022044.1] 
+[location=2800..3770] [gbkey=CDS]
+Length=323
+
+ Score = 106 bits (264),  Expect = 1e-27, Method: Compositional matrix adjust.
+ Identities = 99/292 (34%), Positives = 149/292 (51%), Gaps = 22/292 (8%)
+ Frame = +2
+
+Query  1805  IVQRIAFITLYERHLLGRRQNRLGPTKVTFMGLAQALLDGVKLLKKEQITPLNSSEVSFL  1984
+             I+  +AF TL ER +LG  Q R GP  V   GL Q + DG+KL  KE I PLNSS   F+
+Sbjct  18    ILIAVAFFTLLERKVLGYMQLRKGPNIVGPYGLLQPVADGMKLFIKEPIRPLNSSTTLFM  77
+
+Query  1985  LVPGISFVVIYLE*FTLPYFFDFISFEYSVLFFLCLIGFSVYTTLISGIVRKSKYgiiga  2164
+             + P ++ ++       LP  F        +LF + +  F VY+ L SG    SKY ++GA
+Sbjct  78    MSPILALLLALSIWLPLPLPFPLADLNLGLLFLISMSSFMVYSILWSGWASNSKYALMGA  137
+
+Query  2165  irarrqriSYEIAFSLYVLCIIIHNNVFNFVS--------KFNlrlliiyipfliiviAE  2320
+             +RA  Q ISYE+   + +L + + +  FN  +                + + + I  +AE
+Sbjct  138   LRAVAQTISYEVTLGIILLSLTLLSGGFNLQTFMITQEPMYLMFSSWPLMMMWYISTLAE  197
+
+Query  2321  LNRAPFDFSEGERELVRGFNVEFARVAFVLLFLREYGRLIFFRVlssa------------  2464
+              NRAPFD +EGE ELV GFN+E++   F L FL EY  ++    L++             
+Sbjct  198   TNRAPFDLTEGESELVSGFNIEYSAGPFALFFLAEYANILMMNTLTTILFLNPARMNNTP  257
+
+Query  2465  -iffkfsifiafsifsllifirssYPRYRYDLIISLF*FKLLPISLIILCFY  2617
+              +F    +     + +  +++R+SYPR+RYD ++ L     LPI+L  LC +
+Sbjct  258   ELFSLSLMSKVMLLSAGFLWVRASYPRFRYDQLMHLLWKNFLPITL-ALCLW  308
+
+
+>lcl|NC_023890.1_prot_YP_009022053.1_10 [gene=ND4] [db_xref=GeneID:18983003] 
+[protein=NADH dehydrogenase subunit 4] [transl_except=(pos:1381..1381,aa:TERM)] 
+[protein_id=YP_009022053.1] 
+[location=10248..11628] [gbkey=CDS]
+Length=460
+
+ Score = 93.2 bits (230),  Expect = 2e-22, Method: Compositional matrix adjust.
+ Identities = 82/266 (31%), Positives = 142/266 (53%), Gaps = 14/266 (5%)
+ Frame = +2
+
+Query  6785  YMFFELSIFPILVIILGYGSQIEKINSSYYLIFYAAFCSFPFLFVYFK--------SNFL  6940
+             ++ FE ++ P L II  +G+Q+E++N+  Y +FY    S P L             S ++
+Sbjct  120   FIMFETTLIPTLAIITRWGNQVERLNAGTYFLFYTLIGSLPLLIALLSLQNQIGTLSTYM  179
+
+Query  6941  LVF---TYYNFVIS*EIFFILSLRFIIKFPIYFLHL*LPKAHVEAPttarillaglllkl  7111
+             +     T  N       +F L   F+IK P+Y LHL LPKAHVEAP    ++LA +LLKL
+Sbjct  180   IQLNQPTMLNTWAHTTWWFALLTAFMIKMPLYGLHLWLPKAHVEAPIAGSMILAAVLLKL  239
+
+Query  7112  gtagflRILGSLRFVHNNV*---iliaflgiilgSFCCVFQRDSKALAAYSSVTHIRFLL  7282
+             G  G +RI+ +L  +   +    +++A  G+I+    C+ Q D K+L AYSSV+H+  ++
+Sbjct  240   GGYGIIRIMPTLNPLSKTLSYPFMVLALWGVIMTGSICLRQTDLKSLIAYSSVSHMGLVI  299
+
+Query  7283  LSLVFITMSSKIRRVMLMLAHGYTSTLMFYLIGEFYHTsgrriiyfisrffrsriiigil  7462
+              + +  T  +    + LM+AHG TS+++F L    Y  +  R +           ++G+ 
+Sbjct  300   AATLTQTQWAYTGAITLMIAHGLTSSMLFCLANTNYERTHSRTLLLARNMQLLYPLMGLW  359
+
+Query  7463  fsVVFLSNRGVPPSLSFLSEFLVISN  7540
+             + +  L+N  +PP+++ + E  +I++
+Sbjct  360   WLLTSLANMAIPPTINLMGELTIIAS  385
+
+
+ Score = 27.3 bits (59),  Expect = 0.098, Method: Compositional matrix adjust.
+ Identities = 26/101 (26%), Positives = 47/101 (47%), Gaps = 3/101 (3%)
+ Frame = +3
+
+Query  12201  LLTAFT-KRAQFPFRSWLPKA-IRAPTPVRSLVHSRTLVTAGlillinfnnlviQKDFIS  12374
+              LLTAF  K   +    WLPKA + AP     ++ +  L   G  ++     L      +S
+Sbjct  200    LLTAFMIKMPLYGLHLWLPKAHVEAPIAGSMILAAVLLKLGGYGIIRIMPTLNPLSKTLS  259
+
+Query  12375  FV-LIIGLFTIFFSSLASLVEEDLKKVVALRTLSQIGFSIV  12494
+              +  +++ L+ +  +    L + DLK ++A  ++S +G  I 
+Sbjct  260    YPFMVLALWGVIMTGSICLRQTDLKSLIAYSSVSHMGLVIA  300
+
+
+>lcl|NC_023890.1_prot_YP_009022049.1_6 [gene=ATP6] [db_xref=GeneID:18982999] 
+[protein=ATP synthase F0 subunit 6] [protein_id=YP_009022049.1] 
+[location=8002..8685] [gbkey=CDS]
+Length=227
+
+ Score = 56.6 bits (135),  Expect = 2e-11, Method: Compositional matrix adjust.
+ Identities = 46/136 (34%), Positives = 67/136 (49%), Gaps = 10/136 (7%)
+ Frame = +3
+
+Query  2850  YSFCPCGMVEFTFVYAAVA*LSTLLTFISRE--KFSVYIRKPGDTYLKTLRMLLIEIVRE  3023
+             Y+F P   +      A    L+T+LT +  +  K   ++   G   L T  +++IE +  
+Sbjct  91    YTFTPTTQLSMNMGMAIPMWLATVLTGLRNQPTKSLGHLLPEGTPILLTPTLIIIETISL  150
+
+Query  3024  FSRPLALTVRLTVNITVGHLVRIMLYQGLELRIGDQYI*LSILA-------IIIECFVFF  3182
+             F RPLAL VRLT N+T GHL+ I L     L +    + LS +         I+E  V  
+Sbjct  151   FIRPLALGVRLTANLTAGHLL-IQLTSTATLSLLPTMLTLSAMTTVVLLSLTILELAVAM  209
+
+Query  3183  IQSYIFSRLIFLYLNE  3230
+             IQ+Y+F  L+ LYL E
+Sbjct  210   IQAYVFVLLLSLYLQE  225
+
+
+>lcl|NC_023890.1_prot_YP_009022051.1_8 [gene=ND3] [db_xref=GeneID:18983001] 
+[protein=NADH dehydrogenase subunit 3] [transl_except=(pos:349..349,aa:TERM)] 
+[protein_id=YP_009022051.1] 
+[location=join(9538..9711,9713..9887)] [gbkey=CDS]
+Length=116
+
+ Score = 40.0 bits (92),  Expect = 1e-06, Method: Composition-based stats.
+ Identities = 18/55 (33%), Positives = 32/55 (58%), Gaps = 0/55 (0%)
+ Frame = +1
+
+Query  11413  LINFLLRIKDIGKNKIRAFECGFVRVGKIQNSFRIHFFIMILIFVIFDLEIVMFL  11577
+              ++N  L +      K+  +ECGF  +   +  F I FF++ ++F++FDLEI + L
+Sbjct  20     VLNHWLTLMKPDTEKLSPYECGFDPLESARLPFSIRFFLVAILFLLFDLEIALLL  74
+
+
+>lcl|NC_023890.1_prot_YP_009022045.1_2 [gene=ND2] [db_xref=GeneID:18982995] 
+[protein=NADH dehydrogenase subunit 2] [transl_except=(pos:1039..1039,aa:TERM)] 
+[protein_id=YP_009022045.1] 
+[location=3981..5019] [gbkey=CDS]
+Length=346
+
+ Score = 30.4 bits (67),  Expect = 0.010, Method: Compositional matrix adjust.
+ Identities = 45/198 (23%), Positives = 84/198 (42%), Gaps = 25/198 (13%)
+ Frame = +3
+
+Query  12234  PFRSWLPKAIRAPTPVRSLVHSRTLVTAGlillinfnnlviQKDFISFVLIIGLFTIFFS  12413
+              PF  WLP+ ++  T + +L+    L T   +  ++   +  Q      +L +GL +    
+Sbjct  110    PFHFWLPEVLQGTTTMTALI----LTTWQKLAPLSLLVMTSQSLNTPLMLTLGLTSTLIG  165
+
+Query  12414  SLASLVEEDLKKVVALRTLSQIGF--SIVTLGLGLRFISF----IHLVRHALFKRCLFIQ  12575
+                  L +  L+K++A  +++ +G+  +I+TL   L  ++F    I      L  + L   
+Sbjct  166    GWYGLNQTQLRKIMASSSIAHLGWMTTILTLSPKLTLLTFYTYIIMTSTTFLMIKTLETN  225
+
+Query  12576  VGYIIHCSFGQQDGRNYRNNGNLPNFIQLQILVTLFCLCGLIFSRGAVRKDFIL-ELFFS  12752
+              +  ++  S+ +    N              +++TL  L GL    G   K  IL EL   
+Sbjct  226    MISVMMTSWTKLPTLNT------------MMMLTLMSLAGLPPLTGFTPKWLILQELTKQ  273
+
+Query  12753  NNYIM--FFRLIFFVSVF  12800
+              + +IM     LI  +S+F
+Sbjct  274    HMFIMAAAMALISLLSLF  291
+
+
+ Score = 21.2 bits (43),  Expect = 6.9, Method: Compositional matrix adjust.
+ Identities = 15/37 (41%), Positives = 19/37 (51%), Gaps = 4/37 (11%)
+ Frame = +2
+
+Query  7280  LLSLVFITMSSKIRRVMLMLAHGYTSTLMFYLIGEFY  7390
+             L  L  + M+S+     LML  G TST    LIG +Y
+Sbjct  136   LAPLSLLVMTSQSLNTPLMLTLGLTST----LIGGWY  168
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 13416106
+
+
+  Database: Ref_mitochondria_animal.fna
+    Posted date:  Nov 12, 2021  1:47 PM
+  Number of letters in database: 3,791
+  Number of sequences in database:  13
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 12
+Window for multiple hits: 40
