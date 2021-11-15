@@ -16,7 +16,7 @@ params.outdir = "results"
 
 // blastx parameters
 params.blast_db_fasta = '../../../c_picta_ref_mito.fna'
-
+params.blast_evalue = '1e-21'
 
 log.info("""
 NBIS
@@ -36,7 +36,7 @@ NBIS
 
  Blast parameters
      blast_db_fasta                 : ${params.blast_db_fasta}
-
+     params.blast_evalue            : ${params.blast_evalue}
  """)
 
 workflow {
@@ -106,7 +106,7 @@ process blastx {
     script:
     database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
     """
-    blastx -query $fasta_file -db ${database} -out ${fasta_file.baseName}_blast.tsv
+    blastx -query $fasta_file -db ${database} -evalue ${params.blast_evalue} -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
     """
 
 }
