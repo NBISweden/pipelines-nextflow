@@ -1,3 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-1	ff/79cbc9	18869	organelle_finder:makeblastdb (1)	CACHED	0	2021-11-12 14:47:42.752	3.8s	0ms	16.9%	3.1 MB	5.4 MB	114.5 KB	44.4 KB
-2	8f/1735d5	19265	organelle_finder:blastx (1)	COMPLETED	0	2021-11-12 15:00:25.632	11m 6s	11m 1s	97.8%	615.3 MB	647.1 MB	97 MB	27.4 KB

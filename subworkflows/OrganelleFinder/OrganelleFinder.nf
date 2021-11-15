@@ -11,11 +11,11 @@ Vendela, William and Viktor
 // Test of conflicts
 // Test by William
 
-params.genome = "../../../GCF_000002985.6_WBcel235_genomic.fna"
+params.genome = "../../../GCF_003254395.2_Amel_HAv3.1_genomic.fna"
 params.outdir = "results"
 
 // blastx parameters
-params.blast_db_fasta = '../../../Ref_mitochondria_animal.fna'
+params.blast_db_fasta = '../../../c_picta_ref_mito.fna'
 
 
 log.info("""
