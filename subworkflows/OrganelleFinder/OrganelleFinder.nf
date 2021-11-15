@@ -18,6 +18,9 @@ params.outdir = "results"
 params.blast_db_fasta = '../../../c_picta_ref_mito.fna'
 params.blast_evalue = '1e-21'
 
+// filter parameters
+params.bitscore = 200
+
 log.info("""
 NBIS
   _   _ ____ _____  _____
@@ -37,6 +40,9 @@ NBIS
  Blast parameters
      blast_db_fasta                 : ${params.blast_db_fasta}
      params.blast_evalue            : ${params.blast_evalue}
+
+ Filter parameters
+     params.bitscore                : ${params.bitscore}
  """)
 
 workflow {
@@ -63,8 +69,11 @@ workflow organelle_finder {
         makeblastdb.out.mix(blastdb.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
         blastx(genome,
             blastfiles)
+        filter(blastx.out.collect())
+        extract(genome,
+            filter.out.collect())
     emit:
-        blast_result = blastx.out.collect()
+        blast_result = extract.out.collect()
 }
 
 
@@ -92,8 +101,6 @@ process makeblastdb {
 
 process blastx {
 
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${fasta_file.baseName}_blast.tsv"
-
     label 'blast'
 
     input:
@@ -109,6 +116,53 @@ process blastx {
     blastx -query $fasta_file -db ${database} -evalue ${params.blast_evalue} -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
     """
 
+}
+
+process filter {
+
+    input:
+    path blast_file
+
+    output:
+    path "${blast_file.baseName}_filtered.tsv"
+
+    script:
+    """
+    awk '\$12>${params.bitscore} {print}' $blast_file | awk '{print \$1}' |sort|uniq -c > ${blast_file.baseName}_filtered.tsv
+    """    
+}
+
+process extract {
+
+    publishDir "${params.outdir}", mode: 'copy', pattern: "${blast_file.baseName}_mitochondria.fna"
+    publishDir "${params.outdir}", mode: 'copy', pattern: "${blast_file.baseName}_nuclear.fna"
+
+    input:
+    path assembly
+    path result_filtered
+
+    output:
+    path "${blast_file.baseName}_mitochondria.fna"
+    path "${blast_file.baseName}_nuclear.fna"
+
+    script: 
+    """
+    cp $assembly ${blast_file.baseName}_nuclear.fna
+    for line in (${result_filtered})
+    do
+        grep -n '>' $assembly > row_number
+        grep -A 1 \$line row_number > header_rows
+        grep -oP  '.*?(?=\:)' header_rows > numbers_file
+        start_index=\$(head -n 1 numbers_file)
+        next_index=\$(tail -n 1 numbers_file)
+        row_count=\$(((\$end_index-\$start_index)))
+        end_index=\$(((\$next_index-1)))
+        head -n \$index $assembly | tail -n \$z >> ${blast_file.baseName}_mitochondria.fna
+
+        sed -e '\$start_index, \$end_index' ${blast_file.baseName}_nuclear.fna > intermediate_file.fna
+        mv intermediate_file.fna ${blast_file.baseName}_nuclear.fna
+    done
+    """
 }
 
 
