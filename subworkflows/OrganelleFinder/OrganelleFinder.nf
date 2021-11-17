@@ -73,7 +73,7 @@ workflow organelle_finder {
         extract(genome,
             filter.out.collect())
     emit:
-        blast_result = extract.out.collect()
+        blast_result = extract.out[0]
 }
 
 
@@ -128,39 +128,44 @@ process filter {
 
     script:
     """
-    awk '\$12>${params.bitscore} {print}' $blast_file | awk '{print \$1}' |sort|uniq -c > ${blast_file.baseName}_filtered.tsv
+    awk '\$12>${params.bitscore} {print}' $blast_file | awk '{print \$1}' |sort|uniq -c | awk '{print \$2}'> ${blast_file.baseName}_filtered.tsv
     """    
 }
 
 process extract {
 
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${blast_file.baseName}_mitochondria.fna"
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${blast_file.baseName}_nuclear.fna"
+    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_mitochondria.fna"
+    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_nuclear.fna"
 
     input:
     path assembly
     path result_filtered
 
     output:
-    path "${blast_file.baseName}_mitochondria.fna"
-    path "${blast_file.baseName}_nuclear.fna"
+    path "${assembly.baseName}_mitochondria.fna"
+    path "${assembly.baseName}_nuclear.fna"
 
     script: 
     """
-    cp $assembly ${blast_file.baseName}_nuclear.fna
-    for line in (${result_filtered})
+    cp $assembly ${assembly.baseName}_nuclear.fna
+    LINES=\$(cat $result_filtered)
+    for line in \$LINES
     do
-        grep -n '>' $assembly > row_number
+        grep -n '>' ${assembly.baseName}_nuclear.fna > row_number
         grep -A 1 \$line row_number > header_rows
-        grep -oP  '.*?(?=\:)' header_rows > numbers_file
+        grep -oP  '.*?(?=:)' header_rows > numbers_file
         start_index=\$(head -n 1 numbers_file)
         next_index=\$(tail -n 1 numbers_file)
-        row_count=\$(((\$end_index-\$start_index)))
+        if [ \$(wc -l numbers_file | awk '{print \$1}') -eq 1 ]
+        then
+            end_of_file=\$(wc -l ${assembly.baseName}_nuclear.fna | awk '{print \$1}')
+            next_index=\$(((\$end_of_file+1)))
+        fi
+        row_count=\$(((\$next_index-\$start_index)))
         end_index=\$(((\$next_index-1)))
-        head -n \$index $assembly | tail -n \$z >> ${blast_file.baseName}_mitochondria.fna
-
-        sed -e '\$start_index, \$end_index' ${blast_file.baseName}_nuclear.fna > intermediate_file.fna
-        mv intermediate_file.fna ${blast_file.baseName}_nuclear.fna
+        head -n \$end_index ${assembly.baseName}_nuclear.fna | tail -n \$row_count >> ${assembly.baseName}_mitochondria.fna
+        sed -e \$start_index,\$end_index\\d ${assembly.baseName}_nuclear.fna > intermediate_file.fna
+        mv intermediate_file.fna ${assembly.baseName}_nuclear.fna
     done
     """
 }
