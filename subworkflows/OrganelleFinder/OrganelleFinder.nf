@@ -19,6 +19,7 @@ params.blast_db_fasta = '../../../c_picta_ref_mito.fna'
 params.blast_evalue = '1e-21'
 
 // filter parameters
+params.max_row_length = 300
 params.bitscore = 200
 
 log.info("""
@@ -42,6 +43,7 @@ NBIS
      params.blast_evalue            : ${params.blast_evalue}
 
  Filter parameters
+     params.max_row_length          : ${params.max_row_length}
      params.bitscore                : ${params.bitscore}
  """)
 
@@ -65,18 +67,49 @@ workflow organelle_finder {
         blastdb
 
     main:
+        filter_size(genome)
         makeblastdb(blastdb,blastdb.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         makeblastdb.out.mix(blastdb.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
-        blastx(genome,
+        blastx(filter_size.out.collect(),
             blastfiles)
-        filter(blastx.out.collect())
+        filter_bitscore(blastx.out.collect())
         extract(genome,
-            filter.out.collect())
+            filter_bitscore.out.collect())
     emit:
         blast_result = extract.out[0]
 }
 
+process filter_size {
 
+    input:
+    path genome
+
+    output:
+    path "${genome.baseName}_sizeFilter.fna"
+
+    script:
+    """
+    grep '>' -n $genome | grep -oP  '.*?(?=:)' > row_number_file
+    LINES=\$(cat row_number_file)
+    for line in \$LINES
+    do
+        grep -A 1 \$line row_number_file > sequence_span
+        start_index=\$(head -n 1 sequence_span)
+        next_index=\$(tail -n 1 sequence_span)
+        if [ \$(wc -l sequence_span | awk '{print \$1}') -eq 1 ]
+        then
+            end_of_file=\$(wc -l $genome | awk '{print \$1}')
+            next_index=\$(((\$end_of_file+1)))
+        fi
+        row_count=\$(((\$next_index-\$start_index)))
+        if [ ${params.max_row_length} -gt \$row_count ]
+        then
+            end_index=\$(((\$next_index-1)))
+            head -n \$end_index $genome | tail -n \$row_count >> ${genome.baseName}_sizeFilter.fna
+        fi
+    done
+    """
+}
 
 process makeblastdb {
 
@@ -118,7 +151,7 @@ process blastx {
 
 }
 
-process filter {
+process filter_bitscore {
 
     input:
     path blast_file
