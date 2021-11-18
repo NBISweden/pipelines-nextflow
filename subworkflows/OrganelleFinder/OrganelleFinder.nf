@@ -14,13 +14,13 @@ Vendela, William and Viktor
 params.genome = "../../../GCF_003254395.2_Amel_HAv3.1_genomic.fna"
 params.outdir = "results"
 
-// blastx parameters
-params.blast_db_fasta = '../../../c_picta_ref_mito.fna'
+// tblastn parameters
+params.reference_fasta = '../../../c_picta_ref_mito.fna'
 params.blast_evalue = '1e-21'
 
 // filter parameters
-params.max_row_length = 300
-params.bitscore = 200
+params.bitscore = 150
+params.significant_gene_matches = 3
 
 log.info("""
 NBIS
@@ -30,21 +30,17 @@ NBIS
  | . ` |  _ < | |  \\___ \\
  | |\\  | |_) || |_ ____) |
  |_| \\_|____/_____|_____/  Annotation Service
-
  Functional annotation workflow
  ===================================
-
  General parameters
      genome                         : ${params.genome}
      outdir                         : ${params.outdir}
-
  Blast parameters
-     blast_db_fasta                 : ${params.blast_db_fasta}
+     reference_fasta                 : ${params.reference_fasta}
      params.blast_evalue            : ${params.blast_evalue}
-
  Filter parameters
-     params.max_row_length          : ${params.max_row_length}
      params.bitscore                : ${params.bitscore}
+     params.significant_gene_matches: ${params.significant_gene_matches}
  """)
 
 workflow {
@@ -52,63 +48,31 @@ workflow {
     main:
         Channel.fromPath(params.genome, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
-            .set {genome}
-        Channel.fromPath(params.blast_db_fasta, checkIfExists: true)
-            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.blast_db_fasta}!\n" }
-            .set {blastdb}
-        organelle_finder(genome,blastdb)
+            .set {genome_assembly}
+        Channel.fromPath(params.reference_fasta, checkIfExists: true)
+            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_fasta}!\n" }
+            .set {reference_organelle}
+        organelle_finder(genome_assembly,reference_organelle)
 
 }
 
 workflow organelle_finder {
 
     take:
-        genome
-        blastdb
+        genome_assembly
+        reference_organelle
 
     main:
-        filter_size(genome)
-        makeblastdb(blastdb,blastdb.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
-        makeblastdb.out.mix(blastdb.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
-        blastx(filter_size.out.collect(),
+        makeblastdb(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
+        makeblastdb.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
+        tblastn(reference_organelle,
             blastfiles)
-        filter_bitscore(blastx.out.collect())
-        extract(genome,
-            filter_bitscore.out.collect())
+        filter_bitscore(tblastn.out.collect())
+        statistics(filter_bitscore.out.statistics, filter_bitscore.out.accessions)
+        extract(genome_assembly,
+            filter_bitscore.out.accessions)
     emit:
         blast_result = extract.out[0]
-}
-
-process filter_size {
-
-    input:
-    path genome
-
-    output:
-    path "${genome.baseName}_sizeFilter.fna"
-
-    script:
-    """
-    grep '>' -n $genome | grep -oP  '.*?(?=:)' > row_number_file
-    LINES=\$(cat row_number_file)
-    for line in \$LINES
-    do
-        grep -A 1 \$line row_number_file > sequence_span
-        start_index=\$(head -n 1 sequence_span)
-        next_index=\$(tail -n 1 sequence_span)
-        if [ \$(wc -l sequence_span | awk '{print \$1}') -eq 1 ]
-        then
-            end_of_file=\$(wc -l $genome | awk '{print \$1}')
-            next_index=\$(((\$end_of_file+1)))
-        fi
-        row_count=\$(((\$next_index-\$start_index)))
-        if [ ${params.max_row_length} -gt \$row_count ]
-        then
-            end_index=\$(((\$next_index-1)))
-            head -n \$end_index $genome | tail -n \$row_count >> ${genome.baseName}_sizeFilter.fna
-        fi
-    done
-    """
 }
 
 process makeblastdb {
@@ -116,7 +80,7 @@ process makeblastdb {
     label 'blast'
 
     input:
-    path reference
+    path genome
     val state
 
     output:
@@ -127,26 +91,26 @@ process makeblastdb {
 
     script:
     """
-    makeblastdb -in $reference -dbtype prot
+    makeblastdb -in $genome -dbtype nucl
     """
 
 }
 
-process blastx {
+process tblastn {
 
     label 'blast'
 
     input:
-    path fasta_file
+    path reference_organelle
     path blastdb
 
     output:
-    path "${fasta_file.baseName}_blast.tsv"
+    path "output_blast.tsv"
 
     script:
     database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
     """
-    blastx -query $fasta_file -db ${database} -evalue ${params.blast_evalue} -outfmt 6 -out ${fasta_file.baseName}_blast.tsv
+    tblastn -query $reference_organelle -db ${database} -evalue ${params.blast_evalue} -outfmt 6 -out output_blast.tsv
     """
 
 }
@@ -157,12 +121,36 @@ process filter_bitscore {
     path blast_file
 
     output:
-    path "${blast_file.baseName}_filtered.tsv"
+    path "statistics_bitfiltered.tsv", emit: statistics
+    path "accessions_matchfiltered.tsv", emit: accessions
 
     script:
     """
-    awk '\$12>${params.bitscore} {print}' $blast_file | awk '{print \$1}' |sort|uniq -c | awk '{print \$2}'> ${blast_file.baseName}_filtered.tsv
+    awk '\$12>${params.bitscore} {print}' $blast_file > statistics_bitfiltered.tsv
+    awk '{print \$2}' statistics_bitfiltered.tsv | sort | uniq -c | sort -r | awk '\$1>${params.significant_gene_matches} {print}' | awk '{print \$2}' > accessions_matchfiltered.tsv
     """    
+}
+
+process statistics {
+
+    publishDir "${params.outdir}/statistics", mode: 'copy', pattern: "statistics_significant_matches.tsv"
+
+    input:
+    path statistics_bitfiltered
+    path accessions_matchfiltered
+
+    output:
+    path "statistics_significant_matches.tsv"
+
+    script:
+    """
+    LINES=\$(cat $accessions_matchfiltered)
+    for line in \$LINES
+    do
+        grep \$line $statistics_bitfiltered >> statistics_significant_matches.tsv
+    done
+    """
+
 }
 
 process extract {
@@ -172,7 +160,7 @@ process extract {
 
     input:
     path assembly
-    path result_filtered
+    path matched_accessions
 
     output:
     path "${assembly.baseName}_mitochondria.fna"
@@ -181,7 +169,7 @@ process extract {
     script: 
     """
     cp $assembly ${assembly.baseName}_nuclear.fna
-    LINES=\$(cat $result_filtered)
+    LINES=\$(cat $matched_accessions)
     for line in \$LINES
     do
         grep -n '>' ${assembly.baseName}_nuclear.fna > row_number
