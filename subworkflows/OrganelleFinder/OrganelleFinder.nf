@@ -11,11 +11,11 @@ Vendela, William and Viktor
 // Test of conflicts
 // Test by William
 
-params.genome = "../../../GCF_003254395.2_Amel_HAv3.1_genomic.fna"
-params.outdir = "results"
+params.genome_assembly = ''
+params.outdir = 'results'
 
 // tblastn parameters
-params.reference_fasta = '../../../c_picta_ref_mito.fna'
+params.reference_organelle = ''
 params.blast_evalue = '1e-21'
 
 // filter parameters
@@ -46,11 +46,11 @@ NBIS
 workflow {
 
     main:
-        Channel.fromPath(params.genome, checkIfExists: true)
-            .ifEmpty { exit 1, "Cannot find genome matching ${params.genome}!\n" }
+        Channel.fromPath(params.genome_assembly, checkIfExists: true)
+            .ifEmpty { exit 1, "Cannot find genome matching ${params.genome_assembly}!\n" }
             .set {genome_assembly}
-        Channel.fromPath(params.reference_fasta, checkIfExists: true)
-            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_fasta}!\n" }
+        Channel.fromPath(params.reference_organelle, checkIfExists: true)
+            .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_organelle}!\n" }
             .set {reference_organelle}
         organelle_finder(genome_assembly,reference_organelle)
 
