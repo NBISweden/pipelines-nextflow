@@ -1,5 +1,0 @@
-2021-11-12 14:33:01	42.6s	zen_wiles	ERR	8f1bad0f1823c10f6ce1c5e8d16f516f	2c6fa321-3491-4b86-a9ff-41f7cf92c92d	nextflow run OrganelleFinder.nf -profile docker
-2021-11-12 14:35:46	14.4s	grave_davinci	ERR	8f1bad0f1823c10f6ce1c5e8d16f516f	2c6fa321-3491-4b86-a9ff-41f7cf92c92d	nextflow run OrganelleFinder.nf -profile docker -resume
-2021-11-12 14:36:50	7.7s	scruffy_torvalds	ERR	af03442ee55072cc2ed3258ac78e32dc	2c6fa321-3491-4b86-a9ff-41f7cf92c92d	nextflow run OrganelleFinder.nf -profile docker -resume
-2021-11-12 14:47:40	10.9s	tender_morse	ERR	581ab07f73b829986d9c60f702c60332	2c6fa321-3491-4b86-a9ff-41f7cf92c92d	nextflow run OrganelleFinder.nf -profile docker
-2021-11-12 15:00:23	11m 12s	tender_minsky	OK	b51f636638e6701c722a43648d0d08c9	2c6fa321-3491-4b86-a9ff-41f7cf92c92d	nextflow run OrganelleFinder.nf -profile docker -resume

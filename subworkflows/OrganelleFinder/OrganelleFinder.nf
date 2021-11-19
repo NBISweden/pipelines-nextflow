@@ -19,8 +19,8 @@ params.reference_organelle = ''
 params.blast_evalue = '1e-21'
 
 // filter parameters
-params.bitscore = 150
-params.significant_gene_matches = 3
+params.bitscore = 250
+params.significant_gene_matches = 5
 
 log.info("""
 NBIS
