@@ -22,6 +22,17 @@ params.blast_evalue = '1e-21'
 params.bitscore = 250
 params.significant_gene_matches = 5
 
+/*
+========================================================================================
+    IMPORT LOCAL MODULES/SUBWORKFLOWS
+========================================================================================
+*/
+include { MAKEBLASTDB   } from './modules/makeblastdb.nf'
+include { TBLASTN   } from './modules/tblastn.nf'
+include { FILTER_BITSCORE  } from './modules/filter_bitscore.nf'
+include { STATISTICS  } from './modules/statistics.nf'
+include { EXTRACT  } from './modules/extract.nf'
+
 log.info("""
 NBIS
   _   _ ____ _____  _____
@@ -52,145 +63,28 @@ workflow {
         Channel.fromPath(params.reference_organelle, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_organelle}!\n" }
             .set {reference_organelle}
-        organelle_finder(genome_assembly,reference_organelle)
+        ORGANELLE_FINDER(genome_assembly,reference_organelle)
 
 }
 
-workflow organelle_finder {
+workflow ORGANELLE_FINDER {
 
     take:
         genome_assembly
         reference_organelle
 
     main:
-        makeblastdb(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
-        makeblastdb.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
-        tblastn(reference_organelle,
+        MAKEBLASTDB(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
+        MAKEBLASTDB.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
+        TBLASTN(reference_organelle,
             blastfiles)
-        filter_bitscore(tblastn.out.collect())
-        statistics(filter_bitscore.out.statistics, filter_bitscore.out.accessions)
-        extract(genome_assembly,
-            filter_bitscore.out.accessions)
+        FILTER_BITSCORE(TBLASTN.out.output_blast)
+        STATISTICS(FILTER_BITSCORE.out.statistics, FILTER_BITSCORE.out.accessions)
+        EXTRACT(genome_assembly,
+            FILTER_BITSCORE.out.accessions)
     emit:
-        blast_result = extract.out[0]
+        blast_result = EXTRACT.out[0]
 }
-
-process makeblastdb {
-
-    label 'blast'
-
-    input:
-    path genome
-    val state
-
-    output:
-    path "*.fna*"
-
-    when:
-    state == 'DBFILES_ABSENT'
-
-    script:
-    """
-    makeblastdb -in $genome -dbtype nucl
-    """
-
-}
-
-process tblastn {
-
-    label 'blast'
-
-    input:
-    path reference_organelle
-    path blastdb
-
-    output:
-    path "output_blast.tsv"
-
-    script:
-    database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
-    """
-    tblastn -query $reference_organelle -db ${database} -evalue ${params.blast_evalue} -outfmt 6 -out output_blast.tsv
-    """
-
-}
-
-process filter_bitscore {
-
-    input:
-    path blast_file
-
-    output:
-    path "statistics_bitfiltered.tsv", emit: statistics
-    path "accessions_matchfiltered.tsv", emit: accessions
-
-    script:
-    """
-    awk '\$12>${params.bitscore} {print}' $blast_file > statistics_bitfiltered.tsv
-    awk '{print \$2}' statistics_bitfiltered.tsv | sort | uniq -c | sort -r | awk '\$1>${params.significant_gene_matches} {print}' | awk '{print \$2}' > accessions_matchfiltered.tsv
-    """    
-}
-
-process statistics {
-
-    publishDir "${params.outdir}/statistics", mode: 'copy', pattern: "statistics_significant_matches.tsv"
-
-    input:
-    path statistics_bitfiltered
-    path accessions_matchfiltered
-
-    output:
-    path "statistics_significant_matches.tsv"
-
-    script:
-    """
-    LINES=\$(cat $accessions_matchfiltered)
-    for line in \$LINES
-    do
-        grep \$line $statistics_bitfiltered >> statistics_significant_matches.tsv
-    done
-    """
-
-}
-
-process extract {
-
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_mitochondria.fna"
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_nuclear.fna"
-
-    input:
-    path assembly
-    path matched_accessions
-
-    output:
-    path "${assembly.baseName}_mitochondria.fna"
-    path "${assembly.baseName}_nuclear.fna"
-
-    script: 
-    """
-    cp $assembly ${assembly.baseName}_nuclear.fna
-    LINES=\$(cat $matched_accessions)
-    for line in \$LINES
-    do
-        grep -n '>' ${assembly.baseName}_nuclear.fna > row_number
-        grep -A 1 \$line row_number > header_rows
-        grep -oP  '.*?(?=:)' header_rows > numbers_file
-        start_index=\$(head -n 1 numbers_file)
-        next_index=\$(tail -n 1 numbers_file)
-        if [ \$(wc -l numbers_file | awk '{print \$1}') -eq 1 ]
-        then
-            end_of_file=\$(wc -l ${assembly.baseName}_nuclear.fna | awk '{print \$1}')
-            next_index=\$(((\$end_of_file+1)))
-        fi
-        row_count=\$(((\$next_index-\$start_index)))
-        end_index=\$(((\$next_index-1)))
-        head -n \$end_index ${assembly.baseName}_nuclear.fna | tail -n \$row_count >> ${assembly.baseName}_mitochondria.fna
-        sed -e \$start_index,\$end_index\\d ${assembly.baseName}_nuclear.fna > intermediate_file.fna
-        mv intermediate_file.fna ${assembly.baseName}_nuclear.fna
-    done
-    """
-}
-
 
 workflow.onComplete {
     log.info ( workflow.success ? "\nFunctional annotation input preparation complete!\n" : "Oops .. something went wrong\n" )
