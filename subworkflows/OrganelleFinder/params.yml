@@ -1,0 +1,12 @@
+
+genome_assembly : '../../../a_thaliana_genome_assembly.fna'
+reference_organelle : '../../../s_alba_ref_chloroplast.fna'
+
+outdir : 'results'
+
+
+blast_evalue : '1e-21'
+
+bitscore : 250
+significant_gene_matches : 5
+    

@@ -1,0 +1,4 @@
+.nextflow*
+work/
+results/
+pipeline_report/

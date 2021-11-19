@@ -11,16 +11,6 @@ Vendela, William and Viktor
 // Test of conflicts
 // Test by William
 
-params.genome_assembly = ''
-params.outdir = 'results'
-
-// tblastn parameters
-params.reference_organelle = ''
-params.blast_evalue = '1e-21'
-
-// filter parameters
-params.bitscore = 250
-params.significant_gene_matches = 5
 
 /*
 ========================================================================================
