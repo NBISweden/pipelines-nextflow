@@ -19,7 +19,7 @@ process EXTRACT {
     do
         grep -n '>' ${assembly.baseName}_nuclear.fna > row_number
         grep -A 1 \$line row_number > header_rows
-        grep -oP  '.*?(?=:)' header_rows > numbers_file
+        grep -oP  '.*?(?=:>)' header_rows > numbers_file
         start_index=\$(head -n 1 numbers_file)
         next_index=\$(tail -n 1 numbers_file)
         if [ \$(wc -l numbers_file | awk '{print \$1}') -eq 1 ]
