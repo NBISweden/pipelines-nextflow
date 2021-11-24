@@ -1,4 +1,4 @@
-process MAKEBLASTDB {
+process TBLASTN_MITOCHONDRIA {
 
     conda "${task.ext.enable_conda ? 'bioconda::tool=blast:2.12.0' : '' }"
     container "${workflow.containerEngine == 'singularity' &&
@@ -9,18 +9,16 @@ process MAKEBLASTDB {
     label 'blast'
 
     input:
-    path genome
-    val state
+    path reference_organelle
+    path blastdb
 
     output:
-    path "*.fna*"
-
-    when:
-    state == 'DBFILES_ABSENT'
+    path "output_blast.tsv", emit: output_blast
 
     script:
+    database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
     """
-    makeblastdb -in $genome -dbtype nucl
+    tblastn -query $reference_organelle -db ${database} -evalue ${params.mit_blast_evalue} -outfmt 6 -out output_blast.tsv
     """
 
 }

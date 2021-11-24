@@ -1,6 +1,6 @@
-process EXTRACT {
+process EXTRACT_CHLOROPLAST {
 
-    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_mitochondria.fna"
+    publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_chloroplast.fna"
     publishDir "${params.outdir}", mode: 'copy', pattern: "${assembly.baseName}_nuclear.fna"
 
     input:
@@ -8,7 +8,7 @@ process EXTRACT {
     path matched_accessions
 
     output:
-    path "${assembly.baseName}_mitochondria.fna"
+    path "${assembly.baseName}_chloroplast.fna"
     path "${assembly.baseName}_nuclear.fna"
 
     script: 
@@ -29,7 +29,7 @@ process EXTRACT {
         fi
         row_count=\$(((\$next_index-\$start_index)))
         end_index=\$(((\$next_index-1)))
-        head -n \$end_index ${assembly.baseName}_nuclear.fna | tail -n \$row_count >> ${assembly.baseName}_mitochondria.fna
+        head -n \$end_index ${assembly.baseName}_nuclear.fna | tail -n \$row_count >> ${assembly.baseName}_chloroplast.fna
         sed -e \$start_index,\$end_index\\d ${assembly.baseName}_nuclear.fna > intermediate_file.fna
         mv intermediate_file.fna ${assembly.baseName}_nuclear.fna
     done
