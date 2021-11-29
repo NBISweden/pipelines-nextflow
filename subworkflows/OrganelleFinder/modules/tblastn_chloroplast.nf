@@ -18,7 +18,7 @@ process TBLASTN_CHLOROPLAST {
     script:
     database = blastdb.find { it =~ /\.f(ast|n)?a$/ }
     """
-    tblastn -query $reference_organelle -db ${database} -evalue ${params.chl_blast_evalue} -outfmt 6 -out output_blast.tsv
+    tblastn -query $reference_organelle -db ${database} -evalue ${params.chl_blast_evalue} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen" -out output_blast.tsv
     """
 
 }
