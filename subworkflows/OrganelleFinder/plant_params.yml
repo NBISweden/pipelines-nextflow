@@ -1,8 +1,8 @@
-genome_assembly : '../../../test_data/NMP4_short.fna'
-reference_mitochondria : '../../../plant_genomes/arabi_ref_mit.fna'
-reference_chloroplast : '../../../plant_genomes/arabi_ref_chl.fna'
+genome_assembly : '../../../GCA_900174615.1_Ama_scaffold_v2_genomic.fna'
+reference_mitochondria : '../../../arabi_ref_mit.fna'
+reference_chloroplast : '../../../arabi_ref_chl.fna'
 
-outdir : 'results'
+outdir : '/results'
 input_type : 'plant'
 
 mit_blast_evalue : '1e-10'

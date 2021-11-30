@@ -1,4 +1,4 @@
-process MAKEBLASTDB_MITOCHONDRIA {
+process MAKEBLASTDB {
 
     conda "${task.ext.enable_conda ? 'bioconda::tool=blast:2.12.0' : '' }"
     container "${workflow.containerEngine == 'singularity' &&

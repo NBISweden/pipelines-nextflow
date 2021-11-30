@@ -17,16 +17,11 @@ Vendela, William and Viktor
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ========================================================================================
 */
-include { MAKEBLASTDB_CHLOROPLAST   } from './modules/makeblastdb_chloroplast.nf'
-include { MAKEBLASTDB_MITOCHONDRIA   } from './modules/makeblastdb_mitochondria.nf'
-include { TBLASTN_CHLOROPLAST   } from './modules/tblastn_chloroplast.nf'
-include { TBLASTN_MITOCHONDRIA   } from './modules/tblastn_mitochondria.nf'
-include { FILTER_BITSCORE_CHLOROPLAST  } from './modules/filter_bitscore_chloroplast.nf'
-include { FILTER_BITSCORE_MITOCHONDRIA  } from './modules/filter_bitscore_mitochondria.nf'
-include { STATISTICS_CHLOROPLAST  } from './modules/statistics_chloroplast.nf'
-include { STATISTICS_MITOCHONDRIA  } from './modules/statistics_mitochondria.nf'
-include { EXTRACT  } from './modules/extract.nf'
-include { EXTRACT_CHLOROPLAST  } from './modules/extract_chloroplast.nf'
+include { MAKEBLASTDB as MAKEBLASTDB_CHLOROPLAST; MAKEBLASTDB as MAKEBLASTDB_MITOCHONDRIA } from './modules/makeblastdb.nf'
+include { TBLASTN as TBLASTN_CHLOROPLAST; TBLASTN as TBLASTN_MITOCHONDRIA } from './modules/tblastn.nf'
+include { FILTER as FILTER_CHLOROPLAST; FILTER as FILTER_MITOCHONDRIA } from './modules/filter.nf'
+include { STATISTICS as STATISTICS_CHLOROPLAST; STATISTICS as STATISTICS_MITOCHONDRIA  } from './modules/statistics.nf'
+include { EXTRACT_FINAL  } from './modules/extract_final.nf'
 include { EXTRACT_MITOCHONDRIA  } from './modules/extract_mitochondria.nf'
 
 log.info("""
@@ -89,13 +84,13 @@ workflow ANIMAL_ORGANELLE_FINDER {
         MAKEBLASTDB_MITOCHONDRIA(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_MITOCHONDRIA.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
-            blastfiles)
-        FILTER_BITSCORE_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast)
-        STATISTICS_MITOCHONDRIA(FILTER_BITSCORE_MITOCHONDRIA.out.statistics, FILTER_BITSCORE_MITOCHONDRIA.out.accessions)
-        EXTRACT(genome_assembly,
-            FILTER_BITSCORE_MITOCHONDRIA.out.accessions)
+            blastfiles, params.mit_blast_evalue)
+        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, "mitochondria")
+        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
+        EXTRACT_FINAL(genome_assembly,
+            FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
     emit:
-        blast_result = EXTRACT.out[0]
+        blast_result = EXTRACT_FINAL.out[0]
 }
 
 workflow PLANT_ORGANELLE_FINDER {
@@ -109,19 +104,19 @@ workflow PLANT_ORGANELLE_FINDER {
         MAKEBLASTDB_MITOCHONDRIA(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_MITOCHONDRIA.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{mitochondria_blastfiles}
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
-            mitochondria_blastfiles)
-        FILTER_BITSCORE_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast)
-        STATISTICS_MITOCHONDRIA(FILTER_BITSCORE_MITOCHONDRIA.out.statistics, FILTER_BITSCORE_MITOCHONDRIA.out.accessions)
+            mitochondria_blastfiles, params.mit_blast_evalue)
+        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, "mitochondria")
+        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
         EXTRACT_MITOCHONDRIA(genome_assembly,
-            FILTER_BITSCORE_MITOCHONDRIA.out.accessions)
+            FILTER_MITOCHONDRIA.out.accessions, params.outdir)
         MAKEBLASTDB_CHLOROPLAST(EXTRACT_MITOCHONDRIA.out.no_mitochondria,EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_CHLOROPLAST.out.mix(EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{chloroplast_blastfiles}
-        TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles)
-        FILTER_BITSCORE_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast)
-        STATISTICS_CHLOROPLAST(FILTER_BITSCORE_CHLOROPLAST.out.statistics, FILTER_BITSCORE_CHLOROPLAST.out.accessions)
-        EXTRACT_CHLOROPLAST(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_BITSCORE_CHLOROPLAST.out.accessions)
+        TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles, params.chl_blast_evalue)
+        FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.outdir, params.chl_bitscore, params.chl_significant_gene_matches, "chloroplast")
+        STATISTICS_CHLOROPLAST(FILTER_CHLOROPLAST.out.statistics, FILTER_CHLOROPLAST.out.accessions, params.outdir, "chloroplast")
+        EXTRACT_FINAL(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_CHLOROPLAST.out.accessions, params.outdir, "chloroplast")
     emit:
-        blast_result = EXTRACT_CHLOROPLAST.out[0]
+        blast_result = EXTRACT_FINAL.out[0]
 }
 
 workflow.onComplete {
