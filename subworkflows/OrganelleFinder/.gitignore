@@ -2,3 +2,4 @@
 work/
 results/
 pipeline_report/
+*.sh
