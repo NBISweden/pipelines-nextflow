@@ -23,6 +23,10 @@ include { FILTER as FILTER_CHLOROPLAST; FILTER as FILTER_MITOCHONDRIA } from './
 include { STATISTICS as STATISTICS_CHLOROPLAST; STATISTICS as STATISTICS_MITOCHONDRIA  } from './modules/statistics.nf'
 include { EXTRACT_FINAL  } from './modules/extract_final.nf'
 include { EXTRACT_MITOCHONDRIA  } from './modules/extract_mitochondria.nf'
+include { PLOTING } from './modules/ploting.nf'
+include { MAPPING } from './modules/mapping.nf'
+include { DEPTH_FILTER_ANIMAL } from './modules/depth_filter_animal'
+include { DEPTH_FILTER_PLANT } from './modules/depth_filter_plant'
 
 log.info("""
 NBIS
@@ -38,11 +42,13 @@ NBIS
      params.genome_assembly              : ${params.genome_assembly}
      params.reference_mitochondria       : ${params.reference_mitochondria}
      params.reference_chloroplast        : ${params.reference_chloroplast}
+     params.reads_file                   : ${params.reads_file}
      params.input_type                   : ${params.input_type}
+     params.reads_exist                  : ${params.reads_exist}
 
      // Output directory
      params.outdir                       : ${params.outdir}
-    
+
      // Mitochondria parameters
      params.mit_blast_evalue             : ${params.mit_blast_evalue}
      params.mit_bitscore                 : ${params.mit_bitscore}
@@ -63,22 +69,29 @@ workflow {
         Channel.fromPath(params.reference_mitochondria, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_mitochondria}!\n" }
             .set {reference_mitochondria}
+        if (params.reads_exist == 'yes') {
+            Channel.fromPath(params.reads_file, checkIfExists: true)
+                .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reads_file}!\n" }
+                .set {reads_file}
+        }
         if (params.input_type == 'animal') {
-            ANIMAL_ORGANELLE_FINDER(genome_assembly,reference_mitochondria)
+            ANIMAL_ORGANELLE_FINDER(genome_assembly,reference_mitochondria,reads_file)
         } else if (params.input_type == 'plant') {
             Channel.fromPath(params.reference_chloroplast, checkIfExists: true)
             .ifEmpty { exit 1, "Cannot find blast database files matching ${params.reference_chloroplast}!\n" }
             .set {reference_chloroplast}
-            PLANT_ORGANELLE_FINDER(genome_assembly,reference_mitochondria,reference_chloroplast)
+            PLANT_ORGANELLE_FINDER(genome_assembly,reference_mitochondria,reference_chloroplast,reads_file)
         }
 
 }
+
 
 workflow ANIMAL_ORGANELLE_FINDER {
 
     take:
         genome_assembly
         reference_mitochondria
+        reads_file
 
     main:
         MAKEBLASTDB_MITOCHONDRIA(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
@@ -86,6 +99,11 @@ workflow ANIMAL_ORGANELLE_FINDER {
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
             blastfiles, params.mit_blast_evalue)
         FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, "mitochondria")
+        if (params.reads_exist == 'yes') {
+            MAPPING(genome_assembly, reads_file)
+            DEPTH_FILTER_ANIMAL(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.all_accessions)
+            PLOTING(DEPTH_FILTER_ANIMAL.out.collect(), params.outdir)
+        }
         STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
         EXTRACT_FINAL(genome_assembly,
             FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
@@ -99,6 +117,7 @@ workflow PLANT_ORGANELLE_FINDER {
         genome_assembly
         reference_mitochondria
         reference_chloroplast
+        reads_file
 
     main:
         MAKEBLASTDB_MITOCHONDRIA(genome_assembly,genome_assembly.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
@@ -113,6 +132,11 @@ workflow PLANT_ORGANELLE_FINDER {
         MAKEBLASTDB_CHLOROPLAST.out.mix(EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{chloroplast_blastfiles}
         TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles, params.chl_blast_evalue)
         FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.outdir, params.chl_bitscore, params.chl_significant_gene_matches, "chloroplast")
+        if (params.reads_exist == 'yes') {
+            MAPPING(genome_assembly, reads_file)
+            DEPTH_FILTER_PLANT(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.all_accessions, FILTER_CHLOROPLAST.out.all_accessions)
+            PLOTING(DEPTH_FILTER_PLANT.out.collect(), params.outdir)
+        }
         STATISTICS_CHLOROPLAST(FILTER_CHLOROPLAST.out.statistics, FILTER_CHLOROPLAST.out.accessions, params.outdir, "chloroplast")
         EXTRACT_FINAL(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_CHLOROPLAST.out.accessions, params.outdir, "chloroplast")
     emit:

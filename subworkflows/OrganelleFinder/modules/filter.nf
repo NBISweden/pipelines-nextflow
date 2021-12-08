@@ -12,14 +12,15 @@ process FILTER {
     output:
     path "statistics_${organelle}.tsv", emit: statistics
     path "accessions_matchfiltered.tsv", emit: accessions
+    path "${organelle}_unique_bitscore.tsv", emit: all_accessions
     path "${organelle}_statistics_summary.tsv"
 
     script:
     """
     echo -e "Accession\\tUnique_matches\\tCoding_fraction\\tSpan_fraction\\tSpan_length" >> ${organelle}_statistics_summary.tsv
     awk '\$12>$bitscore {print}' $blast_file > statistics_${organelle}.tsv
-    awk '{print \$2}' statistics_${organelle}.tsv | sort | uniq > unique_bitscore.tsv
-    LINES=\$(cat unique_bitscore.tsv)
+    awk '{print \$2}' statistics_${organelle}.tsv | sort | uniq > ${organelle}_unique_bitscore.tsv
+    LINES=\$(cat ${organelle}_unique_bitscore.tsv)
     for line in \$LINES
     do
         grep \$line statistics_${organelle}.tsv | sort -k 9,9 -n > line_file.tsv
