@@ -1,14 +1,17 @@
-genome_assembly : '../../../GCA_900174615.1_Ama_scaffold_v2_genomic.fna'
-reference_mitochondria : '../../../arabi_ref_mit.fna'
-reference_chloroplast : '../../../arabi_ref_chl.fna'
+
+genome_assembly : ''
+reference_mitochondria : ''
+reference_chloroplast : ''
+reads_file : ''
 
 outdir : '/results'
 input_type : 'plant'
+reads_exist : ''
 
 mit_blast_evalue : '1e-10'
 mit_bitscore : 150
-mit_significant_gene_matches : 9
+mit_significant_gene_matches : 4
 
 chl_blast_evalue : '1e-10'
-chl_bitscore : 200
-chl_significant_gene_matches : 9
+chl_bitscore : 150
+chl_significant_gene_matches : 4

@@ -1,10 +1,13 @@
-genome_assembly : '../../../test_data/GCA_900174615.1_Ama_scaffold_v2_genomic.fna'
-reference_mitochondria : '../../../plant_genomes/arabi_ref_mit.fna'
 
-outdir : 'results'
+genome_assembly : ''
+reference_mitochondria : ''
+reads_file : ''
+
+outdir : '/results'
 input_type : 'animal'
+reads_exist : ''
 
 mit_blast_evalue : '1e-10'
 
 mit_bitscore : 100
-mit_significant_gene_matches : 2
+mit_significant_gene_matches : 10
