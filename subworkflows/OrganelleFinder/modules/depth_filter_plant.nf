@@ -10,17 +10,9 @@ process DEPTH_FILTER_PLANT {
 
     script:
     """
-    LINES=\$(cat $accessions_mit)
-    for line in \$LINES
-    do
-        echo \$line >> accessions.tsv
-    done
-    LINES=\$(cat $accessions_chl)
-    for line in \$LINES
-    do
-        echo \$line >> accessions.tsv
-    done
-    awk '{print \$1}' accessions.tsv | sort | uniq > unique_accessions.tsv
+    cat $accessions_mit >> accessions.tsv
+    cat $accessions_chl >> accessions.tsv    
+    sort accessions.tsv | uniq > unique_accessions.tsv
     LINES=\$(cat unique_accessions.tsv)
     for line in \$LINES
     do
