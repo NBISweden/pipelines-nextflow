@@ -11,7 +11,13 @@ reads_exist : ''
 mit_blast_evalue : '1e-10'
 mit_bitscore : 150
 mit_significant_gene_matches : 4
+mit_suspicious_gene_matches : 2
+mit_max_contig_length : 2500000
+mit_min_span_fraction : 0.8
 
 chl_blast_evalue : '1e-10'
 chl_bitscore : 150
 chl_significant_gene_matches : 4
+chl_suspicious_gene_matches : 2
+chl_max_contig_length : 400000
+chl_min_span_fraction : 0.8

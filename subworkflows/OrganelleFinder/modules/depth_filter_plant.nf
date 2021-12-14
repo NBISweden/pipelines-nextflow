@@ -4,6 +4,8 @@ process DEPTH_FILTER_PLANT {
     path depth_file
     path accessions_mit 
     path accessions_chl
+    path accessions_suspicious_mit
+    path accessions_suspicious_chl
 
     output:
     path "*depth.tsv*"
@@ -11,7 +13,9 @@ process DEPTH_FILTER_PLANT {
     script:
     """
     cat $accessions_mit >> accessions.tsv
-    cat $accessions_chl >> accessions.tsv    
+    cat $accessions_chl >> accessions.tsv
+    cat $accessions_suspicious_mit >> accessions.tsv
+    cat $accessions_suspicious_chl >> accessions.tsv
     sort accessions.tsv | uniq > unique_accessions.tsv
     LINES=\$(cat unique_accessions.tsv)
     for line in \$LINES
