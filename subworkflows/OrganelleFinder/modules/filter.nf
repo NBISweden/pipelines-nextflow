@@ -6,7 +6,6 @@ process FILTER {
         'biocontainers/biocontainers:v1.2.0_cv1' }"
 
     
-    publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_statistics_summary.tsv"
 
     input:
     path blast_file

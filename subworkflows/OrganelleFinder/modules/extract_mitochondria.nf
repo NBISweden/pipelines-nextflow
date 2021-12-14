@@ -1,6 +1,5 @@
 process EXTRACT_MITOCHONDRIA {
 
-    publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_mitochondria.fna"
 
     input:
     path assembly
