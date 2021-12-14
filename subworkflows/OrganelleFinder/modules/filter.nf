@@ -40,11 +40,11 @@ process FILTER {
         length_span=\${raw_length_span#-}
         span_fraction=\$(awk "BEGIN {print \$length_span/\$tot_length}")
 
-        if [ \$unique_count -gt $organelle_gene_matches ] && [\$tot_length -lt $max_contig_length] && [\$span_fraction -gt $min_span_fraction]
+        if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_contig_length -gt \$tot_length ] && [ \$(echo "\$span_fraction > $min_span_fraction" |bc -l) ]
         then
             echo \$line >> accessions_matchfiltered.tsv
             echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_statistics_summary.tsv
-        elif [ \$unique_count -gt $suspicious_gene_matches]
+        elif [ \$unique_count -gt $suspicious_gene_matches ]
         then
             echo \$line >> accessions_suspicious.tsv
             echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_statistics_summary.tsv
