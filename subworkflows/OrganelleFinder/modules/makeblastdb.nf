@@ -1,6 +1,6 @@
 process MAKEBLASTDB {
 
-    conda "${task.ext.enable_conda ? 'bioconda::tool=blast:2.12.0' : '' }"
+    conda "${task.ext.enable_conda ? 'bioconda::blast:2.12.0' : '' }"
     container "${workflow.containerEngine == 'singularity' &&
                   !task.ext.singularity_pull_docker_container ?
               'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :

@@ -1,7 +1,7 @@
 
-genome_assembly : ''
-reference_mitochondria : ''
-reference_chloroplast : ''
+genome_assembly : '../../../GCA_900174615.1_Ama_scaffold_v2_genomic.fna'
+reference_mitochondria : '../../../arabi_ref_mit.fna'
+reference_chloroplast : '../../../arabi_ref_chl.fna'
 reads_file : ''
 
 outdir : '/results'
