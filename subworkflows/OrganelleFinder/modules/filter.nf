@@ -1,11 +1,7 @@
 process FILTER {
 
-    conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
-        'biocontainers/biocontainers:v1.2.0_cv1' }"
+    publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_statistics_summary.tsv"
 
-    
 
     input:
     path blast_file
@@ -57,10 +53,3 @@ process FILTER {
     done
     """    
 }
-
-
-
-//awk '{print \$2}' statistics_bitfiltered.tsv | sort | uniq -c | sort -r | awk '\$1>${params.significant_gene_matches} {print}' | awk '{print \$2}' > accessions_matchfiltered.tsv
-
-
-//| awk '{print \$1}' | sort | uniq | wc -l

@@ -6,7 +6,6 @@ reads_file : ''
 
 outdir : '/results'
 input_type : 'plant'
-reads_exist : ''
 
 mit_blast_evalue : '1e-10'
 mit_bitscore : 150

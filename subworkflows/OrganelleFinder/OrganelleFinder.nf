@@ -44,7 +44,6 @@ NBIS
      params.reference_chloroplast        : ${params.reference_chloroplast}
      params.reads_file                   : ${params.reads_file}
      params.input_type                   : ${params.input_type}
-     params.reads_exist                  : ${params.reads_exist}
 
      // Output directory
      params.outdir                       : ${params.outdir}
