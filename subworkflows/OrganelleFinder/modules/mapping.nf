@@ -19,6 +19,7 @@ process MAPPING {
     """
     minimap2 -d assembly.mmi $assembly
     minimap2 -a assembly.mmi $reads_file | samtools sort --threads $task.cpus -o sorted_assembly_full_alignment.bam
+    samtools depth -o depth_full_alignment.tsv sorted_assembly_full_alignment.bam
     """
 }
 
