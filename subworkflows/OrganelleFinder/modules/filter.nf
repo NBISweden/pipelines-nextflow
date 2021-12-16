@@ -41,7 +41,7 @@ process FILTER {
         length_span=\${raw_length_span#-}
         span_fraction=\$(awk "BEGIN {print \$length_span/\$tot_length}")
 
-        if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_contig_length -gt \$tot_length ] && [ \$(echo "\$span_fraction > $min_span_fraction" |bc -l) ]
+        if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_contig_length -gt \$tot_length ] && [ \$(echo "\$span_fraction > $min_span_fraction" |bc -l) -eq 1 ]
         then
             echo \$line >> accessions_matchfiltered.tsv
             echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_statistics_summary.tsv
