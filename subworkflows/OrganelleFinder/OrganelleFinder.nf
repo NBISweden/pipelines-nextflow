@@ -129,7 +129,7 @@ workflow PLANT_ORGANELLE_FINDER {
         FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
         STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, params.outdir, "mitochondria")
         EXTRACT_MITOCHONDRIA(genome_assembly,
-            FILTER_MITOCHONDRIA.out.accessions, params.outdir)
+            FILTER_MITOCHONDRIA.out.accessions)
         MAKEBLASTDB_CHLOROPLAST(EXTRACT_MITOCHONDRIA.out.no_mitochondria,EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_CHLOROPLAST.out.mix(EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{chloroplast_blastfiles}
         TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles, params.chl_blast_evalue)
