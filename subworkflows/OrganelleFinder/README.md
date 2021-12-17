@@ -17,6 +17,8 @@ nextflow run -profile docker /path/to/OrganelleFinder.nf \
    * `reference_chloroplast`: Path to FNA reference chloroplast (if plant).
    * `reads_file`: Path to PacBio reads file (if present).
    * `input_type`: Type of organism, either 'animal' or 'plant'.
+   * `outdir`: Path to outdirectory (Relative pathing has to start with "./").
+
 
 - Mitochondrial parameters:
    * `mit_blast_evalue`: E-value threshold for the mitochondria matches (default: 1e-6).
@@ -44,6 +46,7 @@ genome_assembly : ''
 reference_mitochondria : ''
 reads_file : ''
 input_type : 'animal'
+outdir: './results'
 
 // Mitochondrial parameters
 mit_blast_evalue : '1e-6'
