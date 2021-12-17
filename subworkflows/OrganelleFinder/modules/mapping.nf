@@ -22,12 +22,3 @@ process MAPPING {
     samtools depth -o depth_full_alignment.tsv sorted_assembly_full_alignment.bam
     """
 }
-
-
-
-
-
-    //minimap2 -a assembly.mmi $reads_file > assembly_full_alignment.sam
-    //samtools view -S -b assembly_full_alignment.sam > assembly_full_alignment.bam
-    //samtools sort -o sorted_assembly_full_alignment.bam assembly_full_alignment.bam
-    //samtools depth -o depth_full_alignment.tsv sorted_assembly_full_alignment.bam

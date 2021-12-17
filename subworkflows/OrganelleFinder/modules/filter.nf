@@ -1,15 +1,11 @@
 process FILTER {
 
-    //publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_statistics_summary.tsv"
-
-
     input:
     path blast_file
-    //path outdir
     val bitscore
     val organelle_gene_matches
     val suspicious_gene_matches
-    val max_contig_length
+    val max_scaffold_length
     val min_span_fraction
     val organelle
 
@@ -23,7 +19,7 @@ process FILTER {
     """
     touch accessions_matchfiltered.tsv
     touch accessions_suspicious.tsv
-    echo -e "Accession\\tUnique_matches\\tSpan_fraction\\tContig_length\\tClass" >> ${organelle}_statistics_summary.tsv
+    echo -e "Accession\\tUnique_matches\\tSpan_fraction\\tScaffold_length\\tClass" >> ${organelle}_draft_statistics_summary.tsv
     awk '\$12>$bitscore {print}' $blast_file > statistics_${organelle}.tsv
     awk '{print \$2}' statistics_${organelle}.tsv | sort | uniq > ${organelle}_unique_bitscore.tsv
     LINES=\$(cat ${organelle}_unique_bitscore.tsv)
@@ -41,15 +37,16 @@ process FILTER {
         length_span=\${raw_length_span#-}
         span_fraction=\$(awk "BEGIN {print \$length_span/\$tot_length}")
 
-        if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_contig_length -gt \$tot_length ] && [ \$(echo "\$span_fraction > $min_span_fraction" |bc -l) -eq 1 ]
+        if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_scaffold_length -gt \$tot_length ] && [[ \$span_fraction > $min_span_fraction ]]
         then
             echo \$line >> accessions_matchfiltered.tsv
-            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_statistics_summary.tsv
+            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_draft_statistics_summary.tsv
         elif [ \$unique_count -gt $suspicious_gene_matches ]
         then
             echo \$line >> accessions_suspicious.tsv
-            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_statistics_summary.tsv
+            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_draft_statistics_summary.tsv
         fi
     done
+    column -t ${organelle}_draft_statistics_summary.tsv > "${organelle}_statistics_summary.tsv"
     """    
 }

@@ -1,11 +1,8 @@
 process EXTRACT_MITOCHONDRIA {
 
-    //publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_mitochondria.fna"
-
     input:
     path assembly
     path matched_accessions
-    //path outdir
 
     output:
     path "${assembly.baseName}_mitochondria.fna"

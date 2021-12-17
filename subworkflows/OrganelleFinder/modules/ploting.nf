@@ -6,12 +6,8 @@ process PLOTING {
               'https://depot.galaxyproject.org/singularity/bioinfokit:2.0.8--pyh5e36f6f_0' :
               'quay.io/biocontainers/bioinfokit:2.0.8--pyh5e36f6f_0' }"
 
-    
-    //publishDir "${outdir}/plots", mode: 'copy', pattern: "*.png*"
-
     input:
     path alignment
-    //path outdir
 
     output:
     path "*.png*"

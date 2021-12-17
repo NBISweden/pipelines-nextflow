@@ -3,14 +3,8 @@
 nextflow.enable.dsl=2
 
 /*
- * Default pipeline parameters. They can be overriden on the command line eg.
- * given `params.foo` specify on the run command line `--foo some_value`.
-Vendela, William and Viktor
+Authored by Vendela, William and Viktor
  */
-// Test5 by Vendela
-// Test of conflicts
-// Test by William
-
 
 /*
 ========================================================================================
@@ -36,7 +30,7 @@ NBIS
  | . ` |  _ < | |  \\___ \\
  | |\\  | |_) || |_ ____) |
  |_| \\_|____/_____|_____/  Annotation Service
- Functional annotation workflow
+ Organelle finding workflow
  ===================================
  General parameters
      params.genome_assembly              : ${params.genome_assembly}
@@ -52,14 +46,16 @@ NBIS
      params.mit_blast_evalue             : ${params.mit_blast_evalue}
      params.mit_bitscore                 : ${params.mit_bitscore}
      params.mit_significant_gene_matches : ${params.mit_significant_gene_matches}
-     params.mit_max_contig_length        : ${params.mit_max_contig_length}
+     params.mit_suspicious_gene_matches  : ${params.mit_suspicious_gene_matches}
+     params.mit_max_scaffold_length      : ${params.mit_max_scaffold_length}
      params.mit_min_span_fraction        : ${params.mit_min_span_fraction}
 
      // Chloroplast parameters
      params.chl_blast_evalue             : ${params.chl_blast_evalue}
      params.chl_bitscore                 : ${params.chl_bitscore}
      params.chl_significant_gene_matches : ${params.chl_significant_gene_matches}
-     params.chl_max_contig_length        : ${params.chl_max_contig_length}
+     params.chl_suspicious_gene_matches  : ${params.chl_suspicious_gene_matches}
+     params.chl_max_scaffold_length      : ${params.chl_max_scaffold_length}
      params.chl_min_span_fraction        : ${params.chl_min_span_fraction}
  """)
 
@@ -102,7 +98,7 @@ workflow ANIMAL_ORGANELLE_FINDER {
         MAKEBLASTDB_MITOCHONDRIA.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{blastfiles}
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
             blastfiles, params.mit_blast_evalue)
-        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
+        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_scaffold_length, params.mit_min_span_fraction, "mitochondria")
         MAPPING(genome_assembly, reads_file)
         DEPTH_FILTER_ANIMAL(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious)
         PLOTING(DEPTH_FILTER_ANIMAL.out.collect())
@@ -126,14 +122,14 @@ workflow PLANT_ORGANELLE_FINDER {
         MAKEBLASTDB_MITOCHONDRIA.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{mitochondria_blastfiles}
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
             mitochondria_blastfiles, params.mit_blast_evalue)
-        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
+        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_scaffold_length, params.mit_min_span_fraction, "mitochondria")
         STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, "mitochondria")
         EXTRACT_MITOCHONDRIA(genome_assembly,
             FILTER_MITOCHONDRIA.out.accessions)
         MAKEBLASTDB_CHLOROPLAST(EXTRACT_MITOCHONDRIA.out.no_mitochondria,EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_CHLOROPLAST.out.mix(EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{chloroplast_blastfiles}
         TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles, params.chl_blast_evalue)
-        FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.chl_bitscore, params.chl_significant_gene_matches, params.chl_suspicious_gene_matches, params.chl_max_contig_length, params.chl_min_span_fraction, "chloroplast")
+        FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.chl_bitscore, params.chl_significant_gene_matches, params.chl_suspicious_gene_matches, params.chl_max_scaffold_length, params.chl_min_span_fraction, "chloroplast")
         MAPPING(genome_assembly, reads_file)
         DEPTH_FILTER_PLANT(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.accessions, FILTER_CHLOROPLAST.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, FILTER_CHLOROPLAST.out.accessions_suspicious )
         PLOTING(DEPTH_FILTER_PLANT.out.collect())
@@ -144,5 +140,5 @@ workflow PLANT_ORGANELLE_FINDER {
 }
 
 workflow.onComplete {
-    log.info ( workflow.success ? "\nFunctional annotation input preparation complete!\n" : "Oops .. something went wrong\n" )
+    log.info ( workflow.success ? "\nOrganelle separation process complete!\n" : "Oops .. something went wrong\n" )
 }
