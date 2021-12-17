@@ -105,10 +105,10 @@ workflow ANIMAL_ORGANELLE_FINDER {
         FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
         MAPPING(genome_assembly, reads_file)
         DEPTH_FILTER_ANIMAL(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious)
-        PLOTING(DEPTH_FILTER_ANIMAL.out.collect(), params.outdir)
-        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, params.outdir, "mitochondria")
+        PLOTING(DEPTH_FILTER_ANIMAL.out.collect())
+        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, "mitochondria")
         EXTRACT_FINAL(genome_assembly,
-            FILTER_MITOCHONDRIA.out.accessions, params.outdir, "mitochondria")
+            FILTER_MITOCHONDRIA.out.accessions, "mitochondria")
     emit:
         blast_result = EXTRACT_FINAL.out[0]
 }
@@ -126,19 +126,19 @@ workflow PLANT_ORGANELLE_FINDER {
         MAKEBLASTDB_MITOCHONDRIA.out.mix(genome_assembly.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{mitochondria_blastfiles}
         TBLASTN_MITOCHONDRIA(reference_mitochondria,
             mitochondria_blastfiles, params.mit_blast_evalue)
-        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.outdir, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
-        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, params.outdir, "mitochondria")
+        FILTER_MITOCHONDRIA(TBLASTN_MITOCHONDRIA.out.output_blast, params.mit_bitscore, params.mit_significant_gene_matches, params.mit_suspicious_gene_matches, params.mit_max_contig_length, params.mit_min_span_fraction, "mitochondria")
+        STATISTICS_MITOCHONDRIA(FILTER_MITOCHONDRIA.out.statistics, FILTER_MITOCHONDRIA.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, "mitochondria")
         EXTRACT_MITOCHONDRIA(genome_assembly,
             FILTER_MITOCHONDRIA.out.accessions)
         MAKEBLASTDB_CHLOROPLAST(EXTRACT_MITOCHONDRIA.out.no_mitochondria,EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { it =~ /.p(hr|in|sq)$/ }.ifEmpty('DBFILES_ABSENT'))
         MAKEBLASTDB_CHLOROPLAST.out.mix(EXTRACT_MITOCHONDRIA.out.no_mitochondria.filter { !(it =~ /[^.]f(ast|n|)a$/) }).unique().collect().set{chloroplast_blastfiles}
         TBLASTN_CHLOROPLAST(reference_chloroplast,chloroplast_blastfiles, params.chl_blast_evalue)
-        FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.outdir, params.chl_bitscore, params.chl_significant_gene_matches, params.chl_suspicious_gene_matches, params.chl_max_contig_length, params.chl_min_span_fraction, "chloroplast")
+        FILTER_CHLOROPLAST(TBLASTN_CHLOROPLAST.out.output_blast, params.chl_bitscore, params.chl_significant_gene_matches, params.chl_suspicious_gene_matches, params.chl_max_contig_length, params.chl_min_span_fraction, "chloroplast")
         MAPPING(genome_assembly, reads_file)
         DEPTH_FILTER_PLANT(MAPPING.out.depth_file, FILTER_MITOCHONDRIA.out.accessions, FILTER_CHLOROPLAST.out.accessions, FILTER_MITOCHONDRIA.out.accessions_suspicious, FILTER_CHLOROPLAST.out.accessions_suspicious )
-        PLOTING(DEPTH_FILTER_PLANT.out.collect(), params.outdir)
-        STATISTICS_CHLOROPLAST(FILTER_CHLOROPLAST.out.statistics, FILTER_CHLOROPLAST.out.accessions, FILTER_CHLOROPLAST.out.accessions_suspicious, params.outdir, "chloroplast")
-        EXTRACT_FINAL(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_CHLOROPLAST.out.accessions, params.outdir, "chloroplast")
+        PLOTING(DEPTH_FILTER_PLANT.out.collect())
+        STATISTICS_CHLOROPLAST(FILTER_CHLOROPLAST.out.statistics, FILTER_CHLOROPLAST.out.accessions, FILTER_CHLOROPLAST.out.accessions_suspicious, "chloroplast")
+        EXTRACT_FINAL(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_CHLOROPLAST.out.accessions, "chloroplast")
     emit:
         blast_result = EXTRACT_FINAL.out[0]
 }

@@ -1,12 +1,12 @@
 process EXTRACT_FINAL {
 
-    publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_${organelle}.fna"
-    publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_nuclear.fna"
+    //publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_${organelle}.fna"
+    //publishDir "${outdir}", mode: 'copy', pattern: "${assembly.baseName}_nuclear.fna"
 
     input:
     path assembly
     path matched_accessions
-    path outdir
+    //path outdir
     val organelle
 
     output:

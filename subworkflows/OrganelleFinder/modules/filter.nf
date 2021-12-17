@@ -1,11 +1,11 @@
 process FILTER {
 
-    publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_statistics_summary.tsv"
+    //publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_statistics_summary.tsv"
 
 
     input:
     path blast_file
-    path outdir
+    //path outdir
     val bitscore
     val organelle_gene_matches
     val suspicious_gene_matches

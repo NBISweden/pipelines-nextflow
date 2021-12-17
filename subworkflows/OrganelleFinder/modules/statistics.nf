@@ -1,7 +1,7 @@
 process STATISTICS {
 
-    publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_organelle_matches_statistics.tsv"
-    publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_suspicious_matches_statistics.tsv"
+    //publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_organelle_matches_statistics.tsv"
+    //publishDir "${outdir}/statistics", mode: 'copy', pattern: "${organelle}_suspicious_matches_statistics.tsv"
 
 
 
@@ -9,7 +9,7 @@ process STATISTICS {
     path statistics_bitfiltered
     path accessions_matchfiltered
     path accessions_suspicious
-    path outdir
+    //path outdir
     val organelle
 
     output:
