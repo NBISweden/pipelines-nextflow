@@ -11,6 +11,7 @@ process EXTRACT_FINAL {
 
     script: 
     """
+    touch ${assembly.baseName}_${organelle}.fna
     cp $assembly ${assembly.baseName}_nuclear.fna
     LINES=\$(cat $matched_accessions)
     for line in \$LINES

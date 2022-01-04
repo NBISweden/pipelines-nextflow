@@ -10,6 +10,7 @@ process EXTRACT_MITOCHONDRIA {
 
     script: 
     """
+    touch ${assembly.baseName}_mitochondria.fna
     cp $assembly ${assembly.baseName}_no_mit.fna
     LINES=\$(cat $matched_accessions)
     for line in \$LINES
