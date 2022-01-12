@@ -26,7 +26,7 @@ nextflow run -profile docker /path/to/OrganelleFinder.nf \
    * `mit_significant_gene_matches`: Threshold for number of unique matches for contig to be classified as mitochondrial (default plant: 5, default animal: 2).
    * `mit_suspicious_gene_matches`: Threshold for number of unique matches for contig to be classified as suspicious (default plant: 2, default animal: 1).
    * `mit_max_scaffold_length`: Max bp length of contig to be classified as mitochondrial (default plant: 2500000, default animal: 100000)
-   * `mit_min_span_fraction`: Minimal match span fraction for contig to be classified as mitochondrial (default plant: 0.8, default animal: 0.8)
+   * `mit_min_span_fraction`: Minimal match span fraction for contig to be classified as mitochondrial (default plant: 0.75, default animal: 0.7)
 
 - Chloroplast parameters:
    * `chl_blast_evalue`: E-value threshold for the chloroplast matches (default: 1e-6).
@@ -34,7 +34,7 @@ nextflow run -profile docker /path/to/OrganelleFinder.nf \
    * `chl_significant_gene_matches`: Threshold for number of unique matches for contig to be classified as chloroplast (default: 9).
    * `chl_suspicious_gene_matches`: Threshold for number of unique matches for contig to be classified as suspicious (default: 2).
    * `chl_max_scaffold_length`: Max bp length of contig to be classified as chloroplast (default: 400000)
-   * `chl_min_span_fraction`: Minimal match span fraction for contig to be classified as chloroplast (default: 0.8)
+   * `chl_min_span_fraction`: Minimal match span fraction for contig to be classified as chloroplast (default: 0.75)
 
 
 Parameters to the workflow is provided by via a params-file that may look as follows:
@@ -54,7 +54,7 @@ mit_bitscore : 100
 mit_significant_gene_matches : 2
 mit_suspicious_gene_matches : 1
 mit_max_scaffold_length : 100000
-mit_min_span_fraction : 0.8
+mit_min_span_fraction : 0.7
 
 ```
 
