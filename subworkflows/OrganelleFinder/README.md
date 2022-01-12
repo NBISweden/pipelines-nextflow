@@ -41,14 +41,14 @@ Parameters to the workflow is provided by via a params-file that may look as fol
 
 `animal_params.yml`:
 ```
-// General parameters
+# General parameters
 genome_assembly : ''
 reference_mitochondria : ''
 reads_file : ''
 input_type : 'animal'
 outdir: './results'
 
-// Mitochondrial parameters
+# Mitochondrial parameters
 mit_blast_evalue : '1e-6'
 mit_bitscore : 100
 mit_significant_gene_matches : 2
