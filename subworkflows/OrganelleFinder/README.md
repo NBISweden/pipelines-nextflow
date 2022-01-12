@@ -41,7 +41,7 @@ Parameters to the workflow is provided by via a params-file that may look as fol
 
 `animal_params.yml`:
 ```
-// General parameters
+# General parameters
 genome_assembly : ''
 reference_mitochondria : ''
 reads_file : ''
