@@ -12,16 +12,14 @@ process DEPTH_FILTER_PLANT {
 
     script:
     """
-    cat $accessions_mit >> accessions.tsv
-    cat $accessions_chl >> accessions.tsv
-    cat $accessions_suspicious_mit >> accessions.tsv
-    cat $accessions_suspicious_chl >> accessions.tsv
-    sort accessions.tsv | uniq > unique_accessions.tsv
-    LINES=\$(cat unique_accessions.tsv)
-    for line in \$LINES
-    do
-        grep \$line $depth_file | sort -k 2,2 -n > \${line}_depth.tsv
-    done
+    cat $accessions_mit \\
+        $accessions_chl \\
+        $accessions_suspicious_mit \\
+        $accessions_suspicious_chl | \\
+        sort -u | \\
+        while read -r line; do
+            grep \$line $depth_file | sort -k 2,2 -n > \${line}_depth.tsv
+        done
     """    
 }
 
