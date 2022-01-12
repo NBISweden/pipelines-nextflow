@@ -48,7 +48,7 @@ reads_file : ''
 input_type : 'animal'
 outdir: './results'
 
-// Mitochondrial parameters
+# Mitochondrial parameters
 mit_blast_evalue : '1e-6'
 mit_bitscore : 100
 mit_significant_gene_matches : 2
