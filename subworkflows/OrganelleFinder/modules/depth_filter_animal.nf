@@ -10,11 +10,8 @@ process DEPTH_FILTER_ANIMAL {
 
     script:
     """
-    cat $accessions_suspicious>>$accessions
-    LINES=\$(cat $accessions)
-    for line in \$LINES
-    do
+    while read -r line; do
         grep \$line $depth_file | sort -k 2,2 -n > \${line}_depth.tsv
-    done
+    done < $accessions_suspicious
     """    
 }
