@@ -1,5 +1,5 @@
 process FILTER {
-
+    
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
@@ -24,7 +24,7 @@ process FILTER {
     """
     touch accessions_matchfiltered.tsv  # Create output files
     touch accessions_suspicious.tsv
-    echo -e "Accession\\tUnique_matches\\tSpan_fraction\\tScaffold_length\\tClass" >> ${organelle}_draft_statistics_summary.tsv # Create header of summary file
+    echo -e "Accession\\tUnique_matches\\tSpan_fraction\\tScaffold_length\\tClass" >> ${organelle}_statistics_summary.tsv # Create header of summary file
     awk '\$12>$bitscore {print}' $blast_file > statistics_${organelle}.tsv  # Filter matches by bitscore
     awk '{print \$2}' statistics_${organelle}.tsv | sort | uniq > ${organelle}_unique_bitscore.tsv  # Extract all unique scaffold headers
     LINES=\$(cat ${organelle}_unique_bitscore.tsv)  # Initialize loop over unique headers
@@ -44,11 +44,11 @@ process FILTER {
         if [ \$unique_count -gt $organelle_gene_matches ] && [ $max_scaffold_length -gt \$tot_length ] && [[ \$span_fraction > $min_span_fraction ]]    # Find organellar scaffolds
         then
             echo \$line >> accessions_matchfiltered.tsv
-            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_draft_statistics_summary.tsv
+            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\t${organelle}" >> ${organelle}_statistics_summary.tsv
         elif [ \$unique_count -gt $suspicious_gene_matches ]    # Find suspicious scaffolds
         then
             echo \$line >> accessions_suspicious.tsv
-            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_draft_statistics_summary.tsv
+            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> $${organelle}_statistics_summary.tsv
         fi
     done
     """    
