@@ -48,7 +48,7 @@ process FILTER {
         elif [ \$unique_count -gt $suspicious_gene_matches ]    # Find suspicious scaffolds
         then
             echo \$line >> accessions_suspicious.tsv
-            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> $${organelle}_statistics_summary.tsv
+            echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_statistics_summary.tsv
         fi
     done
     """    
