@@ -1,5 +1,10 @@
 process FILTER {
 
+    conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
+        'biocontainers/biocontainers:v1.2.0_cv1' }"
+
     input:
     path blast_file
     val bitscore
@@ -46,6 +51,5 @@ process FILTER {
             echo -e "\$line\\t\$unique_count\\t\$span_fraction\\t\$tot_length\\tsuspicious" >> ${organelle}_draft_statistics_summary.tsv
         fi
     done
-    column -t ${organelle}_draft_statistics_summary.tsv > "${organelle}_statistics_summary.tsv" # Reformat tsv file
     """    
 }

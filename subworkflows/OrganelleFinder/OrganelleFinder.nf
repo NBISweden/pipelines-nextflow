@@ -106,7 +106,7 @@ workflow ANIMAL_ORGANELLE_FINDER {
         EXTRACT_FINAL(genome_assembly,
             FILTER_MITOCHONDRIA.out.accessions, "mitochondria")
     emit:
-        blast_result = EXTRACT_FINAL.out[0]
+        final_result = EXTRACT_FINAL.out[0]
 }
 
 workflow PLANT_ORGANELLE_FINDER {
@@ -136,7 +136,7 @@ workflow PLANT_ORGANELLE_FINDER {
         STATISTICS_CHLOROPLAST(FILTER_CHLOROPLAST.out.statistics, FILTER_CHLOROPLAST.out.accessions, FILTER_CHLOROPLAST.out.accessions_suspicious, "chloroplast")
         EXTRACT_FINAL(EXTRACT_MITOCHONDRIA.out.no_mitochondria, FILTER_CHLOROPLAST.out.accessions, "chloroplast")
     emit:
-        blast_result = EXTRACT_FINAL.out[0]
+        final_result = EXTRACT_FINAL.out[0]
 }
 
 workflow.onComplete {
