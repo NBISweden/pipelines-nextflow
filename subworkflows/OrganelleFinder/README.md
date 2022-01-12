@@ -8,13 +8,15 @@ nextflow run -profile docker /path/to/OrganelleFinder.nf \
 ```
 
 ## Usage
-
+Using the pipeline requires space avaliable equal to the genome assembly file size to run to completion. 
+The genome assembly should be nucleotide sequences. The reference organelles should be coding sequences (genes), in FASTA protein format (AAs not nucleotides).
+Note that all genes for a reference should be included, running the pipeline with fewer genes than the gene match thresholds will result in empty statistic outfiles.
 ### Parameters
 
 - General:
-   * `genome_assembly`: Path to FNA genome assembly.
-   * `reference_mitochondria`: Path to FNA reference mitochondria.
-   * `reference_chloroplast`: Path to FNA reference chloroplast (if plant).
+   * `genome_assembly`: Path to (FNA or FASTA) genome assembly.
+   * `reference_mitochondria`: Path to (FNA or FASTA) reference mitochondria.
+   * `reference_chloroplast`: Path to (FNA or FASTA) reference chloroplast (if plant).
    * `reads_file`: Path to PacBio reads file (if present).
    * `input_type`: Type of organism, either 'animal' or 'plant'.
    * `outdir`: Path to outdirectory (Relative pathing has to start with "./").
