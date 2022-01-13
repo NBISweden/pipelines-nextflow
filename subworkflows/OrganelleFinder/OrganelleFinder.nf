@@ -3,7 +3,10 @@
 nextflow.enable.dsl=2
 
 /*
-Authored by Vendela, William and Viktor
+Authored by:
+Vendela Andersson [vendeladelia]
+William Eulau [WilliamEulau]
+Viktor Säde [ViktorSade]
  */
 
 /*
