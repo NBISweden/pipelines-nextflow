@@ -114,15 +114,27 @@ process busco {
     script:
     out = "busco_${fasta.baseName}_${lineage}"
     """
+    # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
+    # Check for container variable initialisation script and source it.
+    if [ -f "/usr/local/env-activate.sh" ]; then
+        # . "/usr/local/env-activate.sh"  # Errors out because of various unbound variables
+        export PATH='/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+        export CONDA_PREFIX='/usr/local'
+        export CONDA_SHLVL='1'
+        export CONDA_DEFAULT_ENV='/usr/local'
+        export CONDA_PROMPT_MODIFIER=''
+        . "/usr/local/etc/conda/activate.d/activate-r-base.sh"
+        . "/usr/local/etc/conda/activate.d/augustus.sh"
+        . "/usr/local/etc/conda/activate.d/openjdk_activate.sh"
+    fi
+    # If the augustus config directory is not writable, then copy to writeable area
     if [ ! -w "\${AUGUSTUS_CONFIG_PATH}" ]; then
         # Create writable tmp directory for augustus
         AUG_CONF_DIR=\$( mktemp -d -p \$PWD )
         cp -r \$AUGUSTUS_CONFIG_PATH/* \$AUG_CONF_DIR
         export AUGUSTUS_CONFIG_PATH=\$AUG_CONF_DIR
+        echo "New AUGUSTUS_CONFIG_PATH=\${AUGUSTUS_CONFIG_PATH}"
     fi
-    # before with buscov4 it was echo "BUSCO_CONFIG_FILE=\$BUSCO_CONFIG_FILE", it stops working for buscov5
-    echo "BUSCO_CONFIG_FILE=\$AUGUSTUS_CONFIG_PATH/myconfig.ini"
-    echo "AUGUSTUS_CONFIG_PATH=\$AUGUSTUS_CONFIG_PATH"
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
     """
 }
