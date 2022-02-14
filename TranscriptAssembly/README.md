@@ -33,7 +33,7 @@ nextflow run -profile nbis,conda /path/to/TranscriptAssembly.nf \
     * `trimmomatic_adapter_path`: Path to trimmomatic adapter sequences.
     * `trimmomatic_clip_options`: Trimmomatic clipping options ( default: 'LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36' ).
 - Hisat2:
-    * `hisat2_options`: Command line options for hisat2, e.g. strandedness (`--hisat2_options ' --fr'`). **Note:** Quote the options and precede `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [Hisat2 Manual](https://ccb.jhu.edu/software/hisat2/manual.shtml) for the full range of options. (Default: `''`).
+    * `hisat2_options`: Command line options for hisat2, e.g. strandedness (`--hisat2_options ' --fr'`). **Note:** Quote the options and precede `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [Hisat2 Manual](http://daehwankimlab.github.io/hisat2/manual/) for the full range of options. (Default: `''`).
 - Stringtie:
     * `stringtie_options`: Command line options for Stringtie, e.g. strandedness (`--stringtie_options ' --fr'`). **Note:** Quote the options and precede `--` with a space, otherwise nextflow interprets it as a workflow parameter. See the [StringTie Manual](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual) for the full range of options. (Default: `''`).
 - MultiQC:
