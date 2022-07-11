@@ -1,0 +1,29 @@
+{
+    "name": "NBIS Genome Annotation Workflow",
+    "homePage": "",
+    "repos": {
+        "nf-core/modules": {
+            "busco": {
+                "git_sha": "9fa6b6c1fc930830c1d819a9273b4ec12ffacb0a"
+            },
+            "fastp": {
+                "git_sha": "9b51362a532a14665f513cf987531f9ea5046b74"
+            },
+            "fastqc": {
+                "git_sha": "49b18b1639f4f7104187058866a8fab33332bdfe"
+            },
+            "hisat2/align": {
+                "git_sha": "233fa70811a03a4cecb2ece483b5c8396e2cee1d"
+            },
+            "hisat2/build": {
+                "git_sha": "233fa70811a03a4cecb2ece483b5c8396e2cee1d"
+            },
+            "multiqc": {
+                "git_sha": "5138acca0985ca01c38a1c4fba917d83772b1106"
+            },
+            "stringtie/stringtie": {
+                "git_sha": "6d88f2da8cc5d586456e801b535cc4213e0fa2f7"
+            }
+        }
+    }
+}

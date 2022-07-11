@@ -34,7 +34,7 @@ Requirements:
 * A container platform (recommended for reproducibility)
     * Singularity
     * Docker
-* The conda package manager if a container platform is not available.
+* The conda/mamba package manager if a container platform is not available.
 * If conda, singularity, or docker is unavailable, all tool dependencies
 must be installed in your PATH.
 
