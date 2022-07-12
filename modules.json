@@ -3,6 +3,9 @@
     "homePage": "",
     "repos": {
         "nf-core/modules": {
+            "blast/makeblastdb": {
+                "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d"
+            },
             "busco": {
                 "git_sha": "9fa6b6c1fc930830c1d819a9273b4ec12ffacb0a"
             },
