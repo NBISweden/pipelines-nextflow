@@ -57,7 +57,12 @@ workflow ABINITIO_TRAINING {
 process SPLIT_MAKER_EVIDENCE {
 
     tag "${maker_evidence.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path maker_evidence
@@ -88,7 +93,12 @@ process SPLIT_MAKER_EVIDENCE {
 process MODEL_SELECTION_BY_AED {
 
     tag "${mrna_gff.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path mrna_gff
@@ -111,7 +121,12 @@ process MODEL_SELECTION_BY_AED {
 process RETAIN_LONGEST_ISOFORM {
 
     tag "${coding_gene_features_gff.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path coding_gene_features_gff
@@ -134,7 +149,12 @@ process RETAIN_LONGEST_ISOFORM {
 process REMOVE_INCOMPLETE_GENE_MODELS {
 
     tag "${coding_gene_features_gff.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path coding_gene_features_gff
@@ -159,7 +179,12 @@ process REMOVE_INCOMPLETE_GENE_MODELS {
 process FILTER_BY_LOCUS_DISTANCE {
 
     tag "${coding_gene_features_gff.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path coding_gene_features_gff
@@ -182,7 +207,12 @@ process FILTER_BY_LOCUS_DISTANCE {
 process EXTRACT_PROTEIN_SEQUENCE {
 
     tag "${gff_file.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path gff_file
@@ -208,7 +238,12 @@ process EXTRACT_PROTEIN_SEQUENCE {
 process BLAST_MAKEBLASTDB {
 
     tag "${fasta_file.baseName} type: $dbtype"
-    label 'Blast'
+    label 'process_medium'
+
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
+        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
     path fasta_file
@@ -231,7 +266,12 @@ process BLAST_MAKEBLASTDB {
 process BLAST_RECURSIVE {
 
     tag "${fasta_file.baseName}"
-    label 'Blast'
+    label 'process_medium'
+
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
+        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
     path fasta_file
@@ -257,7 +297,12 @@ process BLAST_RECURSIVE {
 process GFF_FILTER_BY_BLAST {
 
     tag "${gff_file.baseName}"
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path gff_file
@@ -283,7 +328,12 @@ process GFF_FILTER_BY_BLAST {
 process GFF2GBK {
 
     tag "${gff_file.baseName}"
-    label 'Augustus'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
+        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
     path gff_file
@@ -308,7 +358,12 @@ process GFF2GBK {
 process GBK2AUGUSTUS {
 
     tag "Make Augustus training set: ${genbank_file.baseName}"
-    label 'Augustus'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
+        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
     path genbank_file
@@ -334,7 +389,12 @@ process GBK2AUGUSTUS {
 process AUGUSTUS_TRAINING {
 
     tag "$species_label"
-    label 'Augustus'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
+        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
     path training_file
@@ -365,7 +425,12 @@ process AUGUSTUS_TRAINING {
 
 process CONVERT_GFF2ZFF {
 
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path annotation
@@ -387,6 +452,13 @@ process CONVERT_GFF2ZFF {
 }
 
 process SNAP_TRAINING {
+
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::snap=2013_11_29" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/snap:2013_11_29--hec16e2b_4':
+        'quay.io/biocontainers/snap:2013_11_29--hec16e2b_4' }"
 
     input:
     path training_files
