@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { ABINITIO_TRAINING        } from "$projectDir/subworkflows/abinitio_training"
-include { ANNOTATION_PREPROCESSING } from "$projectDir/subworkflows/annotation_preprocessing"
-include { FUNCTIONAL_ANNOTATION    } from "$projectDir/subworkflows/functional_annotation"
-include { TRANSCRIPT_ASSEMBLY      } from "$projectDir/subworkflows/transcript_assembly"
+include { ABINITIO_TRAINING        } from "$projectDir/subworkflows/abinitio_training/main"
+include { ANNOTATION_PREPROCESSING } from "$projectDir/subworkflows/annotation_preprocessing/main"
+include { FUNCTIONAL_ANNOTATION    } from "$projectDir/subworkflows/functional_annotation/main"
+include { TRANSCRIPT_ASSEMBLY      } from "$projectDir/subworkflows/transcript_assembly/main"
 
 workflow {
 
