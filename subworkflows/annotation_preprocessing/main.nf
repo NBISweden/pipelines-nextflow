@@ -17,7 +17,12 @@ workflow ANNOTATION_PREPROCESSING {
 process ASSEMBLY_PURIFY {
 
     tag "${fasta_file.baseName}"
-    label 'GAAS'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
+        'quay.io/biocontainers/gaas:1.2.0--pl526r35_0' }"
 
     input:
     path fasta_file
@@ -34,13 +39,17 @@ process ASSEMBLY_PURIFY {
     """
     gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
     """
-    // gaas_fasta_purify.pl can be found in the NBIS GAAS repository
 }
 
 process ASSEMBLY_GENERATE_STATS {
 
     tag "${fasta_file.simpleName}"
-    label 'GAAS'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
+        'quay.io/biocontainers/gaas:1.2.0--pl526r35_0' }"
 
     input:
     path fasta_file
@@ -57,12 +66,17 @@ process ASSEMBLY_GENERATE_STATS {
     """
     gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_report
     """
-    // gaas_fasta_statistics.pl can be found in the NBIS GAAS repository
 }
 
 process BUSCO {
 
     tag "$fasta"
+    label 'process_medium'
+
+    conda (params.enable_conda ? "bioconda::busco=5.3.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/busco:5.3.2--pyhdfd78af_0':
+        'quay.io/biocontainers/busco:5.3.2--pyhdfd78af_0' }"
 
     input:
     path fasta
