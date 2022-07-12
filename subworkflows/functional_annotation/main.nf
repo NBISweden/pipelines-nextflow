@@ -42,7 +42,12 @@ workflow FUNCTIONAL_ANNOTATION {
 
 process GFF2PROTEIN {
 
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path gff_file
@@ -66,7 +71,12 @@ process GFF2PROTEIN {
 
 process MAKEBLASTDB {
 
-    label 'blast'
+    label 'process_medium'
+
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
+        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
     path fasta
@@ -96,7 +106,12 @@ process MAKEBLASTDB {
 
 process BLASTP {
 
-    label 'blast'
+    label 'process_medium'
+
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
+        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
     path fasta_file
@@ -120,6 +135,8 @@ process BLASTP {
 }
 
 process INTERPROSCAN {
+
+    // FIXME:Source from path if not in container?
 
     input:
     path protein_fasta
@@ -145,7 +162,12 @@ process INTERPROSCAN {
 
 process MERGE_FUNCTIONAL_ANNOTATION {
 
-    label 'AGAT'
+    label 'process_single'
+
+    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
+        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
     path gff_annotation
