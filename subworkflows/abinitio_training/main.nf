@@ -54,11 +54,13 @@ workflow ABINITIO_TRAINING {
     )
 
 }
+
 process SPLIT_MAKER_EVIDENCE {
 
     tag "${maker_evidence.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -69,7 +71,8 @@ process SPLIT_MAKER_EVIDENCE {
 
     output:
     path "maker_results_noAbinitio_clean/mrna.gff", emit: transcripts
-    path "maker_results_noAbinitio_clean/*", emit: all
+    path "maker_results_noAbinitio_clean/*", emit: all // FIXME: check
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -77,6 +80,7 @@ process SPLIT_MAKER_EVIDENCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_separate_by_record_type.pl -g ${maker_evidence} -o maker_results_noAbinitio_clean
     if test -f maker_results_noAbinitio_clean/mrna.gff && test -f maker_results_noAbinitio_clean/transcript.gff; then
@@ -86,8 +90,12 @@ process SPLIT_MAKER_EVIDENCE {
     elif test -f maker_results_noAbinitio_clean/transcript.gff; then
         cp maker_results_noAbinitio_clean/transcript.gff maker_results_noAbinitio_clean/mrna.gff
     fi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
-    // agat_sp_separate_by_record_type.pl is a script from AGAT
 }
 
 process MODEL_SELECTION_BY_AED {
@@ -95,6 +103,7 @@ process MODEL_SELECTION_BY_AED {
     tag "${mrna_gff.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -105,6 +114,7 @@ process MODEL_SELECTION_BY_AED {
 
     output:
     path "codingGeneFeatures.filter.gff", emit: selected_models
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -112,10 +122,15 @@ process MODEL_SELECTION_BY_AED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_filter_feature_by_attribute_value.pl --gff ${mrna_gff} --value ${params.model_selection_value} -a _AED -t ">" -o codingGeneFeatures.filter.gff
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
-    // agat_sp_filter_feature_by_attribute_value.pl is a script from AGAT
 }
 
 process RETAIN_LONGEST_ISOFORM {
@@ -123,6 +138,7 @@ process RETAIN_LONGEST_ISOFORM {
     tag "${coding_gene_features_gff.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -133,6 +149,7 @@ process RETAIN_LONGEST_ISOFORM {
 
     output:
     path "codingGeneFeatures.filter.longest_cds.gff", emit: longest_isoform
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -140,10 +157,15 @@ process RETAIN_LONGEST_ISOFORM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_keep_longest_isoform.pl -f ${coding_gene_features_gff} -o codingGeneFeatures.filter.longest_cds.gff
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
-    // agat_sp_keep_longest_isoform.pl is a script from AGAT
 }
 
 process REMOVE_INCOMPLETE_GENE_MODELS {
@@ -151,6 +173,7 @@ process REMOVE_INCOMPLETE_GENE_MODELS {
     tag "${coding_gene_features_gff.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -162,6 +185,7 @@ process REMOVE_INCOMPLETE_GENE_MODELS {
 
     output:
     path "codingGeneFeatures.filter.longest_cds.complete.gff", emit: complete_gene_models
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -169,11 +193,16 @@ process REMOVE_INCOMPLETE_GENE_MODELS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_filter_incomplete_gene_coding_models.pl --gff ${coding_gene_features_gff} \
         -f ${genome_fasta} -o codingGeneFeatures.filter.longest_cds.complete.gff
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
-    // agat_sp_filter_incomplete_gene_coding_models.pl is a script from AGAT
 }
 
 process FILTER_BY_LOCUS_DISTANCE {
@@ -181,6 +210,7 @@ process FILTER_BY_LOCUS_DISTANCE {
     tag "${coding_gene_features_gff.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -191,6 +221,7 @@ process FILTER_BY_LOCUS_DISTANCE {
 
     output:
     path "codingGeneFeatures.filter.longest_cds.complete.good_distance.gff", emit: distanced_models
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -198,10 +229,15 @@ process FILTER_BY_LOCUS_DISTANCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_filter_by_locus_distance.pl --gff ${coding_gene_features_gff} -d ${params.locus_distance} -o codingGeneFeatures.filter.longest_cds.complete.good_distance.gff
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
-    // agat_sp_filter_by_locus_distance.pl is a script from AGAT
 }
 
 process EXTRACT_PROTEIN_SEQUENCE {
@@ -209,6 +245,7 @@ process EXTRACT_PROTEIN_SEQUENCE {
     tag "${gff_file.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -220,6 +257,7 @@ process EXTRACT_PROTEIN_SEQUENCE {
 
     output:
     path "${gff_file.baseName}_proteins.fasta", emit: proteins
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -227,12 +265,16 @@ process EXTRACT_PROTEIN_SEQUENCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_extract_sequences.pl -o ${gff_file.baseName}_proteins.fasta -f $genome_fasta \\
         -p -cfs -cis -ct ${params.codon_table} --g $gff_file
-    """
-    // agat_sp_extract_sequences.pl is a script from AGAT
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
+    """
 }
 
 process BLAST_MAKEBLASTDB {
@@ -249,7 +291,8 @@ process BLAST_MAKEBLASTDB {
     path fasta_file
 
     output:
-    path "*.{phr,pin,psq}"
+    path "*.{phr,pin,psq}", emit: db  // FIXME: Include inputs
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -278,7 +321,8 @@ process BLAST_RECURSIVE {
     path blastdb
 
     output:
-    path "${fasta_file.baseName}_blast.tsv"
+    path "${fasta_file.baseName}_blast.tsv", emit: tsv
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -299,6 +343,7 @@ process GFF_FILTER_BY_BLAST {
     tag "${gff_file.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
@@ -310,6 +355,7 @@ process GFF_FILTER_BY_BLAST {
 
     output:
     path "${gff_file.baseName}_blast-filtered.gff3", emit: blast_filtered
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -317,12 +363,16 @@ process GFF_FILTER_BY_BLAST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_sp_filter_by_mrnaBlastValue.pl --gff $gff_file --blast $blast_file \\
         --outfile ${gff_file.baseName}_blast-filtered.gff3
-    """
-    // agat_sp_filter_by_mrnaBlastValue.pl is a script from AGAT
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
+    """
 }
 
 process GFF2GBK {
@@ -340,7 +390,8 @@ process GFF2GBK {
     path genome_fasta
 
     output:
-    path "${gff_file.baseName}.gbk"
+    path "${gff_file.baseName}.gbk", gbk
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -372,6 +423,7 @@ process GBK2AUGUSTUS {
     path "${genbank_file}.train", emit: training_data
     path "${genbank_file}.test", emit: testing_data
     path "${genbank_file}", emit: genbank_file
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -404,6 +456,7 @@ process AUGUSTUS_TRAINING {
     output:
     path "${species_label}_run.log"
     path "${species_label}", emit: training_model
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -420,7 +473,6 @@ process AUGUSTUS_TRAINING {
     augustus --species=$species_label $test_file | tee ${species_label}_run.log
     mv config/species/${species_label} .
     """
-
 }
 
 process CONVERT_GFF2ZFF {
@@ -437,7 +489,8 @@ process CONVERT_GFF2ZFF {
     path genome
 
     output:
-    path "*.{ann,dna}"
+    path "*.{ann,dna}", emit: zff
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -445,9 +498,15 @@ process CONVERT_GFF2ZFF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 0.9.2  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_convert_sp_gff2zff.pl --gff $annotation \\
         --fasta $genome -o ${genome.baseName}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: $VERSION
+    END_VERSIONS
     """
 }
 
@@ -466,6 +525,7 @@ process SNAP_TRAINING {
 
     output:
     path "*.hmm", emit: training_model
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
