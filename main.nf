@@ -9,13 +9,13 @@ include { TRANSCRIPT_ASSEMBLY      } from "$projectDir/subworkflows/transcript_a
 
 workflow {
 
-    log.info """
+    log.info '''
          _  _ ___ ___ ___ 
-        | \| | _ )_ _/ __|
-        | .` | _ \| |\__ \
-        |_|\_|___/___|___/ Annotation Service
+        | \\| | _ )_ _/ __|
+        | .` | _ \\| |\\__ \\
+        |_|\\_|___/___|___/ Annotation Service
 
-    """
+    '''
 
     def valid_subworkflows = [ 'abinitio_training', 'annotation_preprocessing', 'functional_annotation', 'transcript_assembly' ]
     if( ! params.subworkflow in valid_subworkflows ){
