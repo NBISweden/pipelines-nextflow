@@ -52,6 +52,7 @@ process FASTQC {
 
     output:
     path ("fastqc_${sample_id}_logs"), emit: logs
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -81,6 +82,7 @@ process FASTP {
     output:
     tuple val(sample), path('*fastp-trimmed*.fastq.gz'), emit: trimmed_reads
     path "${sample}_fastp.json"                        , emit: json
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -121,6 +123,7 @@ process HISAT2_INDEX {
 
     output:
     path('*.ht2'), emit: indices
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -152,6 +155,7 @@ process HISAT2 {
     path "${sample}_sorted.bam"    , emit: bam
     path "${sample}_splicesite.txt", emit: splicesites
     path "*hisat2-summary.txt"     , emit: summary
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -192,6 +196,7 @@ process STRINGTIE {
 
     output:
     path "${bam.baseName}-transcripts.gtf", emit gtf_transcripts
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -225,6 +230,7 @@ process MULTIQC {
     output:
     path "*multiqc_report.html", emit: report
     path "*_data"              , emit: data
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -234,5 +240,9 @@ process MULTIQC {
     def prefix = task.ext.prefix ?: "multiqc"
     """
     multiqc . -c $multiqc_config
+
+    "${task.process}":
+        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
+    END_VERSIONS
     """
 }

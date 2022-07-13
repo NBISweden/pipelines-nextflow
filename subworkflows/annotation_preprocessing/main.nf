@@ -19,6 +19,7 @@ process ASSEMBLY_PURIFY {
     tag "${fasta_file.baseName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
@@ -28,7 +29,8 @@ process ASSEMBLY_PURIFY {
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa"
+    path "${fasta_file.baseName}_purified/${fasta_file.baseName}_purified.fa", emit: fasta
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,8 +38,14 @@ process ASSEMBLY_PURIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 1.2.0  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gaas_fasta_purify.pl --infile $fasta_file --size ${params.min_length} --output ${fasta_file.baseName}_purified
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gaas: $VERSION
+    END_VERSIONS
     """
 }
 
@@ -46,6 +54,7 @@ process ASSEMBLY_GENERATE_STATS {
     tag "${fasta_file.simpleName}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
@@ -55,7 +64,8 @@ process ASSEMBLY_GENERATE_STATS {
     path fasta_file
 
     output:
-    path "${fasta_file.baseName}_report"
+    path "${fasta_file.baseName}_report", emit: report
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,8 +73,14 @@ process ASSEMBLY_GENERATE_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = 1.2.0  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gaas_fasta_statistics.pl --infile $fasta_file --output ${fasta_file.baseName}_report
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gaas: $VERSION
+    END_VERSIONS
     """
 }
 
@@ -83,7 +99,8 @@ process BUSCO {
     each lineage
 
     output:
-    path out
+    path out, emit: busco
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -115,5 +132,10 @@ process BUSCO {
         echo "New AUGUSTUS_CONFIG_PATH=\${AUGUSTUS_CONFIG_PATH}"
     fi
     busco -c ${task.cpus} -i $fasta -l $lineage -m genome --out $out
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+    END_VERSIONS
     """
 }
