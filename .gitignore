@@ -1,4 +1,5 @@
 .nextflow*
-pipeline_report/
 results/
 work/
+
+.DS_Store
