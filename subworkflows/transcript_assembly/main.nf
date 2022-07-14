@@ -29,9 +29,9 @@ workflow TRANSCRIPT_ASSEMBLY {
     )
     STRINGTIE_STRINGTIE ( HISAT2_ALIGN.out.bam, [] )
     MULTIQC(
-        FASTQC.out.zip.mix( 
-            FASTP.out.log, 
-            HISAT2_ALIGN.out.summary 
+        FASTQC.out.zip.map{ meta, log -> log }.mix( 
+            FASTP.out.log.map{ meta, log -> log }, 
+            HISAT2_ALIGN.out.summary.map{ meta, log -> log } 
         ).collect(),
         [ file( params.multiqc_config, checkIfExists: true ), [] ]
     )
@@ -114,9 +114,7 @@ process HISAT2_BUILD {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hisat2=2.2.0 bioconda::samtools=1.15.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:0e773bb207600fcb4d38202226eb20a33c7909b6-0' :
-        'quay.io/biocontainers/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:0e773bb207600fcb4d38202226eb20a33c7909b6-0' }"
+    container "nbisweden/hisat2:2.1.0"
 
     input:
     path( fasta )
@@ -154,9 +152,7 @@ process HISAT2_ALIGN {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hisat2=2.2.0 bioconda::samtools=1.15.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:0e773bb207600fcb4d38202226eb20a33c7909b6-0' :
-        'quay.io/biocontainers/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:0e773bb207600fcb4d38202226eb20a33c7909b6-0' }"
+    container "nbisweden/hisat2:2.1.0"
 
     input:
     tuple val(meta), path(reads)
