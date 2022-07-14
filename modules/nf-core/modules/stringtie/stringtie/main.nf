@@ -12,10 +12,10 @@ process STRINGTIE_STRINGTIE {
     path  gtf
 
     output:
-    tuple val(meta), path("*.coverage.gtf")   , emit: coverage_gtf
+    tuple val(meta), path("*.coverage.gtf")   , emit: coverage_gtf, optional: true
     tuple val(meta), path("*.transcripts.gtf"), emit: transcript_gtf
     tuple val(meta), path("*.abundance.txt")  , emit: abundance
-    tuple val(meta), path("*.ballgown")       , emit: ballgown
+    tuple val(meta), path("*.ballgown")       , emit: ballgown, optional: true
     path  "versions.yml"                      , emit: versions
 
     when:
@@ -35,11 +35,11 @@ process STRINGTIE_STRINGTIE {
     stringtie \\
         $bam \\
         $strandedness \\
-        -G $gtf \\
+        ${ gtf ? "-G $gff" : "" } \\
         -o ${prefix}.transcripts.gtf \\
         -A ${prefix}.gene.abundance.txt \\
-        -C ${prefix}.coverage.gtf \\
-        -b ${prefix}.ballgown \\
+        ${ gtf ? "-C ${prefix}.coverage.gtf" : "" } \\
+        ${ gtf ? "-b ${prefix}.ballgown" : "" } \\
         -p $task.cpus \\
         $args
 
