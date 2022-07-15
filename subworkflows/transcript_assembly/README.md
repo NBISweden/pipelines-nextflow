@@ -1,6 +1,6 @@
 # Transcript assembly pipeline
 
-## Quickstart
+## Quick start
 
 Run workflow using the singularity profile
 
