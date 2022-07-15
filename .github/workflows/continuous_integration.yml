@@ -24,7 +24,7 @@ jobs:
         workflow:
           - 'abinitio_training'
           - 'annotation_preprocessing'
-          # - 'functional_annotation'
+          - 'functional_annotation'
           - 'transcript_assembly'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
