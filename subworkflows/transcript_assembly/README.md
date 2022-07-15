@@ -46,6 +46,7 @@ process {
 ```
 
 See [Transcript Assembly modules config](../../config/transcript_assembly_modules.config) for the default tool configuration.
+
 ## Workflow Stages
 
 1. Read QC.
