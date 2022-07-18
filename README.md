@@ -37,7 +37,7 @@ Requirements:
 * Nextflow
 * A container platform (recommended) such as Singularity or Docker, or the
   conda/mamba package manager if a container platform is not available.
-  If containers or conda/mamba are unavailable, then all tool dependencies
+  If containers or conda/mamba are unavailable, then tool dependencies
   must be accessible from your `PATH`.
 
 ### Nextflow
@@ -81,6 +81,7 @@ genome: '/path/to/genome'
 busco_lineage:
   - 'eukaryota_odb10'
   - 'bacteria_odb10'
+outdir: '/path/to/save/results'
 ```
 
 See the workflow specific README's for workflow parameter details.
@@ -125,6 +126,7 @@ See the workflow specific README's for workflow parameter details.
 * **nbis**: A profile for the NBIS annotation cluster. Tasks are submitted to the SLURM workload
   manager, and use the disk space `/scratch` for task execution. Software should be managed using one
   of the general purpose profiles above.
+* **gitpod**: A profile to set local executor settings in the Gitpod environment.
 * **test**: A profile supplying test data to check if the workflows run on your system.
 * **pipeline_report**: Adds a folder in the `outdir` which include workflow execution reports.
 

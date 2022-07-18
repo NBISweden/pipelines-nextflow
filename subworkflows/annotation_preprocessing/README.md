@@ -1,73 +1,64 @@
 # Annotation preprocessing pipeline
 
-## Quickstart (NBIS Staff)
+The annotation preprocessing workflow cleans contigs in an assembly (parameter: `genome`),
+calculates assembly statistics pre and post cleaning, along with Busco scores post cleaning
+(parameter: `busco_lineage`).
 
-```bash
-module load Singularity
-nextflow run -profile nbis,singularity /path/to/AnnotationPreprocessing.nf \
- --genome '/path/to/genome_assembly.fasta' \
- --outdir 'results' \
- --min_length '1000'
+## Quick start
+
+Run workflow using the singularity profile:
+
+`params.yml`:
+
+```yml
+subworkflow: 'annotation_preprocessing'
+genome: '/path/to/genome/assembly.fasta'
+busco_lineage:
+  - 'eukaryota_odb10'
+  - 'bacteria_odb10'
+outdir: '/path/to/save/results'
 ```
 
-Or:
+Command line:
 
 ```bash
-nextflow run -profile nbis,conda /path/to/AnnotationPreprocessing.nf \
- --genome '/path/to/genome_assembly.fasta' \
- --outdir 'results' \
- --min_length '1000'
+nextflow run main.nf \
+    -profile singularity \
+    -params-file params.yml
 ```
 
-## Usage
-
-### Parameters
+## Parameters
 
 - General:
   - `genome`: The path to the genome assembly in quotes.
   - `outdir`: The name of the results folder.
-  - `min_length`: The minimum_length for fasta sequences in the assembly to be (default: 1000).
 - Busco:
   - `busco_lineage`: The busco lineages to compare against (default: '[ 'eukaryota_odb10', 'bacteria_odb10' ]').
+  - `busco_lineages_path`: The folder where busco lineages have been downloaded for shared use (default: unset -
+    the selected busco lineage is downloaded by each process).
 
-Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
+### Tool specific parameters
 
-`params.config`:
+Process specific options are passed by overriding the `ext.args` variable using a process selector in a configuration file.
 
-```
-// Workflow parameters
-params.genome = '/path/to/genome'
-params.outdir = '/path/to/results'
-params.min_length = 1000
- // Use `busco --list-datasets` for full list of available lineage sets
-params.busco_lineage = [ 'eukaryota_odb10', 'bacteria_odb10' ]
+`nextflow.config`:
 
-// Nextflow parameters
-resume = true
-workDir = '/path/to/temporary/workspace'
-conda.cacheDir = "$HOME/.nextflow/conda"
-singularity.cacheDir = "$HOME/.nextflow/singularity"
+```nextflow
+process {
+    withName: 'ASSEMBLY_PURIFY' {
+        ext.args   = '--size 1000'
+    }
+}
 ```
 
-Run nextflow with config file:
+See [Annotation preprocessing modules config](../../config/annotation_preprocessing_modules.config) for the default tool configuration.
 
-```bash
-# Open screen terminal
-screen -S my_nextflow_analysis
-# Load Nextflow environment with conda
-conda activate nextflow-env
-# Load Singularity for Nextflow to use -profile singularity
-module load Singularity
-# Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity /path/to/AnnotationPreprocessing.nf
-```
-
-### Workflow Stages
+## Workflow Stages
 
 1. Filter: Remove fasta sequences less than `min_length` bases.
 2. Summarise and plot assembly metrics.
 3. Run BUSCO on filtered assembly.
 
-### Known issues
+## Known issues
 
 1. The Busco conda package does not resolve dependencies when `channel_priority: strict` is used.

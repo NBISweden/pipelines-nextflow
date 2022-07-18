@@ -1,8 +1,13 @@
 # Transcript assembly pipeline
 
+The transcript assembly workflow performs genome guided assembly of transcripts. Reads (parameter: `reads`),
+either single-end (parameter: `single-end: true`) or paired-end (parameter: `single-end: false`), are
+adapter-trimmed (FastP) and then aligned (Hisat2) against a genome (parameter: `genome`). Transcripts are
+constructed using StringTie.
+
 ## Quick start
 
-Run workflow using the singularity profile
+Run workflow using the singularity profile:
 
 `params.yml`:
 
