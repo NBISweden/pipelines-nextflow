@@ -1,9 +1,0 @@
-# conda env create -f environment.yml
-name: snap
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-
-dependencies:
-  - snap=2013_11_29

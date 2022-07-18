@@ -1,9 +1,0 @@
-# conda env create -f environment.yml
-name: blast
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-
-dependencies:
-  - blast=2.9.0
