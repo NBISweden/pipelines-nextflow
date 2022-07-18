@@ -1,80 +1,63 @@
 # Abinitio training pipeline
 
-## Quickstart (NBIS Staff)
+The abinitio training workflow takes an assembly (parameter:`genome`) and
+an evidence file from Maker (parameter:`maker_evidence_gff`) to filter
+gene models and create training and test data sets for abinitio evidence
+driven prediction in Maker.
 
-```bash
-module load Singularity
-nextflow run -profile nbis,singularity /path/to/AbinitioTraining.nf \
-  --genome '/path/to/genome_assembly.fasta' \
-  --maker_evidence_gff 'path/to/annotation.gff3'
+## Quick start
+
+Run workflow using the singularity profile:
+
+`params.yml`:
+
+```yml
+subworkflow: 'abinitio_training'
+genome: '/path/to/genome/assembly.fasta'
+maker_evidence_gff: '/path/to/evidence/annotation.gff'
+species_label: 'species_name'
+codon_table: 1
+outdir: '/path/to/save/results'
 ```
 
-Or:
+Command line:
+
 ```bash
-nextflow run -profile nbis,conda /path/to/AbinitioTraining.nf \
-  --genome '/path/to/genome_assembly.fasta' \
-  --maker_evidence_gff 'path/to/annotation.gff3'
+nextflow run main.nf \
+    -profile singularity \
+    -params-file params.yml
 ```
 
-
-## Usage
-
-### Parameters
+## Parameters
 
 - General:
-    * `maker_evidence_gff`: Path to the GFF annotation.
-    * `genome`: Path to the genome assembly.
-    * `outdir`: Path to the results folder.
-    * `species_label`: A species label for the training data.
-- Model selection:
-    * `model_selection_value`: Value of AED confidence value to select by.
-- Filter models by locus distance:
-    * `locus_distance`: Value of the minimum distance between two loci to be selected (default: 3000).
-- Extract protein sequence:
-    * `codon_table`: The number of the codon table to use for translation (default: 1).
-- Augustus:
-    * `flank_size`: The size of the flank region to include (default: 1000).
-    * `test_size`: The size of the test data set (default: 100).
-    * `maker_species_publishdir`: A shared directory where a copy of the augustus `species_label` profile is saved.
+  - `maker_evidence_gff`: Path to the GFF annotation.
+  - `genome`: Path to the genome assembly.
+  - `outdir`: Path to the results folder.
+  - `species_label`: A species label for the training data.
+  - `maker_species_publishdir`: A shared directory where a copy of the augustus `species_label` profile is saved.
+  - `codon_table`: The number of the codon table to use for translation (default: 1).
+  - `flank_region_size`: The size of the flank region to include (default: 1000).
 
-Parameters to the workflow can be provided either using `--parameter` notation or via a config file as follows:
+### Tool specific parameters
 
-`params.config`:
-```
-// Workflow parameters
-params.maker_evidence_gff = "/path/to/maker/evidence.gff"
-params.genome = "/path/to/genome/assembly.fasta"
-params.outdir = "results"
-params.species_label = 'test_species'  // e.g. 'asecodes_parviclava'
-params.model_selection_value = 0.3
-params.locus_distance = 3000
-params.codon_table = 1
-params.test_size = 100
-params.flank_region_size = 1000
-params.maker_species_publishdir = '/path/to/shared/maker/folder/' // e.g. '/projects/references/augustus/config/species/'
+Process specific options are passed by overriding the `ext.args` variable using a process selector in a configuration file.
 
-// Nextflow parameters
-resume = true
-workDir = '/path/to/temporary/workspace'
-conda.cacheDir = "$HOME/.nextflow/conda"
-singularity.cacheDir = "$HOME/.nextflow/singularity"
+`nextflow.config`:
+
+```nextflow
+process {
+    withName: 'MODEL_SELECTION_BY_AED' {
+        ext.args = '--value 0.3 -a _AED -t ">"'
+    }
+}
 ```
 
-Run nextflow with config file:
-```bash
-# Open screen terminal
-screen -S my_nextflow_analysis
-# Load Nextflow environment with conda
-conda activate nextflow-env
-# Load Singularity for Nextflow to use -profile singularity
-module load Singularity
-# Run Nextflow analysis
-nextflow run -c params.config -profile nbis,singularity /path/to/AbinitioTraining.nf
-```
+See [Abinitio training modules config](../../config/abinitio_training_modules.config) for the default tool configuration.
 
 ## Workflow Stages
 
-1. Separate maker evidence into .
+1. Separate maker evidence by record type.
 2. Select model by AED.
 3. Keep the longest isoform.
 4. Remove incomplete gene models.
