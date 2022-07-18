@@ -1,9 +1,0 @@
-# conda env create -f environment.yml
-name: busco
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-
-dependencies:
-  - busco=5.2.2
