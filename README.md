@@ -2,9 +2,41 @@
 
 ## Table of Contents
 
+* [Overview](#overview)
 * [Citation](#citation)
 * [Installation and Usage](#installation-and-usage)
 * [Available pipelines](#available-pipelines)
+
+## Overview
+
+This Nextflow workflow is a compilation of several subworkflows for different stages of
+genome annotation. Specifically:
+
+* [Annotation preprocessing](./subworkflows/annotation_preprocessing/README.md)
+* [Abinitio Training](./subworkflows/abinitio_training/README.md)
+* [Functional annotation](./subworkflows/functional_annotation/README.md)
+* [Transcript assembly](./subworkflows/transcript_assembly/README.md)
+
+where the overall genome annotation process is:
+
+```mermaid
+graph TD
+  preprocessing[Annotation Preprocessing] --> evidenceAlignment[Evidence alignment]
+  transcriptAssembly[Transcript Assembly] --> evidenceAlignment
+  evidenceAlignment --> evidenceMaker[Evidence-based Maker]
+  denovoRepeatLibrary[De novo Repeat Library] --> evidenceMaker
+  transcriptAssembly --> pasa[PASA]
+  preprocessing --> pasa
+  pasa --> evidenceMaker
+  evidenceMaker --> abinitioTraining[Abinitio Training]
+  abinitioTraining --> abinitioMaker[Abinitio-based Maker]
+  evidenceMaker --> abinitioMaker
+  pasa --> functionalAnnotation[Functional Annotation]
+  abinitioMaker --> functionalAnnotation
+  functionalAnnotation --> EMBLmyGFF3
+```
+
+The subworkflow is selected using the `subworkflow` parameter.
 
 ## Citation
 
@@ -71,7 +103,8 @@ nextflow run NBISweden/pipelines-nextflow \
 ```
 
 where `-profile` selects from a predefined profile (select here for [available profiles](#profiles)),
-`-c workflow.config` loads a custom configuration for altering existing process settings ( such as
+`-c workflow.config` loads a custom configuration for altering existing process settings (defined
+in `nextflow.config` - loaded by default, such as the
 number of cpus, time allocation, memory, output prefixes and tool command-line options ). The
 `-params-file` is a YAML formatted file listing workflow parameters, e.g.
 
@@ -83,13 +116,6 @@ busco_lineage:
   - 'bacteria_odb10'
 outdir: '/path/to/save/results'
 ```
-
-See the workflow specific README's for workflow parameter details.
-
-* [Abinitio Training parameters](./subworkflows/abinitio_training/README.md)
-* [Annotation preprocessing parameters](./subworkflows/annotation_preprocessing/README.md)
-* [Functional annotation parameters](./subworkflows/functional_annotation/README.md)
-* [Transcript assembly parameters](./subworkflows/transcript_assembly/README.md)
 
 > **Note**
 > If running on a compute cluster infrastructure, `nextflow` must be able to communicate
