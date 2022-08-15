@@ -23,7 +23,7 @@ outdir: '/path/to/save/results'
 Command line:
 
 ```bash
-nextflow run main.nf \
+nextflow run NBISweden/pipelines-nextflow \
     -profile singularity \
     -params-file params.yml
 ```
