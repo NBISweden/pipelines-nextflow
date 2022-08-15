@@ -37,7 +37,8 @@ nextflow run NBISweden/pipelines-nextflow \
 
 ### Tool specific parameters
 
-Process specific options are passed by overriding the `ext.args` variable using a process selector in a configuration file.
+In these workflows, the Nextflow process directive `ext.args` is used to inject command line tool parameters directly to the shell script.
+These command line tool parameters can be changed by overriding the `ext.args` variable for the respective process in a configuration file.
 
 `nextflow.config`:
 
