@@ -5,7 +5,6 @@
 * [Overview](#overview)
 * [Citation](#citation)
 * [Installation and Usage](#installation-and-usage)
-* [Available pipelines](#available-pipelines)
 
 ## Overview
 
@@ -179,22 +178,3 @@ outdir: '/path/to/save/results'
 >     }
 > }
 > ```
-
-Note: The FunctionalAnnotation pipeline needs one tool installed in the `PATH` along with its databases.
-See [FunctionalAnnotation](./FunctionalAnnotation) for details.
-
-## Available pipelines
-
-See their respective READMEs for operation instructions.
-
-* [Abinitio training](./subworkflows/abinitio_training/README.md):
-A pipeline for creating a training and testing data set for Augustus and Snap.
-
-* [Annotation preprocessing](./subworkflows/annotation_preprocessing/README.md):
-A pipeline for preprocessing genome assemblies in preparation for genome annotation.
-
-* [Functional annotation](./subworkflows/functional_annotation/README.md):
-A pipeline for functional annotation.
-
-* [Transcript assembly](./subworkflows/transcript_assembly/README.md):
-A transcript assembly pipeline using hisat2 and stringtie.
