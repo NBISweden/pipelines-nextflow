@@ -12,9 +12,9 @@ This Nextflow workflow is a compilation of several subworkflows for different st
 genome annotation. Specifically:
 
 * [Annotation preprocessing](./subworkflows/annotation_preprocessing/README.md)
+* [Transcript assembly](./subworkflows/transcript_assembly/README.md)
 * [Abinitio Training](./subworkflows/abinitio_training/README.md)
 * [Functional annotation](./subworkflows/functional_annotation/README.md)
-* [Transcript assembly](./subworkflows/transcript_assembly/README.md)
 
 where the overall genome annotation process is:
 
