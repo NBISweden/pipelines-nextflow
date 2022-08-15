@@ -24,7 +24,7 @@ graph TD
   preprocessing[Annotation Preprocessing] --> evidenceAlignment[Evidence alignment]
   transcriptAssembly[Transcript Assembly] --> evidenceAlignment
   evidenceAlignment --> evidenceMaker[Evidence-based Maker]
-  denovoRepeatLibrary[De novo Repeat Library] --> evidenceMaker
+  denovoRepeatLibrary[De novo Repeat Library] ---> evidenceMaker
   transcriptAssembly --> pasa[PASA]
   preprocessing --> pasa
   pasa --> evidenceMaker
