@@ -1,20 +1,15 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Continuous Integration
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events but only for the master branch, or add_actions branch
 on:
   push:
     branches: [ master, add_actions ]
   pull_request:
     branches: [ master, add_actions ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a job called "test"
-  test:
-    # The type of runner that the job will run on
+  test_workflow:
     runs-on: ubuntu-latest
 
     env:
@@ -23,15 +18,14 @@ jobs:
 
     strategy:
       matrix:
-        nxf_ver: ['20.01.0', '']
+        nxf_ver: ['21.10.6', '']
         profile:
-          # - conda
           - docker
         workflow:
-          - ${GITHUB_WORKSPACE}/AbinitioTraining
-          - ${GITHUB_WORKSPACE}/AnnotationPreprocessing
-          # - ${GITHUB_WORKSPACE}/FunctionalAnnotation
-          - ${GITHUB_WORKSPACE}/TranscriptAssembly
+          - 'abinitio_training'
+          - 'annotation_preprocessing'
+          - 'functional_annotation'
+          - 'transcript_assembly'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -53,4 +47,4 @@ jobs:
     #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
-      run: nextflow run -profile test,${{ matrix.profile }} ${{ matrix.workflow }}
+      run: nextflow run -profile test,${{ matrix.profile }} main.nf --subworkflow ${{ matrix.workflow }}
