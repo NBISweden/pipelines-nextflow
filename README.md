@@ -155,6 +155,8 @@ outdir: '/path/to/save/results'
 * **test**: A profile supplying test data to check if the workflows run on your system.
 * **pipeline_report**: Adds a folder in the `outdir` which include workflow execution reports.
 
+##### Uppmax profile good practices
+
 > **Note**
 >
 > Nextflow is enabled using the module system on Uppmax.
@@ -178,3 +180,40 @@ outdir: '/path/to/save/results'
 >     }
 > }
 > ```
+
+##### NBIS profile good practices
+
+> **Note**
+>
+> Both singularity and conda are installed, however singularity is
+> preferred for speed and reproducibility.
+>
+> ```bash
+> module load Singularity
+> ```
+> 
+> The following configuration in your `workflow.config` is recommended when running workflows on 
+> the annotation cluster.
+> 
+> ```nextflow
+> // Set your work directory to a folder on the /active partition
+> workDir = '/active/<project_id>/nobackup/work'
+> // Restart workflows from last successful execution (i.e. use cached results where possible).
+> resume = true
+> // Add any overriding process directives here, e.g.,
+> process {
+>     withName: 'BLAST_BLASTN' {
+>         cpus = 12
+>         time = 2.d
+>     }
+> }
+> // Use a shared cache folder singularity images
+> singularity.cacheDir = '/active/nxf_singularity_cachedir'
+> // If using conda, use a shared cache for conda environments
+> conda.cacheDir = '/active/nxf_conda_cachedir'
+> // Use mamba for speed over conda
+> conda.useMamba = true
+> ```
+> 
+> Project results should be published to `/projects`, work directories should be on
+> `/active`, while computations are performed on the local `/scratch` partitions.
