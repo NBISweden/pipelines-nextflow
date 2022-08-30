@@ -191,10 +191,10 @@ outdir: '/path/to/save/results'
 > ```bash
 > module load Singularity
 > ```
-> 
-> The following configuration in your `workflow.config` is recommended when running workflows on 
+>
+> The following configuration in your `workflow.config` is recommended when running workflows on
 > the annotation cluster.
-> 
+>
 > ```nextflow
 > // Set your work directory to a folder on the /active partition
 > workDir = '/active/<project_id>/nobackup/work'
@@ -214,6 +214,6 @@ outdir: '/path/to/save/results'
 > // Use mamba for speed over conda
 > conda.useMamba = true
 > ```
-> 
+>
 > Project results should be published to `/projects`, work directories should be on
 > `/active`, while computations are performed on the local `/scratch` partitions.
