@@ -12,7 +12,7 @@ process BLAST_BLASTP {
     path db
 
     output:
-    path '*.blastn.txt', emit: txt
+    path '*.blastp.txt', emit: txt
     path "versions.yml", emit: versions
 
     when:
@@ -29,11 +29,11 @@ process BLAST_BLASTP {
         -db \$DB \\
         -query $fasta \\
         $args \\
-        -out ${prefix}.blastn.txt
+        -out ${prefix}.blastp.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
     END_VERSIONS
     """
 }
