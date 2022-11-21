@@ -22,7 +22,7 @@ outdir: '/path/to/save/results'
 
 To add the result folder to the augustus folder (to be used in maker for instance), add to the yml file :
 
-```
+```yml
 maker_species_publishdir : '/PATH/augustus/config/species/'
 ```
 
