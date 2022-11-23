@@ -22,7 +22,7 @@ process BLAST_BLASTP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
-    DB=\$( find -L ./ -name "*.pdb" | sed 's/.pdb//' )
+    DB=\$( find -L ./ -name "*.pin" | sed 's/.pin//' )
     echo "DB: \$DB"
     blastp \\
         -num_threads $task.cpus \\
