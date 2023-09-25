@@ -8,11 +8,11 @@ process AUGUSTUS_GBK2AUGUSTUS {
         'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path genbank
+    tuple val(meta), path(genbank)
 
     output:
-    path "${genbank}.train", emit: training_data
-    path "${genbank}.test", emit: testing_data
+    tuple val(meta), path("${genbank}.train"), emit: training_data
+    tuple val(meta), path ("${genbank}.test"), emit: testing_data
     path "versions.yml" , emit: versions
 
     when:
