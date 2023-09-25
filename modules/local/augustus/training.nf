@@ -5,7 +5,7 @@ process AUGUSTUS_TRAINING {
     conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
-        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
+        'biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
     tuple val(meta), path (training_file)
