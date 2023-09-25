@@ -9,12 +9,12 @@ process AGAT_FILTERBYMRNABLASTVALUE {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path blast_tbl
 
     output:
-    path "*_blast-filtered.gff3", emit: blast_filtered
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*_blast-filtered.gff3"), emit: blast_filtered
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
