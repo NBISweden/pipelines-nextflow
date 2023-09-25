@@ -26,6 +26,16 @@ workflow ABINITIO_TRAINING {
     Channel.fromPath( params.genome, checkIfExists: true )
         .set{ genome }
 
+    // Make channel for sweep parameters
+    Channel.fromList( params.aed_value instanceof List ? params.aed_value : [ params.aed_value ] )
+        .filter( Number )
+        .set{ ch_aed }
+    Channel.fromList( params.locus_distance instanceof List ? params.locus_distance : [ params.locus_distance ] )
+        .filter( Number )
+        .combine( ch_aed )
+        .map { locus_distance, aed -> [ 'aed_value': aed, 'locus_distance': locus_distance ] }
+        .set { ch_sweep_parameters }
+
     SPLIT_MAKER_EVIDENCE( gff_annotation )
     MODEL_SELECTION_BY_AED( SPLIT_MAKER_EVIDENCE.out.transcripts )
     RETAIN_LONGEST_ISOFORM( MODEL_SELECTION_BY_AED.out.selected_models )
