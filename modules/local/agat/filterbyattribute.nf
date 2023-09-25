@@ -9,11 +9,11 @@ process AGAT_FILTERBYATTRIBUTE {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path mrna_gff
+    tuple val(meta), path(mrna_gff)
 
     output:
-    path "*.filter.gff", emit: selected_models
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.filter.gff"), emit: selected_models
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
