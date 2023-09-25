@@ -8,12 +8,12 @@ process BLAST_BLASTP {
         'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
     path db
 
     output:
-    path '*.blastp.txt', emit: txt
-    path "versions.yml", emit: versions
+    tuple val(meta), path ('*.blastp.txt'), emit: txt
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
