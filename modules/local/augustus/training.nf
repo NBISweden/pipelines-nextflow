@@ -8,14 +8,14 @@ process AUGUSTUS_TRAINING {
         'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path training_file
+    tuple val(meta), path (training_file)
     path test_file
     val species_label
 
     output:
-    path "${species_label}", emit: training_model
-    path "*_run.log"       , emit: log
-    path "versions.yml"    , emit: versions
+    tuple val(meta), path ("${species_label}"), emit: training_model
+    tuple val(meta), path ("*_run.log")       , emit: log
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
