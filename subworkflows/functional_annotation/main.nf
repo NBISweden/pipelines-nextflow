@@ -1,4 +1,4 @@
-include { BLAST_MAKEBLASTDB                                              } from "$projectDir/modules/nf-core/modules/blast/makeblastdb/main"
+include { BLAST_MAKEBLASTDB                                              } from "$projectDir/modules/nf-core/blast/makeblastdb/main"
 include { AGAT_EXTRACTSEQUENCES as GFF2PROTEIN                           } from "$projectDir/modules/local/agat/extractsequences"
 include { BLAST_BLASTP                                                   } from "$projectDir/modules/local/blast/blastp"
 include { INTERPROSCAN                                                   } from "$projectDir/modules/local/interproscan"
