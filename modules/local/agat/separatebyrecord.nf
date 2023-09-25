@@ -9,11 +9,11 @@ process AGAT_SEPARATEBYRECORD {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path (gff)
 
     output:
-    path "maker_results_noAbinitio_clean/mrna.gff", emit: transcripts
-    path "maker_results_noAbinitio_clean/*", emit: all // FIXME: check
+    tuple val(meta), path("maker_results_noAbinitio_clean/mrna.gff"), emit: transcripts
+    tuple val(meta), path("maker_results_noAbinitio_clean/*")       , emit: all
     path "versions.yml", emit: versions
 
     when:
