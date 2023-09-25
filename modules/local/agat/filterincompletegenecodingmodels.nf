@@ -9,12 +9,12 @@ process AGAT_FILTERINCOMPLETEGENECODINGMODELS {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path coding_gene_features_gff
+    tuple val(meta), path (coding_gene_features_gff)
     path genome
 
     output:
-    path "*.complete.gff", emit: complete_gene_models
-    path "versions.yml"  , emit: versions
+    tuple val(meta), path ("*.complete.gff"), emit: complete_gene_models
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
