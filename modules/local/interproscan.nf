@@ -8,11 +8,11 @@ process INTERPROSCAN {
         'biocontainers/interproscan:5.55_88.0--hec16e2b_1' }"
 
     input:
-    path protein_fasta
+    tuple val(meta), path(protein_fasta)
 
     output:
-    path '*.tsv'        , emit: tsv
-    path "versions.yml" , emit: versions
+    tuple val(meta), path('*.tsv'), emit: tsv
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
