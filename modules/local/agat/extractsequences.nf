@@ -9,12 +9,12 @@ process AGAT_EXTRACTSEQUENCES {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path (gff)
     path genome
 
     output:
-    path "${gff.baseName}_proteins.fasta", emit: proteins
-    path "versions.yml" , emit: versions
+    tuple val(meta), path ("${gff.baseName}_proteins.fasta"), emit: proteins
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
