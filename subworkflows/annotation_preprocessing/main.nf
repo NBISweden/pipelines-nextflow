@@ -12,12 +12,18 @@ workflow ANNOTATION_PREPROCESSING {
     Channel.fromPath( params.genome, checkIfExists: true)
         .ifEmpty { error "Cannot find genome matching ${params.genome}!\n" }
         .set { genome_assembly }
+    Channel.fromList( params.busco_lineage instanceof List ? params.busco_lineage : [ params.busco_lineage ] )
+        .set { ch_busco_lineage }
     
     ASSEMBLY_PURIFY( genome_assembly )
     ASSEMBLY_STATS( genome_assembly.mix( ASSEMBLY_PURIFY.out.fasta ) )
     BUSCO( 
-        ASSEMBLY_PURIFY.out.fasta.map { fasta -> [ [ id: fasta.baseName ], fasta ] }, 
-        params.busco_lineage,
+        ASSEMBLY_PURIFY.out.fasta
+            .combine( ch_busco_lineage )
+            .multiMap { fasta, lineage ->
+                ch_fasta: [ [ id: fasta.baseName ], fasta ]
+                ch_busco: lineage
+            },
         params.busco_lineages_path ? file( params.busco_lineages_path, checkIfExists: true ) : [],
         []
     )
