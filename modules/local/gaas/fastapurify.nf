@@ -6,7 +6,7 @@ process GAAS_FASTAPURIFY {
     conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
-        'quay.io/biocontainers/gaas:1.2.0--pl526r35_0' }"
+        'biocontainers/gaas:1.2.0--pl526r35_0' }"
 
     input:
     path fasta

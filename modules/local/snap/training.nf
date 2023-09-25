@@ -5,7 +5,7 @@ process SNAP_TRAINING {
     conda (params.enable_conda ? "bioconda::snap=2013_11_29" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap:2013_11_29--hec16e2b_4':
-        'quay.io/biocontainers/snap:2013_11_29--hec16e2b_4' }"
+        'biocontainers/snap:2013_11_29--hec16e2b_4' }"
 
     input:
     tuple val(meta), path (training_files)
