@@ -8,12 +8,12 @@ process AGAT_GFF2ZFF {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path annotation
+    tuple val(meta), path (annotation)
     path genome
 
     output:
-    path "*.{ann,dna}" , emit: zff
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.{ann,dna}"), emit: zff
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
