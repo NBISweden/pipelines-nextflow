@@ -4,7 +4,7 @@ include { AGAT_KEEPLONGESTISOFORM               as RETAIN_LONGEST_ISOFORM       
 include { AGAT_FILTERINCOMPLETEGENECODINGMODELS as REMOVE_INCOMPLETE_GENE_MODELS } from "$projectDir/modules/local/agat/filterincompletegenecodingmodels"
 include { AGAT_FILTERBYLOCUSDISTANCE            as FILTER_BY_LOCUS_DISTANCE      } from "$projectDir/modules/local/agat/filterbylocusdistance"
 include { AGAT_EXTRACTSEQUENCES                 as EXTRACT_PROTEIN_SEQUENCE      } from "$projectDir/modules/local/agat/extractsequences"
-include { BLAST_MAKEBLASTDB                                                      } from "$projectDir/modules/nf-core/modules/blast/makeblastdb/main"
+include { BLAST_MAKEBLASTDB                                                      } from "$projectDir/modules/nf-core/blast/makeblastdb/main"
 include { BLAST_BLASTP                          as BLAST_RECURSIVE               } from "$projectDir/modules/local/blast/blastp"
 include { AGAT_FILTERBYMRNABLASTVALUE           as GFF_FILTER_BY_BLAST           } from "$projectDir/modules/local/agat/filterbymrnablastvalue"
 include { AUGUSTUS_GFF2GBK                      as GFF2GBK                       } from "$projectDir/modules/local/augustus/gff2gbk"
