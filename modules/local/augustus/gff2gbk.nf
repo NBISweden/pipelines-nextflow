@@ -8,12 +8,12 @@ process AUGUSTUS_GFF2GBK {
         'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path genome
 
     output:
-    path "*.gbk"       , emit: gbk
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.gbk"), emit: gbk
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
