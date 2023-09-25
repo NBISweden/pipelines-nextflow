@@ -8,12 +8,12 @@ process SNAP_TRAINING {
         'quay.io/biocontainers/snap:2013_11_29--hec16e2b_4' }"
 
     input:
-    path training_files
+    tuple val(meta), path (training_files)
     val species_label
 
     output:
-    path "*.hmm"       , emit: training_model
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.hmm"), emit: training_model
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
