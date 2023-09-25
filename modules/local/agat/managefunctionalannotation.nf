@@ -9,15 +9,15 @@ process AGAT_MANAGEFUNCTIONALANNOTATION {
         'biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path merged_blast_results
     path merged_interproscan_results
     path blast_db
 
     output:
-    path "*_plus-functional-annotation.gff", emit: gff
-    path "*.tsv"                           , emit: tsv, includeInputs: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*_plus-functional-annotation.gff"), emit: gff
+    tuple val(meta), path("*.tsv")                           , emit: tsv, includeInputs: true
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
