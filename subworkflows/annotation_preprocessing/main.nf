@@ -1,6 +1,6 @@
 include { GAAS_FASTAPURIFY     as ASSEMBLY_PURIFY } from "$projectDir/modules/local/gaas/fastapurify"
 include { GAAS_FASTASTATISTICS as ASSEMBLY_STATS  } from "$projectDir/modules/local/gaas/fastastatistics"
-include { BUSCO                                   } from "$projectDir/modules/nf-core/modules/busco/main"
+include { BUSCO                                   } from "$projectDir/modules/nf-core/busco/main"
 
 workflow ANNOTATION_PREPROCESSING {
 
