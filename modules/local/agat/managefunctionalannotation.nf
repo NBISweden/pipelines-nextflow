@@ -16,7 +16,7 @@ process AGAT_MANAGEFUNCTIONALANNOTATION {
 
     output:
     tuple val(meta), path("*_plus-functional-annotation.gff"), emit: gff
-    tuple val(meta), path("*.tsv")                           , emit: tsv, includeInputs: true
+    tuple val(meta), path("*.tsv", includeInputs: true)      , emit: tsv
     path "versions.yml"                                      , emit: versions
 
     when:
