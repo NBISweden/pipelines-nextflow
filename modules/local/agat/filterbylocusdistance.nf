@@ -9,11 +9,11 @@ process AGAT_FILTERBYLOCUSDISTANCE {
         'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path coding_gene_features_gff
+    tuple val(meta), path (coding_gene_features_gff)
 
     output:
-    path "*.good_distance.gff", emit: distanced_models
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path ("*.good_distance.gff"), emit: distanced_models
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
