@@ -12,6 +12,7 @@ workflow FUNCTIONAL_ANNOTATION {
         ===================================================
     """
     Channel.fromPath( params.gff_annotation, checkIfExists: true )
+        .map { gff -> [ [ id: gff.baseName ], gff ] }
         .set { gff_file }
     Channel.fromPath( params.genome, checkIfExists: true )
         .set { genome }
@@ -43,7 +44,7 @@ workflow FUNCTIONAL_ANNOTATION {
         blastdb_ch.collect()
     )
     INTERPROSCAN( GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ) )
-    MERGE_FUNCTIONAL_ANNOTATION( 
+    MERGE_FUNCTIONAL_ANNOTATION(
         gff_file,
         BLAST_BLASTP.out.txt.collectFile( name: 'blast_merged.tsv' ),
         INTERPROSCAN.out.tsv.collectFile( name: 'interproscan_merged.tsv' ),
