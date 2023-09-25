@@ -3,7 +3,7 @@ process GAAS_FASTASTATISTICS {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::gaas=1.2.0" : null)
+    conda "bioconda::gaas=1.2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gaas:1.2.0--pl526r35_0':
         'biocontainers/gaas:1.2.0--pl526r35_0' }"

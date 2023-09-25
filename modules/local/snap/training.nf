@@ -2,7 +2,7 @@ process SNAP_TRAINING {
     tag "$species_label"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::snap=2013_11_29" : null)
+    conda "bioconda::snap=2013_11_29"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap:2013_11_29--hec16e2b_4':
         'biocontainers/snap:2013_11_29--hec16e2b_4' }"
