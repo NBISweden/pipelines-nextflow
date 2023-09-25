@@ -36,7 +36,7 @@ workflow ABINITIO_TRAINING {
         .map { locus_distance, aed -> [ 'aed_value': aed, 'locus_distance': locus_distance ] }
         .set { ch_sweep_parameters }
 
-    SPLIT_MAKER_EVIDENCE( gff_annotation )
+    SPLIT_MAKER_EVIDENCE( ch_sweep_parameters.combine(gff_annotation) )
     MODEL_SELECTION_BY_AED( SPLIT_MAKER_EVIDENCE.out.transcripts )
     RETAIN_LONGEST_ISOFORM( MODEL_SELECTION_BY_AED.out.selected_models )
     REMOVE_INCOMPLETE_GENE_MODELS( 
@@ -48,14 +48,18 @@ workflow ABINITIO_TRAINING {
         FILTER_BY_LOCUS_DISTANCE.out.distanced_models,
         genome.collect()
     )
-    BLAST_MAKEBLASTDB( EXTRACT_PROTEIN_SEQUENCE.out.proteins )
+    BLAST_MAKEBLASTDB( EXTRACT_PROTEIN_SEQUENCE.out.proteins.map { meta, proteins -> proteins } )
     BLAST_RECURSIVE( 
         EXTRACT_PROTEIN_SEQUENCE.out.proteins,
         BLAST_MAKEBLASTDB.out.db.collect()
     )
     GFF_FILTER_BY_BLAST( 
-        FILTER_BY_LOCUS_DISTANCE.out.distanced_models,
-        BLAST_RECURSIVE.out.txt.collect()
+        FILTER_BY_LOCUS_DISTANCE.out.distanced_models
+            .combine( BLAST_RECURSIVE.out.txt, by: 0 )
+            .multiMap{ meta, dmodels, btbl ->
+                dmodels  : [ meta, dmodels ] 
+                blast_tbl: btbl
+            }
     )
     GFF2GBK( 
         GFF_FILTER_BY_BLAST.out.blast_filtered,
@@ -63,8 +67,12 @@ workflow ABINITIO_TRAINING {
     )
     GBK2AUGUSTUS( GFF2GBK.out.gbk )
     AUGUSTUS_TRAINING( 
-        GBK2AUGUSTUS.out.training_data,
-        GBK2AUGUSTUS.out.testing_data,
+        GBK2AUGUSTUS.out.training_data
+            .combine( GBK2AUGUSTUS.out.testing_data , by: 0 )
+            .multiMap{ meta, training, testing ->
+                train: [ meta, training ]
+                test : testing
+            },
         params.species_label
     )
     CONVERT_GFF2ZFF(
