@@ -1,9 +1,9 @@
-include { FASTQC              } from "$projectDir/modules/nf-core/modules/fastqc/main"
+include { FASTQC              } from "$projectDir/modules/nf-core/fastqc/main"
 include { HISAT2_ALIGN        } from "$projectDir/modules/local/hisat2/align"
 include { HISAT2_BUILD        } from "$projectDir/modules/local/hisat2/build"
-include { FASTP               } from "$projectDir/modules/nf-core/modules/fastp/main"
+include { FASTP               } from "$projectDir/modules/nf-core/fastp/main"
 include { STRINGTIE_STRINGTIE } from "$projectDir/modules/local/stringtie/stringtie"
-include { MULTIQC             } from "$projectDir/modules/nf-core/modules/multiqc/main"
+include { MULTIQC             } from "$projectDir/modules/nf-core/multiqc/main"
 
 workflow TRANSCRIPT_ASSEMBLY {
 
