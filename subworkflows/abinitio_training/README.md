@@ -17,6 +17,12 @@ genome: '/path/to/genome/assembly.fasta'
 maker_evidence_gff: '/path/to/evidence/annotation.gff'
 species_label: 'species_name'
 codon_table: 1
+aed_value:
+  - 0.2
+  - 0.3
+locus_distance:
+  - 3000
+  - 4000
 outdir: '/path/to/save/results'
 ```
 
@@ -43,6 +49,8 @@ nextflow run NBISweden/pipelines-nextflow \
   - `species_label`: A species label for the training data.
   - `maker_species_publishdir`: A shared directory where a copy of the augustus `species_label` profile is saved.
   - `codon_table`: The number of the codon table to use for translation (default: 1).
+  - `aed_value`: A list of model selection values to explore (smaller values mean higher stringency).
+  - `locus_distance`: A list of locus distances (average distance between genes) to explore.
   - `flank_region_size`: The size of the flank region to include (default: 1000).
 
 ### Tool specific parameters
