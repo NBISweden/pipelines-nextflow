@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NXF_VER: ${{ matrix.nxf_ver }}
       NXF_ANSI_LOG: false
 
     strategy:
@@ -40,6 +39,11 @@ jobs:
       uses: nf-core/setup-nextflow@v1
       with:
         version: "${{ matrix.NXF_VER }}"
+      # env:
+      #   NXF_VER: ${{ matrix.NXF_VER }}
+      # run: |
+      #   wget -qO- get.nextflow.io | bash
+      #   sudo mv nextflow /usr/local/bin/
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
       run: nextflow run -profile test,${{ matrix.profile }} main.nf --subworkflow ${{ matrix.workflow }}
