@@ -19,8 +19,8 @@ jobs:
     strategy:
       matrix:
         NXF_VER: 
-          - '22.10.1'
-          - 'latest-everything'
+          - "22.10.1"
+          - "latest"
         profile:
           - docker
         workflow:
