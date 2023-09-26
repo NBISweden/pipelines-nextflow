@@ -20,7 +20,7 @@ jobs:
       matrix:
         NXF_VER: 
           - '22.10.1'
-          - 'latest-stable'
+          - 'latest-everything'
         profile:
           - docker
         workflow:
