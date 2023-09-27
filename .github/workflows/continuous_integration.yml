@@ -13,12 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NXF_VER: ${{ matrix.nxf_ver }}
       NXF_ANSI_LOG: false
 
     strategy:
       matrix:
-        nxf_ver: ['21.10.6', '']
+        NXF_VER: 
+          - "22.10.1"
+          - "latest"
         profile:
           - docker
         workflow:
@@ -29,22 +30,15 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    # https://github.com/marketplace/actions/checkout
+    - name: Check out repository code
+      uses: actions/checkout@v4
 
+    # https://github.com/marketplace/actions/setup-nextflow
     - name: Install Nextflow
-      run: |
-        wget -qO- get.nextflow.io | bash
-        sudo mv nextflow /usr/local/bin/
-
-    # Use https://github.com/marketplace/actions/setup-conda to setup conda
-    # - name: Setup Conda
-    #   uses: s-weigand/setup-conda@v1
-    #   with:
-    #     update-conda: true
-
-    # - name: Alias local interproscan to docker container.
-    #  run: alias interproscan.sh='docker run biocontainers/interproscan:v5.30-69.0_cv3 /opt/interproscan/interproscan.sh'
+      uses: nf-core/setup-nextflow@v1
+      with:
+        version: "${{ matrix.NXF_VER }}"
 
     - name: Test ${{ matrix.workflow }} with profile ${{ matrix.profile }}
       run: nextflow run -profile test,${{ matrix.profile }} main.nf --subworkflow ${{ matrix.workflow }}
