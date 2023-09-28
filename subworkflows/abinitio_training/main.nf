@@ -22,6 +22,7 @@ workflow ABINITIO_TRAINING {
     """
 
     Channel.fromPath( params.maker_evidence_gff, checkIfExists: true )
+        .map { gff -> [ [ id: gff.baseName ], gff ] }
         .set { gff_annotation }
     Channel.fromPath( params.genome, checkIfExists: true )
         .set{ genome }
@@ -36,8 +37,8 @@ workflow ABINITIO_TRAINING {
         .map { locus_distance, aed -> [ 'aed_value': aed, 'locus_distance': locus_distance ] }
         .set { ch_sweep_parameters }
 
-    SPLIT_MAKER_EVIDENCE( ch_sweep_parameters.combine(gff_annotation) )
-    MODEL_SELECTION_BY_AED( SPLIT_MAKER_EVIDENCE.out.transcripts )
+    SPLIT_MAKER_EVIDENCE( gff_annotation )
+    MODEL_SELECTION_BY_AED( ch_sweep_parameters.combine( SPLIT_MAKER_EVIDENCE.out.transcripts ).map { pars, id, gff -> [ id + pars, gff ] } )
     RETAIN_LONGEST_ISOFORM( MODEL_SELECTION_BY_AED.out.selected_models )
     REMOVE_INCOMPLETE_GENE_MODELS( 
         RETAIN_LONGEST_ISOFORM.out.longest_isoform,
