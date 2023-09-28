@@ -46,8 +46,8 @@ workflow FUNCTIONAL_ANNOTATION {
     INTERPROSCAN( GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ) )
     MERGE_FUNCTIONAL_ANNOTATION(
         gff_file,
-        BLAST_BLASTP.out.txt.collectFile( name: 'blast_merged.tsv' ),
-        INTERPROSCAN.out.tsv.collectFile( name: 'interproscan_merged.tsv' ),
+        BLAST_BLASTP.out.txt.map{ meta, txt -> txt }.collectFile( name: 'blast_merged.tsv' ),
+        INTERPROSCAN.out.tsv.map{ meta, tsv -> tsv }.collectFile( name: 'interproscan_merged.tsv' ),
         blast_fa.collect()
     )
 }
