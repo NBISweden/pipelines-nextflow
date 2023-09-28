@@ -26,9 +26,9 @@ workflow FUNCTIONAL_ANNOTATION {
                 // No database files found matching the glob pattern
             }
             make_db : db_files.size() == 1
-                return db_files
+                return [ [ db: fasta.baseName ] , db_files ]
             with_db : db_files.size() > 1
-                return db_files
+                return [ [ db: fasta.baseName ] , db_files ]
         }.set { ch_blast_fa }
 
     BLAST_MAKEBLASTDB(
@@ -41,7 +41,7 @@ workflow FUNCTIONAL_ANNOTATION {
     )
     BLAST_BLASTP(
         GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ),
-        blastdb_ch.collect()
+        blastdb_ch.map{ meta, db -> db }.collect()
     )
     INTERPROSCAN( GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ) )
     MERGE_FUNCTIONAL_ANNOTATION(
