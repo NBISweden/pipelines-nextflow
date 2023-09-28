@@ -49,10 +49,14 @@ workflow ABINITIO_TRAINING {
         FILTER_BY_LOCUS_DISTANCE.out.distanced_models,
         genome.collect()
     )
-    BLAST_MAKEBLASTDB( EXTRACT_PROTEIN_SEQUENCE.out.proteins.map { meta, proteins -> proteins } )
+    BLAST_MAKEBLASTDB( EXTRACT_PROTEIN_SEQUENCE.out.proteins )
     BLAST_RECURSIVE( 
-        EXTRACT_PROTEIN_SEQUENCE.out.proteins,
-        BLAST_MAKEBLASTDB.out.db.collect()
+        EXTRACT_PROTEIN_SEQUENCE.out.proteins
+            .join( BLAST_MAKEBLASTDB.out.db )
+            .multiMap { meta, proteins, proteindb -> 
+                proteins: [ meta, proteins ]
+                prot_db: proteindb
+            }
     )
     GFF_FILTER_BY_BLAST( 
         FILTER_BY_LOCUS_DISTANCE.out.distanced_models
