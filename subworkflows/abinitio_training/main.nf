@@ -12,6 +12,7 @@ include { AUGUSTUS_GBK2AUGUSTUS                 as GBK2AUGUSTUS                 
 include { AUGUSTUS_TRAINING                                                      } from "$projectDir/modules/local/augustus/training"
 include { AGAT_GFF2ZFF                          as CONVERT_GFF2ZFF               } from "$projectDir/modules/local/agat/gff2zff"
 include { SNAP_TRAINING                                                          } from "$projectDir/modules/local/snap/training"
+include { CUSTOM_RANKMODELS                     as RANK_AUGUSTUS_MODELS          } from "$projectDir/modules/local/custom/rankmodels"
 
 workflow ABINITIO_TRAINING {
 
@@ -80,6 +81,7 @@ workflow ABINITIO_TRAINING {
             },
         params.species_label
     )
+    RANK_AUGUSTUS_MODEL( AUGUSTUS_TRAINING.out.log.map{ meta, log -> log }.collect() )
     CONVERT_GFF2ZFF(
         GFF_FILTER_BY_BLAST.out.blast_filtered,
         genome.collect()
