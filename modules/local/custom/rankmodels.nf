@@ -1,5 +1,5 @@
 process CUSTOM_RANKMODELS {
-    tag '$bam'
+    tag "$prefix"
     label 'process_single'
 
     conda "anaconda::gawk=5.1.0"
@@ -11,18 +11,18 @@ process CUSTOM_RANKMODELS {
     path augustus_logs
 
     output:
-    path "*.bam", emit: bam
-    path "versions.yml"           , emit: versions
+    path "*sweep_summary.tsv", emit: summary
+    path "versions.yml"      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ( augustus_logs[0].baseName - ~/-LD[0-9]+*/ )
+    prefix     = task.ext.prefix ?: ( augustus_logs[0].baseName - ~/-LD[0-9]+.*/ )
     """
     ( 
-        printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
+        printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
             "locus_distance" \
             "model_selection_value" \
             "exon_sensitivity" \
@@ -33,16 +33,16 @@ process CUSTOM_RANKMODELS {
             "gene_specificity" \
             "genes"
         for LOG in $augustus_logs; do
-            printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
-                \$( grep -Eo "LD[0-9]+" <<< $LOG | cut -c 3- ) \
-                \$( grep -Eo "AED[0-9.]+" <<< $LOG  | cut -c 4- ) \
-                \$( grep "^exon level" $LOG | grep -Eo "[0-9.]+" | sed -n "4p" ) \
-                \$( grep "^exon level" $LOG | grep -Eo "[0-9.]+" | sed -n "5p" ) \
-                \$( grep "^nucleotide level" $LOG | grep -Eo "[0-9.]+" | sed -n "1p" ) \
-                \$( grep "^nucleotide level" $LOG | grep -Eo "[0-9.]+" | sed -n "2p" ) \
-                \$( grep "^gene level" $LOG | grep -Eo "[0-9.]+" | sed -n "6p" ) \
-                \$( grep "^gene level" $LOG | grep -Eo "[0-9.]+" | sed -n "7p" ) \
-                \$( grep -c "# annotation:" $LOG )
+            printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
+                \$( grep -Eo "LD[0-9]+" <<< \$LOG | cut -c 3- ) \
+                \$( grep -Eo "AED[0-9.]+" <<< \$LOG  | cut -c 4- ) \
+                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "4p" ) \
+                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "5p" ) \
+                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "1p" ) \
+                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "2p" ) \
+                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "6p" ) \
+                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "7p" ) \
+                \$( grep -c "# annotation:" \$LOG )
         done
     ) > ${prefix}_sweep_summary.tsv
 
