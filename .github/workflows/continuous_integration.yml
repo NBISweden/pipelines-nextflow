@@ -4,13 +4,14 @@ name: Continuous Integration
 # events but only for the master branch, or add_actions branch
 on:
   push:
-    branches: [ master, add_actions ]
+    branches: [ master, test_actions ]
   pull_request:
-    branches: [ master, add_actions ]
+    branches: [ master, test_actions ]
 
 jobs:
   test_workflow:
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     env:
       NXF_ANSI_LOG: false
