@@ -31,6 +31,7 @@ process AUGUSTUS_TRAINING {
     etraining --species=$species_label $training_file
     augustus --species=$species_label $test_file | tee ${prefix}_run.log
     mv config/species/${species_label} .
+    printf "Training gene count: %d\\n" \$( grep -c "LOCUS" $training_file ) | tee -a ${prefix}_run.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

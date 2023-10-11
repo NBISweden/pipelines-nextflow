@@ -81,7 +81,11 @@ workflow ABINITIO_TRAINING {
             },
         params.species_label
     )
-    RANK_AUGUSTUS_MODELS( AUGUSTUS_TRAINING.out.log.map{ meta, log -> log }.collect() )
+    RANK_AUGUSTUS_MODELS( 
+        AUGUSTUS_TRAINING.out.log
+            .map { meta, log -> [ [ 'id': params.species_label ], log ] }
+            .groupTuple() 
+    )
     CONVERT_GFF2ZFF(
         GFF_FILTER_BY_BLAST.out.blast_filtered,
         genome.collect()

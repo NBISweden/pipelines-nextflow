@@ -8,7 +8,7 @@ process CUSTOM_RANKMODELS {
         'biocontainers/gawk:5.1.0' }"
 
     input:
-    path augustus_logs
+    tuple val(meta), path(augustus_logs)
 
     output:
     path "*sweep_summary.tsv", emit: summary
@@ -19,30 +19,30 @@ process CUSTOM_RANKMODELS {
 
     script:
     def args   = task.ext.args ?: ''
-    prefix     = task.ext.prefix ?: ( augustus_logs[0].baseName - ~/-LD[0-9]+.*/ )
+    prefix     = task.ext.prefix ?: meta.id
     """
     ( 
-        printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
-            "locus_distance" \
-            "model_selection_value" \
-            "exon_sensitivity" \
-            "exon_specificity" \
-            "nucleotide_sensitivity" \
-            "nucleotide_specificity" \
-            "gene_sensitivity" \
-            "gene_specificity" \
+        printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \\
+            "locus_distance" \\
+            "model_selection_value" \\
+            "exon_sensitivity" \\
+            "exon_specificity" \\
+            "nucleotide_sensitivity" \\
+            "nucleotide_specificity" \\
+            "gene_sensitivity" \\
+            "gene_specificity" \\
             "genes"
         for LOG in $augustus_logs; do
-            printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" \
-                \$( grep -Eo "LD[0-9]+" <<< \$LOG | cut -c 3- ) \
-                \$( grep -Eo "AED[0-9.]+" <<< \$LOG  | cut -c 4- ) \
-                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "4p" ) \
-                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "5p" ) \
-                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "1p" ) \
-                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "2p" ) \
-                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "6p" ) \
-                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "7p" ) \
-                \$( grep -c "# annotation:" \$LOG )
+            printf "%d\\t%f\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%d\\n" \\
+                \$( grep -Eo "LD[0-9]+" <<< \$LOG | cut -c 3- ) \\
+                \$( grep -Eo "AED[0-9.]+" <<< \$LOG  | cut -c 4- ) \\
+                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "4p" ) \\
+                \$( grep "^exon level" \$LOG | grep -Eo "[0-9.]+" | sed -n "5p" ) \\
+                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "1p" ) \\
+                \$( grep "^nucleotide level" \$LOG | grep -Eo "[0-9.]+" | sed -n "2p" ) \\
+                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "6p" ) \\
+                \$( grep "^gene level" \$LOG | grep -Eo "[0-9.]+" | sed -n "7p" ) \\
+                \$( grep "Training gene count:" \$LOG | grep -Eo "[0-9.]+" )
         done
     ) > ${prefix}_sweep_summary.tsv
 
@@ -56,7 +56,7 @@ process CUSTOM_RANKMODELS {
 
     stub:
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ( augustus_logs[0].baseName - ~/-LD[0-9]+*/ )
+    prefix     = task.ext.prefix ?: meta.id
     """
     touch ${prefix}_sweep_summary.tsv
 
