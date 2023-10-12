@@ -3,17 +3,17 @@ process AGAT_FILTERBYATTRIBUTE {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    conda "bioconda::agat=0.9.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
-        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
+        'biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path mrna_gff
+    tuple val(meta), path(mrna_gff)
 
     output:
-    path "*.filter.gff", emit: selected_models
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.filter.gff"), emit: selected_models
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

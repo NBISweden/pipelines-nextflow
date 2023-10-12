@@ -2,20 +2,20 @@ process AUGUSTUS_TRAINING {
     tag "$species_label"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    conda "bioconda::augustus=3.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
-        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
+        'biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path training_file
+    tuple val(meta), path (training_file)
     path test_file
     val species_label
 
     output:
-    path "${species_label}", emit: training_model
-    path "*_run.log"       , emit: log
-    path "versions.yml"    , emit: versions
+    tuple val(meta), path ("${species_label}"), emit: training_model
+    tuple val(meta), path ("*_run.log")       , emit: log
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +31,7 @@ process AUGUSTUS_TRAINING {
     etraining --species=$species_label $training_file
     augustus --species=$species_label $test_file | tee ${prefix}_run.log
     mv config/species/${species_label} .
+    printf "Training gene count: %d\\n" \$( grep -c "LOCUS" $training_file ) | tee -a ${prefix}_run.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

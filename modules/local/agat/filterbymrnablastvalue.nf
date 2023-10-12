@@ -3,18 +3,18 @@ process AGAT_FILTERBYMRNABLASTVALUE {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    conda "bioconda::agat=0.9.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
-        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
+        'biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path blast_tbl
 
     output:
-    path "*_blast-filtered.gff3", emit: blast_filtered
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*_blast-filtered.gff3"), emit: blast_filtered
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

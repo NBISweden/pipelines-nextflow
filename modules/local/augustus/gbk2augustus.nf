@@ -2,17 +2,17 @@ process AUGUSTUS_GBK2AUGUSTUS {
     tag "${genbank.baseName}"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    conda "bioconda::augustus=3.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
-        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
+        'biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path genbank
+    tuple val(meta), path(genbank)
 
     output:
-    path "${genbank}.train", emit: training_data
-    path "${genbank}.test", emit: testing_data
+    tuple val(meta), path("${genbank}.train"), emit: training_data
+    tuple val(meta), path ("${genbank}.test"), emit: testing_data
     path "versions.yml" , emit: versions
 
     when:

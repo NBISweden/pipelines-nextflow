@@ -3,21 +3,21 @@ process AGAT_MANAGEFUNCTIONALANNOTATION {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::agat=0.9.2" : null)
+    conda "bioconda::agat=0.9.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
-        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
+        'biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path merged_blast_results
     path merged_interproscan_results
     path blast_db
 
     output:
-    path "*_plus-functional-annotation.gff", emit: gff
-    path "*.tsv"                           , emit: tsv, includeInputs: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*_plus-functional-annotation.gff"), emit: gff
+    tuple val(meta), path("*.tsv", includeInputs: true)      , emit: tsv
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

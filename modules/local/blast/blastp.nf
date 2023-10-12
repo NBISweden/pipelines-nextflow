@@ -2,18 +2,18 @@ process BLAST_BLASTP {
     tag "${fasta.baseName}"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    conda 'bioconda::blast=2.12.0'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
-        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
+        'biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
     path db
 
     output:
-    path '*.blastp.txt', emit: txt
-    path "versions.yml", emit: versions
+    tuple val(meta), path ('*.blastp.txt'), emit: txt
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

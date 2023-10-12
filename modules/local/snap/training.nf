@@ -2,18 +2,18 @@ process SNAP_TRAINING {
     tag "$species_label"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::snap=2013_11_29" : null)
+    conda "bioconda::snap=2013_11_29"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap:2013_11_29--hec16e2b_4':
-        'quay.io/biocontainers/snap:2013_11_29--hec16e2b_4' }"
+        'biocontainers/snap:2013_11_29--hec16e2b_4' }"
 
     input:
-    path training_files
+    tuple val(meta), path (training_files)
     val species_label
 
     output:
-    path "*.hmm"       , emit: training_model
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.hmm"), emit: training_model
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

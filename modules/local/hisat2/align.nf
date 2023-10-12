@@ -4,8 +4,8 @@ process HISAT2_ALIGN {
     label 'process_high'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::hisat2=2.2.0 bioconda::samtools=1.15.1" : null)
-    container "nbisweden/hisat2:2.1.0"
+    conda "bioconda::hisat2=2.2.0 bioconda::samtools=1.15.1"
+    container "ghcr.io/nbisweden/pipelines-nextflow/hisat2:2.1.0"
 
     input:
     tuple val(meta), path(reads)

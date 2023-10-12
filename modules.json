@@ -1,23 +1,41 @@
 {
-    "name": "NBIS Genome Annotation Workflow",
-    "homePage": "",
-    "repos": {
-        "nf-core/modules": {
-            "blast/makeblastdb": {
-                "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d"
-            },
-            "busco": {
-                "git_sha": "89a84538bede7c6919f7c042fdb4c79e5e2d9d2a"
-            },
-            "fastp": {
-                "git_sha": "9b51362a532a14665f513cf987531f9ea5046b74"
-            },
-            "fastqc": {
-                "git_sha": "49b18b1639f4f7104187058866a8fab33332bdfe"
-            },
-            "multiqc": {
-                "git_sha": "5138acca0985ca01c38a1c4fba917d83772b1106"
-            }
+  "name": "NBIS Genome Annotation Workflow",
+  "homePage": "",
+  "repos": {
+    "https://github.com/nf-core/modules.git": {
+      "modules": {
+        "nf-core": {
+          "blast/makeblastdb": {
+            "branch": "master",
+            "git_sha": "911696ea0b62df80e900ef244d7867d177971f73",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/blast/makeblastdb/blast-makeblastdb.diff"
+          },
+          "busco": {
+            "branch": "master",
+            "git_sha": "6d6552cb582f56b6101c452e16ee7c23073f91de",
+            "installed_by": ["modules"]
+          },
+          "fastp": {
+            "branch": "master",
+            "git_sha": "d497a4868ace3302016ea8ed4b395072d5e833cd",
+            "installed_by": ["modules"]
+          },
+          "fastqc": {
+            "branch": "master",
+            "git_sha": "9a4517e720bc812e95b56d23d15a1653b6db4f53",
+            "installed_by": ["modules"]
+          },
+          "multiqc": {
+            "branch": "master",
+            "git_sha": "a6e11ac655e744f7ebc724be669dd568ffdc0e80",
+            "installed_by": ["modules"]
+          }
         }
+      },
+      "subworkflows": {
+        "nf-core": {}
+      }
     }
+  }
 }

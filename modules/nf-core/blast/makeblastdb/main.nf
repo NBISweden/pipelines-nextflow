@@ -2,17 +2,17 @@ process BLAST_MAKEBLASTDB {
     tag "$fasta"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    conda "bioconda::blast=2.13.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
-        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0' :
+        'biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path 'blast_db'     , emit: db
-    path "versions.yml" , emit: versions
+    tuple val(meta), path('blast_db'), emit: db
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

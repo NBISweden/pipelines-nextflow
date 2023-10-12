@@ -2,18 +2,18 @@ process AUGUSTUS_GFF2GBK {
     tag "${gff.baseName}"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::augustus=3.4.0" : null)
+    conda "bioconda::augustus=3.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5321h5f9f3d9_6':
-        'quay.io/biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
+        'biocontainers/augustus:3.4.0--pl5321h5f9f3d9_6' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path genome
 
     output:
-    path "*.gbk"       , emit: gbk
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.gbk"), emit: gbk
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
