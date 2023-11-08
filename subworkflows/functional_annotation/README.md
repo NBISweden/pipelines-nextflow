@@ -51,6 +51,9 @@ nextflow run NBISweden/pipelines-nextflow \
   - `outdir`: Path to the results folder.
   - `records_per_file`: Number of fasta records per file to distribute to blast and interproscan (default: 1000).
   - `codon_table`: (default: 1).
+  - `blast_db_fasta` : Path to blast protein database fasta.
+  - `merge_annotation_identifier`: The identifier to use for labeling genes (default: NBIS).
+  - `use_pcds`: If true, enables the pcds flag when merging annotation.
 
 ### Tool specific parameters
 
