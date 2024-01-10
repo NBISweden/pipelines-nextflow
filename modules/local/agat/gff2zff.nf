@@ -2,10 +2,10 @@ process AGAT_GFF2ZFF {
     tag "${annotation}"
     label 'process_single'
 
-    conda "bioconda::agat=0.9.2"
+    conda "bioconda::agat=1.2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1':
-        'biocontainers/agat:0.9.2--pl5321hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.2.0--pl5321hdfd78af_0':
+        'biocontainers/agat:1.2.0--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path (annotation)
@@ -21,7 +21,7 @@ process AGAT_GFF2ZFF {
     script:
     // def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${genome.baseName}"
-    def VERSION = '0.9.2'  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.0'  // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     agat_convert_sp_gff2zff.pl \\
         --gff $annotation \\
