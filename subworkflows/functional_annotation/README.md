@@ -26,23 +26,6 @@ nextflow run NBISweden/pipelines-nextflow \
     -params-file params.yml
 ```
 
-> **note**
->
-> The Interproscan conda package is temperamental. Please use a local installation
-> by overriding the workflow configuration.
->
-> `nextflow.config`:
->
-> ```nextflow
-> process {
->     withName: 'INTERPROSCAN' {
->         conda = null
->         container = null
->         module = 'bioinfo-tools:InterProScan/5.30-69.0'  // Load Uppmax modules `bioinfo-tools` and `InterProScan/5.30-69.0`
->     }    
-> }
-> ```
-
 ## Parameters
 
 - General:
@@ -65,7 +48,8 @@ These command line tool parameters can be changed by overriding the `ext.args` v
 ```nextflow
 process {
     withName: 'INTERPROSCAN' {
-        ext.args = '-f TSV --iprlookup --goterms -pa -dp -t p'
+        //
+        ext.args = '--iprlookup --goterms -pa -t p'
     }
 }
 ```
