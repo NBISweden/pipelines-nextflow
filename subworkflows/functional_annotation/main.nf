@@ -45,7 +45,7 @@ workflow FUNCTIONAL_ANNOTATION {
     )
     INTERPROSCAN( 
         GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ),
-        out_text='tsv'
+        'tsv'
     )
     MERGE_FUNCTIONAL_ANNOTATION(
         gff_file,
