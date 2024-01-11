@@ -27,10 +27,11 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
 
-    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
-    if ( args.contains("-appl") ) {
-        appl = ""
-    }
+// get rid of a predefined set of applications, we always want to see applications
+//    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+//    if ( args.contains("-appl") ) {
+//        appl = ""
+//    }
     switch ( out_ext ) {
         case "tsv": break
         case "xml": break
@@ -43,6 +44,7 @@ process INTERPROSCAN {
     }
 
     //  -dp (disable precalculation) is on so no online dependency
+    // removed argument "${appl} \\" from interproscan.sh command call
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -53,7 +55,6 @@ process INTERPROSCAN {
         -i ${fasta_name} \\
         -f ${out_ext} \\
         -dp \\
-        ${appl} \\
         ${args} \\
         -o ${prefix}.${out_ext}
 
