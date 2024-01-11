@@ -48,7 +48,6 @@ These command line tool parameters can be changed by overriding the `ext.args` v
 ```nextflow
 process {
     withName: 'INTERPROSCAN' {
-        //
         ext.args = '--iprlookup --goterms -pa -t p'
     }
 }
