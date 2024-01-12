@@ -1,7 +1,7 @@
 include { BLAST_MAKEBLASTDB                                              } from "$projectDir/modules/nf-core/blast/makeblastdb/main"
 include { AGAT_EXTRACTSEQUENCES as GFF2PROTEIN                           } from "$projectDir/modules/local/agat/extractsequences"
 include { BLAST_BLASTP                                                   } from "$projectDir/modules/local/blast/blastp"
-include { INTERPROSCAN                                                   } from "$projectDir/modules/local/interproscan"
+include { INTERPROSCAN                                                   } from "$projectDir/modules/nf-core/interproscan"
 include { AGAT_MANAGEFUNCTIONALANNOTATION as MERGE_FUNCTIONAL_ANNOTATION } from "$projectDir/modules/local/agat/managefunctionalannotation"
 
 workflow FUNCTIONAL_ANNOTATION {
@@ -43,7 +43,10 @@ workflow FUNCTIONAL_ANNOTATION {
         GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ),
         blastdb_ch.map{ meta, db -> db }.collect()
     )
-    INTERPROSCAN( GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ) )
+    INTERPROSCAN( 
+        GFF2PROTEIN.out.proteins.splitFasta( by: params.records_per_file, file: true ),
+        'tsv'
+    )
     MERGE_FUNCTIONAL_ANNOTATION(
         gff_file,
         BLAST_BLASTP.out.txt.map{ meta, txt -> txt }.collectFile( name: 'blast_merged.tsv' ),
