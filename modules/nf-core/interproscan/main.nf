@@ -27,11 +27,10 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
 
-// get rid of a predefined set of applications, we always want to see applications
-//    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
-//    if ( args.contains("-appl") ) {
-//        appl = ""
-//    }
+    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+    if ( args.contains("-appl") ) {
+        appl = ""
+    }
     switch ( out_ext ) {
         case "tsv": break
         case "xml": break
@@ -44,7 +43,6 @@ process INTERPROSCAN {
     }
 
     //  -dp (disable precalculation) is on so no online dependency
-    // removed argument "${appl} \\" from interproscan.sh command call
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -56,11 +54,12 @@ process INTERPROSCAN {
         -f ${out_ext} \\
         -dp \\
         ${args} \\
+        ${appl} \\
         -o ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
+    interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
     END_VERSIONS
     """
 
