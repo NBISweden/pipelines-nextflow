@@ -21,9 +21,10 @@ workflow ANNOTATION_PREPROCESSING {
         ASSEMBLY_PURIFY.out.fasta
             .combine( ch_busco_lineage )
             .multiMap { fasta, lineage ->
-                ch_fasta: [ [ id: fasta.baseName ], fasta ]
+                ch_fasta: [ [ id: fasta.baseName ], fasta ]                
                 ch_busco: lineage
             },
+        'genome',
         params.busco_lineages_path ? file( params.busco_lineages_path, checkIfExists: true ) : [],
         []
     )

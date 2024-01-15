@@ -12,7 +12,7 @@
           },
           "busco": {
             "branch": "master",
-            "git_sha": "6d6552cb582f56b6101c452e16ee7c23073f91de",
+            "git_sha": "e3126f437c336c826f242842fe51769cfce0ec2d",
             "installed_by": ["modules"]
           },
           "fastp": {
