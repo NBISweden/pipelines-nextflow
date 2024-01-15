@@ -17,13 +17,17 @@ workflow ANNOTATION_PREPROCESSING {
     
     ASSEMBLY_PURIFY( genome_assembly )
     ASSEMBLY_STATS( genome_assembly.mix( ASSEMBLY_PURIFY.out.fasta ) )
-    BUSCO( 
-        ASSEMBLY_PURIFY.out.fasta
-            .combine( ch_busco_lineage )
-            .multiMap { fasta, lineage ->
-                ch_fasta: [ [ id: fasta.baseName ], fasta ]
-                ch_busco: lineage
-            },
+
+    ch_busco_in = ASSEMBLY_PURIFY.out.fasta
+        .combine( ch_busco_lineage )
+        .multiMap { fasta, lineage ->
+            fasta: [ [ id: fasta.baseName ], fasta ]
+            lineage: lineage
+        }
+    BUSCO (
+        ch_busco_in.fasta,
+        "genome",
+        ch_busco_in.lineage,
         params.busco_lineages_path ? file( params.busco_lineages_path, checkIfExists: true ) : [],
         []
     )
