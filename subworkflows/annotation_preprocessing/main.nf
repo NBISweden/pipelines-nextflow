@@ -19,11 +19,11 @@ workflow ANNOTATION_PREPROCESSING {
     ASSEMBLY_STATS( genome_assembly.mix( ASSEMBLY_PURIFY.out.fasta ) )
 
     ch_busco_in = ASSEMBLY_PURIFY.out.fasta
-                    .combine( ch_busco_lineage )
-                    .multiMap { fasta, lineage ->
-                    fasta: [ [ id: fasta.baseName ], fasta ]
-                    lineage: lineage
-                    }
+        .combine( ch_busco_lineage )
+        .multiMap { fasta, lineage ->
+            fasta: [ [ id: fasta.baseName ], fasta ]
+            lineage: lineage
+        }
     BUSCO (
         ch_busco_in.fasta,
         "genome",
